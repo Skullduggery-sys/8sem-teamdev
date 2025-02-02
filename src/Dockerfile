@@ -27,10 +27,13 @@ COPY . .
 
 # CMD ["go", "run", "./cmd/main.go"]
 
-############################################
+# RUN go install github.com/pressly/goose/v3/cmd/goose@latest
+# RUN make migration-up
 
-# RUN make build
-RUN go build -o main cmd/main.go
+RUN make build
+# RUN go build -o main cmd/main.go
+
+############################################
 
 FROM golang:1.23
 # FROM apline:latest

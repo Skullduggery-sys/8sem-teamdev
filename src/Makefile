@@ -25,17 +25,10 @@ docker-down:
 docker-killdb:
 	docker compose -f docker-compose.yml down --volumes
 
-ci-unit-tests-coverage:
-	docker compose -f docker-compose.yml run app \
-	ls -a \
-	&& pwd \
-	&& ls .. \
-	&& go test -covermode=atomic -coverprofile=coverage/coverage.out.tmp -count=1 -shuffle=on ./... \
-	&& cat coverage/coverage.out.tmp | grep -v "_mock.go" > coverage/coverage.out \
-	&& go tool cover -html=coverage/coverage.out -o coverage/coverage_report.html
-ci-integration-tests:
-	docker compose -f docker-compose.yml run app \
-	go test -tags=integration ./internal/tests -v -count=1 -shuffle=on
+# ci-unit-tests-coverage:
+# 	docker compose -f docker-compose.yml run app make unit-tests-coverage
+# ci-integration-tests:
+# 	docker compose -f docker-compose.yml run app make integration-tests
 
 build:
 	go build -o main cmd/main.go
