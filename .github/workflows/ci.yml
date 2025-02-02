@@ -37,6 +37,9 @@ jobs:
         run: |
           cd src
           touch .env
+          ls -a
+          pwd
+          ls ..
           make ci-unit-tests-coverage
 
       - name: Run Integration Tests
