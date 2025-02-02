@@ -5,14 +5,6 @@ on: [push]
 jobs:
   test:
     runs-on: ubuntu-latest
-    # services:
-    #   postgres:
-    #     image: postgres:latest
-    #     env:
-    #       POSTGRES_USER: postgres
-    #       POSTGRES_PASSWORD: ${{secrets.DB_PASSWORD}}
-    #     ports:
-    #       - 5432:5432
 
     steps:
       - name: Checkout code
@@ -33,6 +25,7 @@ jobs:
           export PATH=$PATH:$(go env GOPATH)/bin
           go install github.com/pressly/goose/v3/cmd/goose@latest
           make migration-up
+          make docker-app-up
         env:
           DB_HOST: 0.0.0.0
           DB_PORT: 5432
@@ -54,6 +47,21 @@ jobs:
           touch internal/tests/.env
           make integration-tests
         env:
+          DB_HOST: 0.0.0.0
+          DB_PORT: 5432
+          DB_NAME: postgres
+          DB_USERNAME: postgres
+          DB_PASSWORD: ${{secrets.DB_PASSWORD}}
+
+      - name: Run e2e Tests
+        run: |
+          cd src
+          touch .env
+          touch e2e/.env
+          make e2e-setup
+          make e2e-tests
+        env:
+          APP_HOST: 0.0.0.0
           DB_HOST: 0.0.0.0
           DB_PORT: 5432
           DB_NAME: postgres

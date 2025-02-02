@@ -19,11 +19,14 @@ migration-down:
 docker-build:
 	docker compose -f docker-compose.yml build
 docker-up:
-	docker compose -f docker-compose.yml up --build --detach
+	docker compose -f docker-compose.yml up postgres --build --detach
 docker-down:
 	docker compose -f docker-compose.yml down
 docker-killdb:
 	docker compose -f docker-compose.yml down --volumes
+
+docker-app-up:
+	docker compose -f docker-compose.yml up app --build --detach
 
 # ci-unit-tests-coverage:
 # 	docker compose -f docker-compose.yml run app make unit-tests-coverage
@@ -44,6 +47,12 @@ unit-tests-coverage:
 	go tool cover -html=coverage/coverage.out -o coverage/coverage_report.html
 integration-tests:
 	go test -tags=integration ./internal/tests -v -count=1 -shuffle=on
+e2e-setup:
+	curl -X POST -H "Content-Type: application/json" \
+	-d '{"name":"alexey vasilyev","login":"alivasilyev","role":"user","password":"12345"}' \
+	http://${APP_HOST}:9000/sign-up
+e2e-tests:
+	go test -tags=e2e ./e2e -v -count=1
 lint:
 	golangci-lint run --config ./golangci.yaml
 
