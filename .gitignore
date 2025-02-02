@@ -1,0 +1,4 @@
+.env
+swagger
+test_report.html
+coverage.*

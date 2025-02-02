@@ -1,0 +1,12 @@
+version: '3.0'
+services:
+  postgres:
+    container_name: media-organizer
+    image: postgres:15.4
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    ports:
+      - '5436:5432'
