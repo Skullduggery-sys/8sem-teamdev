@@ -14,7 +14,8 @@ import (
 	dbpostgres "git.iu7.bmstu.ru/vai20u117/testing/src/internal/db/postgres"
 	repository "git.iu7.bmstu.ru/vai20u117/testing/src/internal/repository/postgres"
 	"git.iu7.bmstu.ru/vai20u117/testing/src/internal/service"
-	_ "git.iu7.bmstu.ru/vai20u117/testing/src/swagger"
+
+	// _ "git.iu7.bmstu.ru/vai20u117/testing/src/swagger"
 	muxhandlers "github.com/gorilla/handlers"
 	"github.com/joho/godotenv"
 	"github.com/spf13/viper"
@@ -42,7 +43,7 @@ func main() {
 		initAuthHandler(database, os.Getenv("ADMIN_SECRET")),
 	)
 
-	serverPort := ":" + viper.GetString("port")
+	serverPort := ":" + "9000" // viper.GetString("port")
 	router := controller.CreateRouter()
 	http.Handle("/", router)
 
@@ -99,9 +100,9 @@ func initAuthHandler(database *dbpostgres.Database, adminToken string) *controll
 }
 
 func mustLoadConfigs() {
-	if err := initConfig(); err != nil {
-		log.Fatal("Failed to init configs: ", err)
-	}
+	// if err := initConfig(); err != nil {
+	// 	log.Fatal("Failed to init configs: ", err)
+	// }
 	if err := godotenv.Load(); err != nil {
 		log.Fatal("Failed to load env variables: ", err)
 	}
@@ -109,12 +110,11 @@ func mustLoadConfigs() {
 
 func mustLoadDB(ctx context.Context) *dbpostgres.Database {
 	database, err := dbpostgres.NewDB(ctx, &dbpostgres.DBConfig{
-		Host:     viper.GetString("db.host"),
-		Port:     viper.GetString("db.port"),
+		Host:     os.Getenv("DB_HOST"),
+		Port:     os.Getenv("DB_PORT"),
 		Username: os.Getenv("DB_USERNAME"),
 		Password: os.Getenv("DB_PASSWORD"),
-		DBName:   viper.GetString("db.dbname"),
-		SSLMode:  viper.GetString("db.sslmode"),
+		DBName:   os.Getenv("DB_NAME"),
 	})
 	if err != nil {
 		log.Fatal("Failed to create db: ", err)
