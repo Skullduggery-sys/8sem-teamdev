@@ -25,7 +25,9 @@ jobs:
         run: |
           cd src
           touch .env
+          go install github.com/pressly/goose/v3/cmd/goose@latest
           make docker-up
+          make migration-up
         env:
           DB_HOST: postgres
           DB_PORT: 5432
@@ -45,7 +47,6 @@ jobs:
           cd src
           touch .env
           touch internal/tests/.env
-          go install github.com/pressly/goose/v3/cmd/goose@latest
           make integration-tests
         env:
           DB_HOST: postgres
