@@ -23,6 +23,7 @@ jobs:
 
       - name: Build Docker Services
         run: |
+          cd src
           touch .env
           make docker-build
         env:

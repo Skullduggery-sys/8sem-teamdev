@@ -15,7 +15,8 @@ services:
   app:
     # container_name: media-organizer
     build:
-      context: ./src
+      # context: ./src
+      context: .
       dockerfile: Dockerfile
     depends_on:
       - postgres
