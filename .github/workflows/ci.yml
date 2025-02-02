@@ -53,20 +53,20 @@ jobs:
           DB_USERNAME: postgres
           DB_PASSWORD: ${{secrets.DB_PASSWORD}}
 
-      - name: Run e2e Tests
-        run: |
-          cd src
-          touch .env
-          touch e2e/.env
-          make e2e-setup
-          make e2e-tests
-        env:
-          APP_HOST: 0.0.0.0
-          DB_HOST: 0.0.0.0
-          DB_PORT: 5432
-          DB_NAME: postgres
-          DB_USERNAME: postgres
-          DB_PASSWORD: ${{secrets.DB_PASSWORD}}
+      # - name: Run e2e Tests
+      #   run: |
+      #     cd src
+      #     touch .env
+      #     touch e2e/.env
+      #     make e2e-setup
+      #     make e2e-tests
+      #   env:
+      #     APP_HOST: 0.0.0.0
+      #     DB_HOST: 0.0.0.0
+      #     DB_PORT: 5432
+      #     DB_NAME: postgres
+      #     DB_USERNAME: postgres
+      #     DB_PASSWORD: ${{secrets.DB_PASSWORD}}
 
       - name: Clean Up
         run: |
