@@ -5,14 +5,14 @@ on: [push]
 jobs:
   test:
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:latest
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: ${{secrets.DB_PASSWORD}}
-        ports:
-          - 5432:5432
+    # services:
+    #   postgres:
+    #     image: postgres:latest
+    #     env:
+    #       POSTGRES_USER: postgres
+    #       POSTGRES_PASSWORD: ${{secrets.DB_PASSWORD}}
+    #     ports:
+    #       - 5432:5432
 
     steps:
       - name: Checkout code
