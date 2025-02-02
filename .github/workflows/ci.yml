@@ -1,0 +1,74 @@
+name: Go CI
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      # - name: Set up migration tool
+      #   run: |
+      #     export PATH=$PATH:$(go env GOPATH)/bin
+
+      - name: Docker Build
+        run: |
+          cd src
+          touch .env
+          make docker-up
+          export PATH=$PATH:$(go env GOPATH)/bin
+          go install github.com/pressly/goose/v3/cmd/goose@latest
+          make migration-up
+          make docker-app-up
+        env:
+          DB_HOST: 0.0.0.0
+          DB_PORT: 5432
+          DB_NAME: postgres
+          DB_USERNAME: postgres
+          DB_PASSWORD: ${{secrets.DB_PASSWORD}}
+
+      - name: Run Unit Tests
+        run: |
+          cd src
+          touch .env
+          mkdir -p coverage
+          make unit-tests-coverage
+
+      - name: Run Integration Tests
+        run: |
+          cd src
+          touch .env
+          touch internal/tests/.env
+          make integration-tests
+        env:
+          DB_HOST: 0.0.0.0
+          DB_PORT: 5432
+          DB_NAME: postgres
+          DB_USERNAME: postgres
+          DB_PASSWORD: ${{secrets.DB_PASSWORD}}
+
+      # - name: Run e2e Tests
+      #   run: |
+      #     cd src
+      #     touch .env
+      #     touch e2e/.env
+      #     make e2e-setup
+      #     make e2e-tests
+      #   env:
+      #     APP_HOST: 0.0.0.0
+      #     DB_HOST: 0.0.0.0
+      #     DB_PORT: 5432
+      #     DB_NAME: postgres
+      #     DB_USERNAME: postgres
+      #     DB_PASSWORD: ${{secrets.DB_PASSWORD}}
+
+      - name: Clean Up
+        run: |
+          cd src
+          make docker-down

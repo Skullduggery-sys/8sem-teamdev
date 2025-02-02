@@ -1,4 +1,5 @@
 .env
-swagger
+src/swagger/docs.go
+src/swagger/swagger*
 test_report.html
-coverage.*
+coverage

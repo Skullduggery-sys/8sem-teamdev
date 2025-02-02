@@ -1,0 +1,4 @@
+# git config --global url."git@git.iu7.bmstu.ru:".insteadOf "https://git.iu7.bmstu.ru/"
+
+[url "git@git.iu7.bmstu.ru"]
+    insteadOf = https://git.iu7.bmstu.ru/
