@@ -25,7 +25,7 @@ jobs:
         run: |
           cd src
           touch .env
-          make docker-build
+          make docker-up
         env:
           DB_HOST: postgres
           DB_PORT: 5432
@@ -37,13 +37,14 @@ jobs:
         run: |
           cd src
           touch .env
-          make ci-unit-tests-coverage
+          mkdir -p coverage
+          make unit-tests-coverage
 
       - name: Run Integration Tests
         run: |
           cd src
           touch .env
-          make ci-integration-tests
+          make integration-tests
         env:
           DB_HOST: postgres
           DB_PORT: 5432
