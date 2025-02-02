@@ -27,7 +27,7 @@ COPY . .
 
 # CMD ["go", "run", "./cmd/main.go"]
 
-RUN go install github.com/pressly/goose/v3/cmd/goose@latest
+# RUN go install github.com/pressly/goose/v3/cmd/goose@latest
 # RUN make migration-up
 
 RUN make build

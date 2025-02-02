@@ -21,11 +21,17 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
+      # - name: Set up migration tool
+      #   run: |
+      #     export PATH=$PATH:$(go env GOPATH)/bin
+
       - name: Docker Build
         run: |
           cd src
           touch .env
           make docker-up
+          export PATH=$PATH:$(go env GOPATH)/bin
+          go install github.com/pressly/goose/v3/cmd/goose@latest
           make migration-up
         env:
           DB_HOST: postgres
