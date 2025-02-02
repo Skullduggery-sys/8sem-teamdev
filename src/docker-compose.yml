@@ -12,17 +12,17 @@ services:
       # - '5436:5432'
       - '5432:5432'
 
-  app:
-    # container_name: media-organizer
-    build:
-      # context: ./src
-      context: .
-      dockerfile: Dockerfile
-    depends_on:
-      # - migration
-      - postgres
-    ports:
-      - "9000:9000"
+  # app:
+  #   # container_name: media-organizer
+  #   build:
+  #     # context: ./src
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   depends_on:
+  #     # - migration
+  #     - postgres
+  #   ports:
+  #     - "9000:9000"
   # migration:
   #   build: .
   #   command: make migration-up
