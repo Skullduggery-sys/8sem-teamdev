@@ -1,0 +1,57 @@
+name: Go CI
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ${{secrets.DB_PASSWORD}}
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build Docker Services
+        run: |
+          cd src
+          touch .env
+          make docker-build
+        env:
+          DB_HOST: postgres
+          DB_PORT: 5432
+          DB_NAME: postgres
+          DB_USERNAME: postgres
+          DB_PASSWORD: ${{secrets.DB_PASSWORD}}
+
+      - name: Run Unit Tests
+        run: |
+          cd src
+          touch .env
+          make ci-unit-tests-coverage
+
+      - name: Run Integration Tests
+        run: |
+          cd src
+          touch .env
+          make ci-integration-tests
+        env:
+          DB_HOST: postgres
+          DB_PORT: 5432
+          DB_NAME: postgres
+          DB_USERNAME: postgres
+          DB_PASSWORD: ${{secrets.DB_PASSWORD}}
+
+      - name: Clean Up
+        run: |
+          cd src
+          make docker-down

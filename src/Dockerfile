@@ -14,6 +14,7 @@ COPY go.sum .
 # ADD go.sum /app/
 
 RUN go mod download
+# RUN go install github.com/vakenbolt/go-test-report@latest
 
 COPY . .
 # ADD cmd /app/cmd/
@@ -22,6 +23,11 @@ COPY . .
 # ADD migrations /app/migrations
 # ADD internal /app/internal/
 # ADD Makefile /app/Makefile
+
+
+# CMD ["go", "run", "./cmd/main.go"]
+
+############################################
 
 # RUN make build
 RUN go build -o main cmd/main.go
@@ -40,5 +46,4 @@ EXPOSE 9000
 
 # RUN chmod +x ./main
 
-# CMD ["make", "unit-tests", "unit-tests-coverage"]
 CMD ["/main"]

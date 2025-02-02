@@ -1,14 +1,7 @@
 version: '3.0'
 services:
-  # gitlab-runner:
-  #   image: gitlab/gitlab-runner:latest
-  #   restart: always
-  #   volumes:
-  #     - gitlab-runner-config:/etc/gitlab-runner
-  #     - /var/run/docker.sock:/var/run/docker.sock
-  #     - /etc/localtime:/etc/localtime:ro
   postgres:
-    container_name: media-organizer
+    # container_name: media-organizer
     image: postgres:15.4
     env_file:
       - .env
@@ -16,12 +9,13 @@ services:
       - POSTGRES_USER=${DB_USERNAME}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
     ports:
-      - '5436:5432'
-      # - '5432:5432'
+      # - '5436:5432'
+      - '5432:5432'
 
   app:
+    # container_name: media-organizer
     build:
-      context: .
+      context: ./src
       dockerfile: Dockerfile
     depends_on:
       - postgres
