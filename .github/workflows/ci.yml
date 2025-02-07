@@ -19,6 +19,7 @@ jobs:
 
       - name: Code checks
         run: |
+          go install github.com/fzipp/gocyclo/cmd/gocyclo@latest
           cd src
           touch .env
           make code-check
