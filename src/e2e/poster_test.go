@@ -1,6 +1,3 @@
-//go:build e2e
-// +build e2e
-
 package e2e
 
 import (
@@ -30,6 +27,13 @@ func Test_PosterScenary(t *testing.T) {
 	assert.NoError(t, gotErr)
 
 	resp, gotErr := client.Do(signInReq)
+	assert.NoError(t, gotErr)
+	defer resp.Body.Close()
+
+	verify2FAReq, gotErr := makeVerify2FARequest()
+	assert.NoError(t, gotErr)
+
+	resp, gotErr = client.Do(verify2FAReq)
 	assert.NoError(t, gotErr)
 	defer resp.Body.Close()
 
@@ -69,9 +73,27 @@ func makeSignInRequest() (*http.Request, error) {
 	}
 
 	url := fmt.Sprintf("http://%s:%d/sign-in", host, appPort)
-	rawBody := []byte(`{"name":"alexey vasilyev","login":"alivasilyev","role":"user","password":"12345"}`)
+	rawBody := []byte(`{"name":"alexey vasilyev","login":"alivasilyev","role":"user","email": "convex.hull.trick@mail.ru", "password":"12345"}`)
 
 	req, err := http.NewRequest(http.MethodPost, url, bytes.NewBuffer(rawBody))
+	if err != nil {
+		return nil, fmt.Errorf("failed to create sign in request: %w", err)
+	}
+
+	req.Header.Set("Content-Type", "application/json")
+
+	return req, nil
+}
+
+func makeVerify2FARequest() (*http.Request, error) {
+	host := os.Getenv("APP_HOST")
+	if host == "" {
+		return nil, fmt.Errorf("APP_HOST is not set")
+	}
+
+	url := fmt.Sprintf("http://%s:%d/verify-2fa?code=228228&email=convex.hull.trick@mail.ru", host, appPort)
+
+	req, err := http.NewRequest(http.MethodPost, url, nil)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create sign in request: %w", err)
 	}

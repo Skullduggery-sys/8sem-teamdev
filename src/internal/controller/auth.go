@@ -91,7 +91,7 @@ func (h *AuthHandler) SignUp(ctx context.Context, user *model.User) ([]byte, err
 		slog.Warn("failed to generate password hash", "error", err)
 		return nil, errInternal
 	case errors.Is(err, servicePkg.ErrWaiting2FA):
-		slog.Info("sign in wainting 2fa", "user_login", user.Login)
+		slog.Info("sign up wainting 2fa", "user_login", user.Login)
 		return nil, errWaiting2FA
 	case err != nil:
 		slog.Error("unexpected error occurred while signing up", "error", err)
@@ -190,7 +190,7 @@ func (h *AuthHandler) Verify2FA(ctx context.Context, email, code string) ([]byte
 		slog.Warn("failed to generate password hash", "error", err)
 		return nil, errInternal
 	case errors.Is(err, servicePkg.ErrNotFound):
-		slog.Warn("user by login is not found", "user_email", email)
+		slog.Warn("user by email is not found in verify storage", "user_email", email)
 		return nil, errNotFound
 	case errors.Is(err, servicePkg.ErrBadPassword):
 		slog.Warn("user password is not matched", "user_email", email)
@@ -265,7 +265,7 @@ func (h *AuthHandler) ResetPassword(ctx context.Context, login, email, oldPasswo
 		slog.Warn("this user is not allowed to be an admin")
 		return errInvalidArguments
 	case errors.Is(err, servicePkg.ErrWaiting2FA):
-		slog.Info("sign in wainting 2fa", "user_login", login)
+		slog.Info("reset password wainting 2fa", "user_login", login)
 		return errWaiting2FA
 	case err != nil:
 		slog.Error("unexpected error occurred while resetting password", "error", err)

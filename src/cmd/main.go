@@ -28,7 +28,7 @@ func main() {
 	defer cancel()
 
 	slog.New(slog.NewTextHandler(os.Stderr, nil))
-	slog.SetLogLoggerLevel(slog.LevelInfo)
+	slog.SetLogLoggerLevel(slog.LevelDebug)
 
 	mustLoadConfigs()
 

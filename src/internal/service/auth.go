@@ -46,7 +46,7 @@ type AuthService struct {
 	sessions    map[string]*Session
 	adminSecret string
 
-	veryfyCodes    map[string]string // user.email -> code
+	verifyCodes    map[string]string // user.email -> code
 	verifyMetadata map[string]*VeryfyUserMetadata
 
 	userRepo UserRepository
@@ -67,7 +67,7 @@ func NewAuthService(userRepo UserRepository, adminSecret string) *AuthService {
 		adminSecret: adminSecret,
 		userRepo:    userRepo,
 
-		veryfyCodes:    make(map[string]string),
+		verifyCodes:    make(map[string]string),
 		verifyMetadata: make(map[string]*VeryfyUserMetadata),
 	}
 }
@@ -102,19 +102,6 @@ func (a *AuthService) GetUserTokenByAdmin(ctx context.Context, adminSecret, logi
 	return session.Token, nil
 }
 
-// TODO: 2FA
-// singup:
-// 1. check if user exists
-// 2. if ok, send errWaiting2FA, put [user.mail]code, [user.email]2fa{*model.User, action=create},
-// 		(both maps with mutex)
-// 3. in verify2FAhandler check that incoming code == [user.email], handle 2fa{*model.User, action=create}
-// 4. remove user.email from both maps
-// signin the same
-
-//TODO: ResetPasswordHandler
-// accept user, oldPassword, newPassword
-// permorm the same as in 2FA
-
 func (a *AuthService) SignUp(ctx context.Context, user *model.User) (int, error) {
 	if user.Role == model.Admin.String() && user.AdminSecret != a.adminSecret {
 		return 0, ErrAdminIsNotAuthtorized
@@ -137,7 +124,7 @@ func (a *AuthService) SignUp(ctx context.Context, user *model.User) (int, error)
 
 		code := generate2FACode()
 		sendCodeInEmail(code)
-		a.veryfyCodes[user.Email] = code
+		a.verifyCodes[user.Email] = code
 		a.verifyMetadata[user.Email] = &VeryfyUserMetadata{
 			User:   user,
 			Action: UserMethodSignUp,
@@ -175,7 +162,7 @@ func (a *AuthService) SignIn(ctx context.Context, user *model.User) (string, err
 
 		code := generate2FACode()
 		sendCodeInEmail(code)
-		a.veryfyCodes[user.Email] = code
+		a.verifyCodes[user.Email] = code
 		a.verifyMetadata[user.Email] = &VeryfyUserMetadata{
 			User:   user,
 			Action: UserMethodSignIn,
@@ -229,7 +216,7 @@ func (a *AuthService) ResetPassword(ctx context.Context, login, email, oldPasswo
 
 		code := generate2FACode()
 		sendCodeInEmail(code)
-		a.veryfyCodes[email] = code
+		a.verifyCodes[email] = code
 		a.verifyMetadata[email] = &VeryfyUserMetadata{
 			User:        &model.User{Email: email, Login: login},
 			NewPassword: string(newHash),
@@ -246,7 +233,7 @@ func (a *AuthService) Handle2FA(ctx context.Context, email, code string) (*Veryf
 	a.mx.Lock()
 	defer a.mx.Unlock()
 
-	if actualCode, ok := a.veryfyCodes[email]; !ok {
+	if actualCode, ok := a.verifyCodes[email]; !ok {
 		return nil, ErrNotFound
 	} else if actualCode != code {
 		return nil, ErrBadVeryfyCode
@@ -287,7 +274,7 @@ func (a *AuthService) ClearVerifyEmail(email string) {
 	defer a.mx.Unlock()
 
 	delete(a.verifyMetadata, email)
-	delete(a.veryfyCodes, email)
+	delete(a.verifyCodes, email)
 	slog.Info("cleared verify metadata & code", "user_email", email)
 }
 
@@ -308,6 +295,10 @@ func sendCodeInEmail(code string) {
 }
 
 func generate2FACode() string {
+	if ok := os.Getenv("E2E_TEST"); ok != "" {
+		return "228228"
+	}
+
 	bi, err := rand.Int(
 		rand.Reader,
 		big.NewInt(int64(math.Pow(10, float64(code2FADigits)))),

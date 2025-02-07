@@ -9,8 +9,8 @@ services:
       - POSTGRES_USER=${DB_USERNAME}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
     ports:
-      - '5436:5432'
-      # - '5432:5432'
+      # - '5436:5432'
+      - '5432:5432'
 
   app:
     # container_name: media-organizer
