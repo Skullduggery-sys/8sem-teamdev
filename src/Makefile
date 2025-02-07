@@ -49,8 +49,9 @@ integration-tests:
 	go test -tags=integration ./internal/tests -v -count=1 -shuffle=on
 e2e-setup:
 	curl -X POST -H "Content-Type: application/json" \
-	-d '{"name":"alexey vasilyev","login":"alivasilyev","role":"user","password":"12345"}' \
+	-d '{"name":"alexey vasilyev","login":"alivasilyev","email":"convex.hull.trick@mail.ru","role":"user","password":"12345"}' \
 	http://${APP_HOST}:9000/sign-up
+	curl -X POST "http://${APP_HOST}:9000/verify-2fa?code=228228&email=convex.hull.trick@mail.ru"
 e2e-tests:
 	go test -tags=e2e ./e2e -v -count=1
 lint:

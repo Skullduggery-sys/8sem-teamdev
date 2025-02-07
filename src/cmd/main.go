@@ -28,7 +28,7 @@ func main() {
 	defer cancel()
 
 	slog.New(slog.NewTextHandler(os.Stderr, nil))
-	slog.SetLogLoggerLevel(slog.LevelInfo)
+	slog.SetLogLoggerLevel(slog.LevelDebug)
 
 	mustLoadConfigs()
 
@@ -60,7 +60,7 @@ func main() {
 		}
 	}()
 
-	slog.Info("Server started")
+	slog.Info("Server started", "address", "http://localhost"+serverPort)
 
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT)

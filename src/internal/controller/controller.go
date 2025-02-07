@@ -50,6 +50,10 @@ func (c *Controller) CreateRouter() *mux.Router {
 		Methods(http.MethodPost)
 	router.HandleFunc("/sign-out", c.handleSignOutRequests).
 		Methods(http.MethodPost)
+	router.HandleFunc("/verify-2fa", c.handleVerify2FARequests).
+		Methods(http.MethodPost)
+	router.HandleFunc("/reset-password", c.handleResetPasswordRequests).
+		Methods(http.MethodPost)
 
 	router.HandleFunc("/poster", c.handlePosterRequests).
 		Methods(http.MethodGet, http.MethodPost, http.MethodPut, http.MethodDelete)
@@ -98,7 +102,6 @@ func (c *Controller) authorizeUserID(token string, userID int) error {
 	return nil
 }
 
-// TODO: rename to writeErrorCode.
 func writeError(w http.ResponseWriter, err error) {
 	switch {
 	case errors.Is(err, errInvalidArguments):
@@ -111,6 +114,8 @@ func writeError(w http.ResponseWriter, err error) {
 		w.WriteHeader(http.StatusBadRequest)
 	case errors.Is(err, errActionNotAuthorized):
 		w.WriteHeader(http.StatusUnauthorized)
+	case errors.Is(err, errWaiting2FA):
+		w.WriteHeader(http.StatusAccepted)
 	default:
 		w.WriteHeader(http.StatusTeapot)
 		slog.Error("type of error is unknown to controller, returning teapot status", "error", err)
