@@ -20,6 +20,7 @@ jobs:
       - name: Code checks
         run: |
           cd src
+          touch .env
           make code-check
 
       - name: Docker Build
