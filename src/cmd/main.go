@@ -18,7 +18,10 @@ import (
 	// _ "git.iu7.bmstu.ru/vai20u117/testing/src/swagger"
 	muxhandlers "github.com/gorilla/handlers"
 	"github.com/joho/godotenv"
+	"github.com/opentracing/opentracing-go"
 	"github.com/spf13/viper"
+	"github.com/uber/jaeger-client-go"
+	"github.com/uber/jaeger-client-go/config"
 )
 
 const requestsTimeout = 15 * time.Second
@@ -31,6 +34,26 @@ func main() {
 	slog.SetLogLoggerLevel(slog.LevelDebug)
 
 	mustLoadConfigs()
+
+	traceCfg := config.Configuration{
+		ServiceName: "media-organizer-app",
+		Sampler: &config.SamplerConfig{
+			Type:  "const",
+			Param: 1,
+		},
+		Reporter: &config.ReporterConfig{
+			LogSpans:            false,
+			BufferFlushInterval: 1 * time.Second,
+		},
+	}
+
+	tracer, closer, err := traceCfg.NewTracer(config.Logger(jaeger.StdLogger))
+	if err != nil {
+		log.Fatal("Failed to create tracer: ", err)
+	}
+	defer closer.Close()
+
+	opentracing.SetGlobalTracer(tracer)
 
 	database := mustLoadDB(ctx)
 	defer database.GetPool(ctx).Close()
