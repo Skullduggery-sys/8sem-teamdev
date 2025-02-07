@@ -10,6 +10,7 @@ import (
 
 	"git.iu7.bmstu.ru/vai20u117/testing/src/internal/model"
 	servicePkg "git.iu7.bmstu.ru/vai20u117/testing/src/internal/service"
+	"github.com/opentracing/opentracing-go"
 )
 
 type listPosterService interface {
@@ -153,6 +154,9 @@ func (h *ListPosterHandler) DeletePoster(ctx context.Context, listID, posterID i
 }
 
 func (c *Controller) handleListPosterGetDeleteRequests(w http.ResponseWriter, r *http.Request) {
+	span, _ := opentracing.StartSpanFromContext(r.Context(), "app-http-handler: list-poster: get/delete")
+	defer span.Finish()
+
 	token := r.URL.Query().Get("token")
 	ctx := r.Context()
 	switch r.Method {
@@ -208,6 +212,9 @@ func (c *Controller) handleListPosterGetDeleteRequests(w http.ResponseWriter, r 
 }
 
 func (c *Controller) handleListPosterAddRequests(w http.ResponseWriter, r *http.Request) {
+	span, _ := opentracing.StartSpanFromContext(r.Context(), "app-http-handler: list-poster: add")
+	defer span.Finish()
+
 	token := r.URL.Query().Get("token")
 	ctx := r.Context()
 	switch r.Method {
@@ -243,6 +250,9 @@ func (c *Controller) handleListPosterAddRequests(w http.ResponseWriter, r *http.
 }
 
 func (c *Controller) handleListPosterMoveRequests(w http.ResponseWriter, r *http.Request) {
+	span, _ := opentracing.StartSpanFromContext(r.Context(), "app-http-handler: list-poster: move")
+	defer span.Finish()
+
 	token := r.URL.Query().Get("token")
 	ctx := r.Context()
 	switch r.Method {
@@ -287,6 +297,9 @@ func (c *Controller) handleListPosterMoveRequests(w http.ResponseWriter, r *http
 }
 
 func (c *Controller) handleListPosterChangePositionRequests(w http.ResponseWriter, r *http.Request) {
+	span, _ := opentracing.StartSpanFromContext(r.Context(), "app-http-handler: list-poster: change position")
+	defer span.Finish()
+
 	token := r.URL.Query().Get("token")
 	ctx := r.Context()
 	switch r.Method {
