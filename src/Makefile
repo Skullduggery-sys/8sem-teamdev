@@ -60,8 +60,8 @@ lint:
 jaeger-up:
 	docker run -d -p 6831:6831/udp -p 16686:16686 jaegertracing/all-in-one:latest
 
-jaeger-down:
-	docker stop
+code-check:
+	bash check/check.sh
 
 swagger: $(SWAGGER_SRC)
 	swag init --parseDependency --parseInternal -g ./cmd/main.go -o ./swagger

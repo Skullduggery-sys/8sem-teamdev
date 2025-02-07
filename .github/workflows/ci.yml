@@ -17,6 +17,11 @@ jobs:
       #   run: |
       #     export PATH=$PATH:$(go env GOPATH)/bin
 
+      - name: Code checks
+        run: |
+          cd src
+          make code-check
+
       - name: Docker Build
         run: |
           cd src
