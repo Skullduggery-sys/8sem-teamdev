@@ -22,6 +22,7 @@ type User struct {
 	ID          int    `json:"id"`
 	Name        string `json:"name"`
 	Login       string `json:"login"`
+	Email       string `json:"email"`
 	Role        string `json:"role"`
 	Password    string `json:"password"`
 	AdminSecret string `json:"admintoken"`

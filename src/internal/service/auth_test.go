@@ -317,3 +317,9 @@ func (f *fakeUserRepo) GetByLogin(ctx context.Context, login string) (*model.Use
 
 	return filtered[0], nil
 }
+
+func (*fakeUserRepo) ResetPassword(_ context.Context, _, _ string) error {
+	return nil
+}
+
+func (*fakeUserRepo) ClearVerifyEmail(email string) {}
