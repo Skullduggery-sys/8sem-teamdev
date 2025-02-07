@@ -2,12 +2,17 @@ package service
 
 import (
 	"context"
+	"errors"
+	"fmt"
 
 	"git.iu7.bmstu.ru/vai20u117/testing/src/internal/model"
+	repository "git.iu7.bmstu.ru/vai20u117/testing/src/internal/repository/postgres"
 )
 
 type listRepository interface {
 	Get(ctx context.Context, listID int) (*model.List, error)
+	GetSublists(ctx context.Context, listID int) ([]*model.List, error)
+	GetUserRoot(ctx context.Context, globalRootID, userID int) (*model.List, error)
 	GetRootID(ctx context.Context) (int, error)
 	Create(ctx context.Context, list *model.List) (int, error)
 	Update(ctx context.Context, list *model.List) error
@@ -23,14 +28,41 @@ func NewListService(repo listRepository) *ListService {
 }
 
 func (s *ListService) Get(ctx context.Context, listID int) (*model.List, error) {
-	return s.repo.Get(ctx, listID)
+	list, err := s.repo.Get(ctx, listID)
+	if errors.Is(err, repository.ErrNotFound) {
+		return nil, ErrNotFound
+	} else if err != nil {
+		return nil, err
+	}
+
+	return list, nil
+}
+
+func (s *ListService) GetUserRoot(ctx context.Context, userID int) (*model.List, error) {
+	globalRootID, err := s.repo.GetRootID(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get id of global list root: %w", err)
+	}
+
+	root, err := s.repo.GetUserRoot(ctx, globalRootID, userID)
+	if errors.Is(err, repository.ErrNotFound) {
+		return nil, ErrNotFound
+	} else if err != nil {
+		return nil, err
+	}
+
+	return root, nil
+}
+
+func (s *ListService) GetSublists(ctx context.Context, listID int) ([]*model.List, error) {
+	return s.repo.GetSublists(ctx, listID)
 }
 
 func (s *ListService) Create(ctx context.Context, list *model.List) (int, error) {
 	if list.ParentID == 0 {
 		rootID, err := s.repo.GetRootID(ctx)
 		if err != nil {
-			return 0, err
+			return 0, fmt.Errorf("failed to get id of global list root: %w", err)
 		}
 
 		list.ParentID = rootID
@@ -40,10 +72,23 @@ func (s *ListService) Create(ctx context.Context, list *model.List) (int, error)
 }
 
 func (s *ListService) Update(ctx context.Context, list *model.List) error {
-	return s.repo.Update(ctx, list)
+	err := s.repo.Update(ctx, list)
+	if errors.Is(err, repository.ErrNotFound) {
+		return ErrNotFound
+	} else if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (s *ListService) Delete(ctx context.Context, listID int) error {
-	// TODO change parentID of all posters that belong to this list to parentID of this list.
-	return s.repo.Delete(ctx, listID)
+	err := s.repo.Delete(ctx, listID)
+	if errors.Is(err, repository.ErrNotFound) {
+		return ErrNotFound
+	} else if err != nil {
+		return err
+	}
+
+	return nil
 }

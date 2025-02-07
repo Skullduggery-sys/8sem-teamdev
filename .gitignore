@@ -1,6 +1,5 @@
 .env
 src/swagger/docs.go
-src/swagger/swagger*
-test_report.html
-coverage
-benchmarks/gatling/results
+src/swagger/openapi*
+src/swagger/*graphql
+src/nginx/pswrd/*

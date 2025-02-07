@@ -17,6 +17,14 @@ jobs:
       #   run: |
       #     export PATH=$PATH:$(go env GOPATH)/bin
 
+      - name: Code checks
+        run: |
+          export PATH=$PATH:$(go env GOPATH)/bin
+          go install github.com/fzipp/gocyclo/cmd/gocyclo@latest
+          cd src
+          touch .env
+          make code-check
+
       - name: Docker Build
         run: |
           cd src
