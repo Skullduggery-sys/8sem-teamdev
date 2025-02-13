@@ -332,10 +332,9 @@ func (c *Controller) handleSignUpRequests(w http.ResponseWriter, r *http.Request
 }
 
 func (c *Controller) handleSignInRequests(w http.ResponseWriter, r *http.Request) {
-	span, _ := opentracing.StartSpanFromContext(r.Context(), "app-http-handler: sign-in")
+	span, ctx := opentracing.StartSpanFromContext(r.Context(), "app-http-handler: sign-in")
 	defer span.Finish()
 
-	ctx := r.Context()
 	switch r.Method {
 	case http.MethodPost:
 		user, err := parseUser(r)

@@ -42,8 +42,9 @@ func main() {
 			Param: 1,
 		},
 		Reporter: &config.ReporterConfig{
-			LogSpans:            false,
+			LogSpans:            true,
 			BufferFlushInterval: 1 * time.Second,
+			LocalAgentHostPort:  "127.0.0.1:16686",
 		},
 	}
 
