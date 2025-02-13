@@ -58,7 +58,8 @@ lint:
 	golangci-lint run --config ./golangci.yaml
 
 jaeger-up:
-	docker run -d -p 6831:6831/udp -p 16686:16686 jaegertracing/all-in-one:latest
+# docker run -d -p 6831:6831/udp -p 16686:16686 jaegertracing/all-in-one:latest
+	docker run -d -p 6831:6831/udp -p 14268:14268 -p 16686:16686 jaegertracing/all-in-one:latest
 
 code-check:
 	bash check/check.sh

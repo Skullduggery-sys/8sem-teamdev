@@ -137,11 +137,11 @@ func (h *ListHandler) Delete(ctx context.Context, listID int) error {
 
 //nolint:funlen,cyclop // http handler methods router
 func (c *Controller) handleListRequests(w http.ResponseWriter, r *http.Request) {
-	span, _ := opentracing.StartSpanFromContext(r.Context(), "app-http-handler: list")
+	span, ctx := opentracing.StartSpanFromContext(r.Context(), "app-http-handler: list")
 	defer span.Finish()
 
 	token := r.URL.Query().Get("token")
-	ctx := r.Context()
+
 	switch r.Method {
 	case http.MethodGet:
 		listID, err := parseInt(r, "id")

@@ -233,6 +233,8 @@ func (a *AuthService) Handle2FA(ctx context.Context, email, code string) (*Veryf
 	a.mx.Lock()
 	defer a.mx.Unlock()
 
+	// slog.Info("verify codes", a.verifyCodes)
+
 	if actualCode, ok := a.verifyCodes[email]; !ok {
 		return nil, ErrNotFound
 	} else if actualCode != code {

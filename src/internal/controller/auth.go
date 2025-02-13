@@ -278,10 +278,9 @@ func (h *AuthHandler) ResetPassword(ctx context.Context, login, email, oldPasswo
 }
 
 func (c *Controller) handleGetUserTokenRequests(w http.ResponseWriter, r *http.Request) {
-	span, _ := opentracing.StartSpanFromContext(r.Context(), "app-http-handler: get-user-token")
+	span, ctx := opentracing.StartSpanFromContext(r.Context(), "app-http-handler: get-user-token")
 	defer span.Finish()
 
-	ctx := r.Context()
 	switch r.Method {
 	case http.MethodPost:
 		adminSecret := r.URL.Query().Get("admin_secret")
@@ -303,10 +302,9 @@ func (c *Controller) handleGetUserTokenRequests(w http.ResponseWriter, r *http.R
 }
 
 func (c *Controller) handleSignUpRequests(w http.ResponseWriter, r *http.Request) {
-	span, _ := opentracing.StartSpanFromContext(r.Context(), "app-http-handler: sign-up")
+	span, ctx := opentracing.StartSpanFromContext(r.Context(), "app-http-handler: sign-up")
 	defer span.Finish()
 
-	ctx := r.Context()
 	switch r.Method {
 	case http.MethodPost:
 		user, err := parseUser(r)
@@ -360,10 +358,9 @@ func (c *Controller) handleSignInRequests(w http.ResponseWriter, r *http.Request
 }
 
 func (c *Controller) handleSignOutRequests(w http.ResponseWriter, r *http.Request) {
-	span, _ := opentracing.StartSpanFromContext(r.Context(), "app-http-handler: sign-out")
+	span, ctx := opentracing.StartSpanFromContext(r.Context(), "app-http-handler: sign-out")
 	defer span.Finish()
 
-	ctx := r.Context()
 	switch r.Method {
 	case http.MethodPost:
 		token := r.URL.Query().Get("token")
@@ -380,10 +377,9 @@ func (c *Controller) handleSignOutRequests(w http.ResponseWriter, r *http.Reques
 }
 
 func (c *Controller) handleVerify2FARequests(w http.ResponseWriter, r *http.Request) {
-	span, _ := opentracing.StartSpanFromContext(r.Context(), "app-http-handler: verify-2fa")
+	span, ctx := opentracing.StartSpanFromContext(r.Context(), "app-http-handler: verify-2fa")
 	defer span.Finish()
 
-	ctx := r.Context()
 	switch r.Method {
 	case http.MethodPost:
 		email := r.URL.Query().Get("email")
@@ -405,10 +401,9 @@ func (c *Controller) handleVerify2FARequests(w http.ResponseWriter, r *http.Requ
 }
 
 func (c *Controller) handleResetPasswordRequests(w http.ResponseWriter, r *http.Request) {
-	span, _ := opentracing.StartSpanFromContext(r.Context(), "app-http-handler: reset-password")
+	span, ctx := opentracing.StartSpanFromContext(r.Context(), "app-http-handler: reset-password")
 	defer span.Finish()
 
-	ctx := r.Context()
 	switch r.Method {
 	case http.MethodPost:
 		email := r.URL.Query().Get("email")

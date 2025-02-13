@@ -26,6 +26,10 @@ import (
 
 const requestsTimeout = 15 * time.Second
 
+const jaegerHostPort = "172.17.0.1:16686"
+
+// const jaegerHostPort = "localhost:16686"
+
 func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -38,13 +42,15 @@ func main() {
 	traceCfg := config.Configuration{
 		ServiceName: "media-organizer-app",
 		Sampler: &config.SamplerConfig{
-			Type:  "const",
+			Type:  jaeger.SamplerTypeConst,
 			Param: 1,
 		},
 		Reporter: &config.ReporterConfig{
 			LogSpans:            true,
 			BufferFlushInterval: 1 * time.Second,
-			LocalAgentHostPort:  "127.0.0.1:16686",
+			// LocalAgentHostPort:  jaegerHostPort,
+			// CollectorEndpoint: fmt.Sprintf("http://%s/api/traces", jaegerHostPort),
+			CollectorEndpoint: "http://localhost:14268/api/traces",
 		},
 	}
 

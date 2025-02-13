@@ -154,11 +154,11 @@ func (h *ListPosterHandler) DeletePoster(ctx context.Context, listID, posterID i
 }
 
 func (c *Controller) handleListPosterGetDeleteRequests(w http.ResponseWriter, r *http.Request) {
-	span, _ := opentracing.StartSpanFromContext(r.Context(), "app-http-handler: list-poster: get/delete")
+	span, ctx := opentracing.StartSpanFromContext(r.Context(), "app-http-handler: list-poster: get/delete")
 	defer span.Finish()
 
 	token := r.URL.Query().Get("token")
-	ctx := r.Context()
+
 	switch r.Method {
 	case http.MethodGet:
 		listID, err := parseInt(r, "list_id")
@@ -212,11 +212,11 @@ func (c *Controller) handleListPosterGetDeleteRequests(w http.ResponseWriter, r 
 }
 
 func (c *Controller) handleListPosterAddRequests(w http.ResponseWriter, r *http.Request) {
-	span, _ := opentracing.StartSpanFromContext(r.Context(), "app-http-handler: list-poster: add")
+	span, ctx := opentracing.StartSpanFromContext(r.Context(), "app-http-handler: list-poster: add")
 	defer span.Finish()
 
 	token := r.URL.Query().Get("token")
-	ctx := r.Context()
+
 	switch r.Method {
 	case http.MethodPost:
 		listID, err := parseInt(r, "list_id")
@@ -250,11 +250,11 @@ func (c *Controller) handleListPosterAddRequests(w http.ResponseWriter, r *http.
 }
 
 func (c *Controller) handleListPosterMoveRequests(w http.ResponseWriter, r *http.Request) {
-	span, _ := opentracing.StartSpanFromContext(r.Context(), "app-http-handler: list-poster: move")
+	span, ctx := opentracing.StartSpanFromContext(r.Context(), "app-http-handler: list-poster: move")
 	defer span.Finish()
 
 	token := r.URL.Query().Get("token")
-	ctx := r.Context()
+
 	switch r.Method {
 	case http.MethodPost:
 		curListID, err := parseInt(r, "cur_list_id")
@@ -297,11 +297,11 @@ func (c *Controller) handleListPosterMoveRequests(w http.ResponseWriter, r *http
 }
 
 func (c *Controller) handleListPosterChangePositionRequests(w http.ResponseWriter, r *http.Request) {
-	span, _ := opentracing.StartSpanFromContext(r.Context(), "app-http-handler: list-poster: change position")
+	span, ctx := opentracing.StartSpanFromContext(r.Context(), "app-http-handler: list-poster: change position")
 	defer span.Finish()
 
 	token := r.URL.Query().Get("token")
-	ctx := r.Context()
+
 	switch r.Method {
 	case http.MethodPost:
 		listID, err := parseInt(r, "list_id")
