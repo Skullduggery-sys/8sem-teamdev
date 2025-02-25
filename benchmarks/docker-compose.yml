@@ -18,6 +18,8 @@ services:
       - "3000:3000"
     volumes:
       - ./grafana/data:/var/lib/grafana
+      # - grafana-storage:/var/lib/grafana
+    # user: "root:root"
     depends_on:
       - prometheus
 
@@ -30,6 +32,11 @@ services:
     depends_on:
       - echo-ping
       - fasthttp-ping
+    deploy:
+      resources:
+        limits:
+          cpus: '1.5'
+    # cpus: 2
     entrypoint: ["/bin/sh", "-c", "gatling.sh -s ServerAtOnceLoadSimulation"]
 
   gatling-per-second:
@@ -41,6 +48,11 @@ services:
     depends_on:
       gatling-at-once:
         condition: service_completed_successfully
+    # cpus: 2
+    deploy:
+      resources:
+        limits:
+          cpus: '1.5'
     entrypoint: ["/bin/sh", "-c", "gatling.sh -s ServerPerSecondLoadSimulation"]
 
   echo-ping:
@@ -50,6 +62,11 @@ services:
       - "8081:8081"
     depends_on:
       - prometheus
+    # cpus: 2
+    deploy:
+      resources:
+        limits:
+          cpus: '1.5'
     entrypoint: ["/bin/sh", "-c", "go run prometheus/echo/core.go"]
 
   fasthttp-ping:
@@ -59,4 +76,9 @@ services:
       - "8082:8081"
     depends_on:
       - prometheus
+    # cpus: 2
+    deploy:
+      resources:
+        limits:
+          cpus: '1.5'
     entrypoint: ["/bin/sh", "-c", "go run prometheus/fasthttp/core.go"]
