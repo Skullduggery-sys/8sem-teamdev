@@ -11,6 +11,7 @@ import (
 
 	"git.iu7.bmstu.ru/vai20u117/testing/src/internal/model"
 	servicePkg "git.iu7.bmstu.ru/vai20u117/testing/src/internal/service"
+	"github.com/opentracing/opentracing-go"
 )
 
 type posterService interface {
@@ -136,8 +137,11 @@ func (h *PosterHandler) Delete(ctx context.Context, posterID int) error {
 
 //nolint:funlen,cyclop // http handler methods router
 func (c *Controller) handlePosterRequests(w http.ResponseWriter, r *http.Request) {
+	span, ctx := opentracing.StartSpanFromContext(r.Context(), "app-http-handler: poster")
+	defer span.Finish()
+
 	token := r.URL.Query().Get("token")
-	ctx := r.Context()
+
 	switch r.Method {
 	case http.MethodGet:
 		posterID, err := parseInt(r, "id")

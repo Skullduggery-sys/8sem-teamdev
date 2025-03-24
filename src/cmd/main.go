@@ -14,22 +14,53 @@ import (
 	dbpostgres "git.iu7.bmstu.ru/vai20u117/testing/src/internal/db/postgres"
 	repository "git.iu7.bmstu.ru/vai20u117/testing/src/internal/repository/postgres"
 	"git.iu7.bmstu.ru/vai20u117/testing/src/internal/service"
-	_ "git.iu7.bmstu.ru/vai20u117/testing/src/swagger"
+
+	// _ "git.iu7.bmstu.ru/vai20u117/testing/src/swagger"
 	muxhandlers "github.com/gorilla/handlers"
 	"github.com/joho/godotenv"
+	"github.com/opentracing/opentracing-go"
 	"github.com/spf13/viper"
+	"github.com/uber/jaeger-client-go"
+	"github.com/uber/jaeger-client-go/config"
 )
 
 const requestsTimeout = 15 * time.Second
+
+const jaegerHostPort = "172.17.0.1:16686"
+
+// const jaegerHostPort = "localhost:16686"
 
 func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
 	slog.New(slog.NewTextHandler(os.Stderr, nil))
-	slog.SetLogLoggerLevel(slog.LevelInfo)
+	slog.SetLogLoggerLevel(slog.LevelDebug)
 
 	mustLoadConfigs()
+
+	traceCfg := config.Configuration{
+		ServiceName: "media-organizer-app",
+		Sampler: &config.SamplerConfig{
+			Type:  jaeger.SamplerTypeConst,
+			Param: 1,
+		},
+		Reporter: &config.ReporterConfig{
+			LogSpans:            true,
+			BufferFlushInterval: 1 * time.Second,
+			// LocalAgentHostPort:  jaegerHostPort,
+			// CollectorEndpoint: fmt.Sprintf("http://%s/api/traces", jaegerHostPort),
+			CollectorEndpoint: "http://localhost:14268/api/traces",
+		},
+	}
+
+	tracer, closer, err := traceCfg.NewTracer(config.Logger(jaeger.StdLogger))
+	if err != nil {
+		log.Fatal("Failed to create tracer: ", err)
+	}
+	defer closer.Close()
+
+	opentracing.SetGlobalTracer(tracer)
 
 	database := mustLoadDB(ctx)
 	defer database.GetPool(ctx).Close()
@@ -42,7 +73,7 @@ func main() {
 		initAuthHandler(database, os.Getenv("ADMIN_SECRET")),
 	)
 
-	serverPort := ":" + viper.GetString("port")
+	serverPort := ":" + "9000" // viper.GetString("port")
 	router := controller.CreateRouter()
 	http.Handle("/", router)
 
@@ -59,7 +90,7 @@ func main() {
 		}
 	}()
 
-	slog.Info("Server started")
+	slog.Info("Server started", "address", "http://localhost"+serverPort)
 
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT)
@@ -99,9 +130,9 @@ func initAuthHandler(database *dbpostgres.Database, adminToken string) *controll
 }
 
 func mustLoadConfigs() {
-	if err := initConfig(); err != nil {
-		log.Fatal("Failed to init configs: ", err)
-	}
+	// if err := initConfig(); err != nil {
+	// 	log.Fatal("Failed to init configs: ", err)
+	// }
 	if err := godotenv.Load(); err != nil {
 		log.Fatal("Failed to load env variables: ", err)
 	}
@@ -109,12 +140,11 @@ func mustLoadConfigs() {
 
 func mustLoadDB(ctx context.Context) *dbpostgres.Database {
 	database, err := dbpostgres.NewDB(ctx, &dbpostgres.DBConfig{
-		Host:     viper.GetString("db.host"),
-		Port:     viper.GetString("db.port"),
+		Host:     os.Getenv("DB_HOST"),
+		Port:     os.Getenv("DB_PORT"),
 		Username: os.Getenv("DB_USERNAME"),
 		Password: os.Getenv("DB_PASSWORD"),
-		DBName:   viper.GetString("db.dbname"),
-		SSLMode:  viper.GetString("db.sslmode"),
+		DBName:   os.Getenv("DB_NAME"),
 	})
 	if err != nil {
 		log.Fatal("Failed to create db: ", err)

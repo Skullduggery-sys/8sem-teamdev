@@ -1,7 +1,7 @@
 version: '3.0'
 services:
   postgres:
-    container_name: media-organizer
+    # container_name: media-organizer
     image: postgres:15.4
     env_file:
       - .env
@@ -10,3 +10,21 @@ services:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
     ports:
       - '5436:5432'
+      # - '5432:5432'
+
+  app:
+    # container_name: media-organizer
+    build:
+      # context: ./src
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      # - migration
+      - postgres
+    ports:
+      - "9000:9000"
+  # migration:
+  #   build: .
+  #   command: make migration-up
+  #   depends_on:
+  #     - postgres

@@ -11,6 +11,7 @@ import (
 
 	"git.iu7.bmstu.ru/vai20u117/testing/src/internal/model"
 	servicePkg "git.iu7.bmstu.ru/vai20u117/testing/src/internal/service"
+	"github.com/opentracing/opentracing-go"
 )
 
 type listService interface {
@@ -136,8 +137,11 @@ func (h *ListHandler) Delete(ctx context.Context, listID int) error {
 
 //nolint:funlen,cyclop // http handler methods router
 func (c *Controller) handleListRequests(w http.ResponseWriter, r *http.Request) {
+	span, ctx := opentracing.StartSpanFromContext(r.Context(), "app-http-handler: list")
+	defer span.Finish()
+
 	token := r.URL.Query().Get("token")
-	ctx := r.Context()
+
 	switch r.Method {
 	case http.MethodGet:
 		listID, err := parseInt(r, "id")

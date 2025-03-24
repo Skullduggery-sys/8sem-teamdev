@@ -28,6 +28,7 @@ type userDAO struct {
 	ID       int    `db:"id"`
 	Name     string `db:"name"`
 	Login    string `db:"login"`
+	Email    string `db:"email"`
 	Role     string `db:"role"`
 	Password string `db:"password"`
 }
@@ -81,6 +82,7 @@ func mapUserDAO(user *userDAO) *model.User {
 		ID:       user.ID,
 		Name:     user.Name,
 		Login:    user.Login,
+		Email:    user.Email,
 		Role:     user.Role,
 		Password: user.Password,
 	}
@@ -91,6 +93,7 @@ func reverseMapUserDAO(user *model.User) *userDAO {
 		ID:       user.ID,
 		Name:     user.Name,
 		Login:    user.Login,
+		Email:    user.Email,
 		Role:     user.Role,
 		Password: user.Password,
 	}

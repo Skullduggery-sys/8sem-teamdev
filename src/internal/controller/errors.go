@@ -8,4 +8,5 @@ var (
 	errUserNotFound        = errors.New("user not found")
 	errInvalidArguments    = errors.New("requests' arguments are invalid")
 	errActionNotAuthorized = errors.New("action not authorized")
+	errWaiting2FA          = errors.New("wainting to finish 2FA")
 )
