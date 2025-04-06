@@ -1,28 +1,812 @@
+swagger: '2.0'
+info:
+  contact: {}
+paths:
+  /api/v2/lists:
+    post:
+      description: create list
+      consumes:
+        - application/json
+      tags:
+        - lists/v2
+      summary: Create
+      parameters:
+        - description: List body
+          name: input
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ListCreateRequest'
+        - type: string
+          description: JWT-format token
+          name: X-User-Token
+          in: header
+          required: true
+      responses:
+        '201':
+          description: id
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.IDResponse'
+        '400':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '401':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '500':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+  /api/v2/lists-root:
+    get:
+      description: get user root list
+      consumes:
+        - application/json
+      tags:
+        - lists/v2
+      summary: Get user root list
+      parameters:
+        - type: string
+          description: JWT-format token
+          name: X-User-Token
+          in: header
+          required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ListResponse'
+        '400':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '401':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '404':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '500':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+  /api/v2/lists/{id}:
+    get:
+      description: get list
+      consumes:
+        - application/json
+      tags:
+        - lists/v2
+      summary: Get
+      parameters:
+        - type: string
+          description: JWT-format token
+          name: X-User-Token
+          in: header
+          required: true
+        - type: integer
+          description: ListId
+          name: id
+          in: path
+          required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ListResponse'
+        '400':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '401':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '404':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '500':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+    put:
+      description: update list
+      consumes:
+        - application/json
+      tags:
+        - lists/v2
+      summary: Update
+      parameters:
+        - description: List body
+          name: input
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ListUpdateRequest'
+        - type: integer
+          description: ListId
+          name: id
+          in: path
+          required: true
+        - type: string
+          description: JWT-format token
+          name: X-User-Token
+          in: header
+          required: true
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '401':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '404':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '500':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+    delete:
+      description: delete list
+      consumes:
+        - application/json
+      tags:
+        - lists/v2
+      summary: Delete
+      parameters:
+        - type: string
+          description: JWT-format token
+          name: X-User-Token
+          in: header
+          required: true
+        - type: integer
+          description: ListId
+          name: id
+          in: path
+          required: true
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '401':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '404':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '500':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+  /api/v2/lists/{list_id}/posters:
+    get:
+      description: get posters in list
+      tags:
+        - lists/v2
+      summary: Get posters in list
+      parameters:
+        - type: string
+          description: JWT-format token
+          name: X-User-Token
+          in: header
+          required: true
+        - type: integer
+          description: ListId
+          name: list_id
+          in: path
+          required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ListPosterResponse'
+        '400':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '401':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '404':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '500':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+  /api/v2/lists/{list_id}/posters/{poster_id}:
+    put:
+      description: change poster position in list
+      consumes:
+        - application/json
+      tags:
+        - lists/v2
+      summary: Change poster position in list
+      parameters:
+        - type: string
+          description: JWT-format token
+          name: X-User-Token
+          in: header
+          required: true
+        - type: integer
+          description: ListId
+          name: list_id
+          in: path
+          required: true
+        - type: integer
+          description: PosterId
+          name: poster_id
+          in: path
+          required: true
+        - description: Change position body
+          name: position
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ListPositionRequest'
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '401':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '404':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '500':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+    post:
+      description: Adds poster in list. If poster already exists in some list, it will be moved to new list.
+      tags:
+        - lists/v2
+      summary: Add poster in list
+      parameters:
+        - type: string
+          description: JWT-format token
+          name: X-User-Token
+          in: header
+          required: true
+        - type: integer
+          description: ListId
+          name: list_id
+          in: path
+          required: true
+        - type: integer
+          description: PosterId
+          name: poster_id
+          in: path
+          required: true
+      responses:
+        '200':
+          description: Poster moved
+        '201':
+          description: Poster added
+        '400':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '401':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '404':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '500':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+    delete:
+      description: delete poster from list
+      consumes:
+        - application/json
+      tags:
+        - lists/v2
+      summary: Delete poster from list
+      parameters:
+        - type: string
+          description: JWT-format token
+          name: X-User-Token
+          in: header
+          required: true
+        - type: integer
+          description: ListId
+          name: list_id
+          in: path
+          required: true
+        - type: integer
+          description: PosterId
+          name: poster_id
+          in: path
+          required: true
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '401':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '404':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '500':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+  /api/v2/poster-records:
+    get:
+      description: lists all user records
+      consumes:
+        - application/json
+      tags:
+        - poster-records/v2
+      summary: List all user records
+      parameters:
+        - type: string
+          description: JWT-format token
+          name: X-User-Token
+          in: header
+          required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.PosterRecordResponse'
+        '400':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '401':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '404':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '500':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+  /api/v2/poster-records/{poster_id}:
+    post:
+      description: create poster record
+      consumes:
+        - application/json
+      tags:
+        - poster-records/v2
+      summary: Create poster record
+      parameters:
+        - type: string
+          description: JWT-format token
+          name: X-User-Token
+          in: header
+          required: true
+        - type: integer
+          description: PosterId
+          name: poster_id
+          in: path
+          required: true
+      responses:
+        '201':
+          description: id
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.IDResponse'
+        '400':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '401':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '404':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '500':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+    delete:
+      description: delete user record
+      consumes:
+        - application/json
+      tags:
+        - poster-records/v2
+      summary: Delete user record
+      parameters:
+        - type: string
+          description: JWT-format token
+          name: X-User-Token
+          in: header
+          required: true
+        - type: integer
+          description: PosterId
+          name: poster_id
+          in: path
+          required: true
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '401':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '404':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '500':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+  /api/v2/posters:
+    post:
+      description: create poster
+      consumes:
+        - application/json
+      tags:
+        - posters/v2
+      summary: Create
+      parameters:
+        - description: Poster body
+          name: input
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.PosterRequest'
+        - type: string
+          description: JWT-format token
+          name: X-User-Token
+          in: header
+          required: true
+      responses:
+        '201':
+          description: id
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.IDResponse'
+        '400':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '401':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '500':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+  /api/v2/posters/{id}:
+    get:
+      description: get poster
+      consumes:
+        - application/json
+      tags:
+        - posters/v2
+      summary: Get
+      parameters:
+        - type: string
+          description: JWT-format token
+          name: X-User-Token
+          in: header
+          required: true
+        - type: integer
+          description: PosterId
+          name: id
+          in: path
+          required: true
+      responses:
+        '200':
+          description: Poster
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.PosterResponse'
+        '400':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '401':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '404':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '500':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+    put:
+      description: update poster
+      consumes:
+        - application/json
+      tags:
+        - posters/v2
+      summary: Update
+      parameters:
+        - description: Poster body
+          name: input
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.PosterRequest'
+        - type: integer
+          description: PosterId
+          name: id
+          in: path
+          required: true
+        - type: string
+          description: JWT-format token
+          name: X-User-Token
+          in: header
+          required: true
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '401':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '404':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '500':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+    delete:
+      description: delete poster
+      consumes:
+        - application/json
+      tags:
+        - posters/v2
+      summary: Delete
+      parameters:
+        - type: string
+          description: JWT-format token
+          name: X-User-Token
+          in: header
+          required: true
+        - type: integer
+          description: PosterId
+          name: id
+          in: path
+          required: true
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '401':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '404':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '500':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+  /api/v2/sign-in:
+    post:
+      description: sing in
+      consumes:
+        - application/json
+      tags:
+        - auth/v2
+      summary: Sign in
+      parameters:
+        - description: User body
+          name: input
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.SignInRequest'
+        - type: string
+          description: Admin auth secret
+          name: admin_secret
+          in: query
+      responses:
+        '200':
+          description: Token
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.TokenResponse'
+        '400':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '401':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '404':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '500':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+  /api/v2/sign-out:
+    post:
+      description: sing out
+      consumes:
+        - application/json
+      tags:
+        - auth/v2
+      summary: Sign out
+      parameters:
+        - type: string
+          description: JWT-format token
+          name: X-User-Token
+          in: header
+          required: true
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '404':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '500':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+  /api/v2/sign-up:
+    post:
+      description: sing up
+      consumes:
+        - application/json
+      tags:
+        - auth/v2
+      summary: Sign up
+      parameters:
+        - description: User body
+          name: input
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.SignUpRequest'
+        - type: string
+          description: Admin auth secret
+          name: admin_secret
+          in: query
+      responses:
+        '201':
+          description: ID
+          schema:
+            type: integer
+        '400':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '401':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '500':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+  /api/v2/sublists/{id}:
+    get:
+      description: get sublists of the list
+      consumes:
+        - application/json
+      tags:
+        - lists/v2
+      summary: Get sublists
+      parameters:
+        - type: string
+          description: JWT-format token
+          name: X-User-Token
+          in: header
+          required: true
+        - type: integer
+          description: ListId
+          name: id
+          in: path
+          required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ListResponse'
+        '400':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '401':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        '500':
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
 definitions:
   git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse:
+    type: object
     properties:
       error:
-        example: error description
         type: string
-    type: object
+        example: error description
   git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.IDResponse:
+    type: object
     properties:
       id:
         type: integer
-    type: object
   git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ListCreateRequest:
+    type: object
     properties:
       name:
         type: string
       parentId:
         type: integer
-    type: object
   git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ListPositionRequest:
+    type: object
     properties:
       position:
         type: integer
-    type: object
   git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ListPosterResponse:
+    type: object
     properties:
       listId:
         description: ID       int `json:"id"`
@@ -31,8 +815,8 @@ definitions:
         type: integer
       posterId:
         type: integer
-    type: object
   git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ListResponse:
+    type: object
     properties:
       id:
         type: integer
@@ -42,13 +826,13 @@ definitions:
         type: integer
       userId:
         type: integer
-    type: object
   git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ListUpdateRequest:
+    type: object
     properties:
       name:
         type: string
-    type: object
   git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.PosterRecordResponse:
+    type: object
     properties:
       createdat:
         type: string
@@ -58,21 +842,21 @@ definitions:
         type: integer
       userId:
         type: integer
-    type: object
   git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.PosterRequest:
+    type: object
     properties:
       chrono:
         type: integer
       genres:
+        type: array
         items:
           type: string
-        type: array
       name:
         type: string
       year:
         type: integer
-    type: object
   git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.PosterResponse:
+    type: object
     properties:
       chrono:
         type: integer
@@ -80,9 +864,9 @@ definitions:
         description: will not be used, satisfy musttag linter
         type: string
       genres:
+        type: array
         items:
           type: string
-        type: array
       id:
         type: integer
       name:
@@ -91,15 +875,15 @@ definitions:
         type: integer
       year:
         type: integer
-    type: object
   git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.SignInRequest:
+    type: object
     properties:
       login:
         type: string
       password:
         type: string
-    type: object
   git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.SignUpRequest:
+    type: object
     properties:
       login:
         type: string
@@ -109,794 +893,9 @@ definitions:
         type: string
       role:
         type: string
-    type: object
   git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.TokenResponse:
+    type: object
     properties:
       token:
+        type: string
         example: jwt-format token
-        type: string
-    type: object
-info:
-  contact: {}
-paths:
-  /api/v2/lists:
-    post:
-      consumes:
-      - application/json
-      description: create list
-      parameters:
-      - description: List body
-        in: body
-        name: input
-        required: true
-        schema:
-          $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ListCreateRequest'
-      - description: JWT-format token
-        in: header
-        name: X-User-Token
-        required: true
-        type: string
-      responses:
-        "201":
-          description: id
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.IDResponse'
-        "400":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "401":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "500":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-      summary: Create
-      tags:
-      - lists/v2
-  /api/v2/lists-root:
-    get:
-      consumes:
-      - application/json
-      description: get user root list
-      parameters:
-      - description: JWT-format token
-        in: header
-        name: X-User-Token
-        required: true
-        type: string
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ListResponse'
-        "400":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "401":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "404":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "500":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-      summary: Get user root list
-      tags:
-      - lists/v2
-  /api/v2/lists/{id}:
-    delete:
-      consumes:
-      - application/json
-      description: delete list
-      parameters:
-      - description: JWT-format token
-        in: header
-        name: X-User-Token
-        required: true
-        type: string
-      - description: ListId
-        in: path
-        name: id
-        required: true
-        type: integer
-      responses:
-        "200":
-          description: OK
-        "400":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "401":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "404":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "500":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-      summary: Delete
-      tags:
-      - lists/v2
-    get:
-      consumes:
-      - application/json
-      description: get list
-      parameters:
-      - description: JWT-format token
-        in: header
-        name: X-User-Token
-        required: true
-        type: string
-      - description: ListId
-        in: path
-        name: id
-        required: true
-        type: integer
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ListResponse'
-        "400":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "401":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "404":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "500":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-      summary: Get
-      tags:
-      - lists/v2
-    put:
-      consumes:
-      - application/json
-      description: update list
-      parameters:
-      - description: List body
-        in: body
-        name: input
-        required: true
-        schema:
-          $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ListUpdateRequest'
-      - description: ListId
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: JWT-format token
-        in: header
-        name: X-User-Token
-        required: true
-        type: string
-      responses:
-        "200":
-          description: OK
-        "400":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "401":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "404":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "500":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-      summary: Update
-      tags:
-      - lists/v2
-  /api/v2/lists/{list_id}/posters:
-    get:
-      description: get posters in list
-      parameters:
-      - description: JWT-format token
-        in: header
-        name: X-User-Token
-        required: true
-        type: string
-      - description: ListId
-        in: path
-        name: list_id
-        required: true
-        type: integer
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ListPosterResponse'
-            type: array
-        "400":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "401":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "404":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "500":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-      summary: Get posters in list
-      tags:
-      - lists/v2
-  /api/v2/lists/{list_id}/posters/{poster_id}:
-    delete:
-      consumes:
-      - application/json
-      description: delete poster from list
-      parameters:
-      - description: JWT-format token
-        in: header
-        name: X-User-Token
-        required: true
-        type: string
-      - description: ListId
-        in: path
-        name: list_id
-        required: true
-        type: integer
-      - description: PosterId
-        in: path
-        name: poster_id
-        required: true
-        type: integer
-      responses:
-        "200":
-          description: OK
-        "400":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "401":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "404":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "500":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-      summary: Delete poster from list
-      tags:
-      - lists/v2
-    post:
-      description: Adds poster in list. If poster already exists in some list, it
-        will be moved to new list.
-      parameters:
-      - description: JWT-format token
-        in: header
-        name: X-User-Token
-        required: true
-        type: string
-      - description: ListId
-        in: path
-        name: list_id
-        required: true
-        type: integer
-      - description: PosterId
-        in: path
-        name: poster_id
-        required: true
-        type: integer
-      responses:
-        "200":
-          description: Poster moved
-        "201":
-          description: Poster added
-        "400":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "401":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "404":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "500":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-      summary: Add poster in list
-      tags:
-      - lists/v2
-    put:
-      consumes:
-      - application/json
-      description: change poster position in list
-      parameters:
-      - description: JWT-format token
-        in: header
-        name: X-User-Token
-        required: true
-        type: string
-      - description: ListId
-        in: path
-        name: list_id
-        required: true
-        type: integer
-      - description: PosterId
-        in: path
-        name: poster_id
-        required: true
-        type: integer
-      - description: Change position body
-        in: body
-        name: position
-        required: true
-        schema:
-          $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ListPositionRequest'
-      responses:
-        "200":
-          description: OK
-        "400":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "401":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "404":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "500":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-      summary: Change poster position in list
-      tags:
-      - lists/v2
-  /api/v2/poster-records:
-    get:
-      consumes:
-      - application/json
-      description: lists all user records
-      parameters:
-      - description: JWT-format token
-        in: header
-        name: X-User-Token
-        required: true
-        type: string
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.PosterRecordResponse'
-            type: array
-        "400":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "401":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "404":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "500":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-      summary: List all user records
-      tags:
-      - poster-records/v2
-  /api/v2/poster-records/{poster_id}:
-    delete:
-      consumes:
-      - application/json
-      description: delete user record
-      parameters:
-      - description: JWT-format token
-        in: header
-        name: X-User-Token
-        required: true
-        type: string
-      - description: PosterId
-        in: path
-        name: poster_id
-        required: true
-        type: integer
-      responses:
-        "200":
-          description: OK
-        "400":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "401":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "404":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "500":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-      summary: Delete user record
-      tags:
-      - poster-records/v2
-    post:
-      consumes:
-      - application/json
-      description: create poster record
-      parameters:
-      - description: JWT-format token
-        in: header
-        name: X-User-Token
-        required: true
-        type: string
-      - description: PosterId
-        in: path
-        name: poster_id
-        required: true
-        type: integer
-      responses:
-        "201":
-          description: id
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.IDResponse'
-        "400":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "401":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "404":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "500":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-      summary: Create poster record
-      tags:
-      - poster-records/v2
-  /api/v2/posters:
-    post:
-      consumes:
-      - application/json
-      description: create poster
-      parameters:
-      - description: Poster body
-        in: body
-        name: input
-        required: true
-        schema:
-          $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.PosterRequest'
-      - description: JWT-format token
-        in: header
-        name: X-User-Token
-        required: true
-        type: string
-      responses:
-        "201":
-          description: id
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.IDResponse'
-        "400":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "401":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "500":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-      summary: Create
-      tags:
-      - posters/v2
-  /api/v2/posters/{id}:
-    delete:
-      consumes:
-      - application/json
-      description: delete poster
-      parameters:
-      - description: JWT-format token
-        in: header
-        name: X-User-Token
-        required: true
-        type: string
-      - description: PosterId
-        in: path
-        name: id
-        required: true
-        type: integer
-      responses:
-        "200":
-          description: OK
-        "400":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "401":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "404":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "500":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-      summary: Delete
-      tags:
-      - posters/v2
-    get:
-      consumes:
-      - application/json
-      description: get poster
-      parameters:
-      - description: JWT-format token
-        in: header
-        name: X-User-Token
-        required: true
-        type: string
-      - description: PosterId
-        in: path
-        name: id
-        required: true
-        type: integer
-      responses:
-        "200":
-          description: Poster
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.PosterResponse'
-        "400":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "401":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "404":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "500":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-      summary: Get
-      tags:
-      - posters/v2
-    put:
-      consumes:
-      - application/json
-      description: update poster
-      parameters:
-      - description: Poster body
-        in: body
-        name: input
-        required: true
-        schema:
-          $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.PosterRequest'
-      - description: PosterId
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: JWT-format token
-        in: header
-        name: X-User-Token
-        required: true
-        type: string
-      responses:
-        "200":
-          description: OK
-        "400":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "401":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "404":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "500":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-      summary: Update
-      tags:
-      - posters/v2
-  /api/v2/sign-in:
-    post:
-      consumes:
-      - application/json
-      description: sing in
-      parameters:
-      - description: User body
-        in: body
-        name: input
-        required: true
-        schema:
-          $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.SignInRequest'
-      - description: Admin auth secret
-        in: query
-        name: admin_secret
-        type: string
-      responses:
-        "200":
-          description: Token
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.TokenResponse'
-        "400":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "401":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "404":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "500":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-      summary: Sign in
-      tags:
-      - auth/v2
-  /api/v2/sign-out:
-    post:
-      consumes:
-      - application/json
-      description: sing out
-      parameters:
-      - description: JWT-format token
-        in: header
-        name: X-User-Token
-        required: true
-        type: string
-      responses:
-        "200":
-          description: OK
-        "400":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "404":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "500":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-      summary: Sign out
-      tags:
-      - auth/v2
-  /api/v2/sign-up:
-    post:
-      consumes:
-      - application/json
-      description: sing up
-      parameters:
-      - description: User body
-        in: body
-        name: input
-        required: true
-        schema:
-          $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.SignUpRequest'
-      - description: Admin auth secret
-        in: query
-        name: admin_secret
-        type: string
-      responses:
-        "201":
-          description: ID
-          schema:
-            type: integer
-        "400":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "401":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "500":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-      summary: Sign up
-      tags:
-      - auth/v2
-  /api/v2/sublists/{id}:
-    get:
-      consumes:
-      - application/json
-      description: get sublists of the list
-      parameters:
-      - description: JWT-format token
-        in: header
-        name: X-User-Token
-        required: true
-        type: string
-      - description: ListId
-        in: path
-        name: id
-        required: true
-        type: integer
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ListResponse'
-            type: array
-        "400":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "401":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-        "500":
-          description: Error
-          schema:
-            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
-      summary: Get sublists
-      tags:
-      - lists/v2
-swagger: "2.0"
