@@ -1,0 +1,10 @@
+.env
+src/swagger/docs.go
+src/swagger/swagger*
+src/swagger/openapi*
+src/swagger/*graphql
+src/node_modules
+src/nginx/pswrd/*
+frontend/node_modules/*
+slave-data
+src/slave/standby.signal
