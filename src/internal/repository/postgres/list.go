@@ -3,6 +3,7 @@ package postgres
 import (
 	"context"
 	"errors"
+	"fmt"
 
 	dbpostgres "git.iu7.bmstu.ru/vai20u117/testing/src/internal/db/postgres"
 	"git.iu7.bmstu.ru/vai20u117/testing/src/internal/model"
@@ -33,6 +34,48 @@ func (r *ListRepository) Get(ctx context.Context, listID int) (*model.List, erro
 	return mapListDAO(&dao), err
 }
 
+func (r *ListRepository) GetUserRoot(ctx context.Context, globalRootID, userID int) (*model.List, error) {
+	queryName := "ListRepository/GetUserRoot"
+	query := `select id,name,user_id,parent_id from list where parent_id = $1 and user_id = $2 limit 1`
+
+	dao := listDAO{}
+
+	err := r.db.Get(ctx, &dao, query, globalRootID, userID)
+	if errors.Is(err, pgx.ErrNoRows) {
+		return nil, formatError(queryName, ErrNotFound)
+	} else if err != nil {
+		return nil, formatError(queryName, err)
+	}
+
+	return mapListDAO(&dao), err
+}
+
+func (r *ListRepository) GetSublists(ctx context.Context, listID int) ([]*model.List, error) {
+	queryName := "ListRepository/GetSublists"
+	query := `select id,name,user_id,parent_id from list where parent_id = $1`
+
+	rows, err := r.db.Query(ctx, query, listID)
+	if errors.Is(err, pgx.ErrNoRows) {
+		return []*model.List{}, nil
+	} else if err != nil {
+		return nil, formatError(queryName, err)
+	} else if err = rows.Err(); err != nil {
+		return nil, formatError(queryName, fmt.Errorf("rows: %w", err))
+	}
+	defer rows.Close()
+
+	// TODO: use dao instead
+	var dao []*model.List
+	err = r.db.ScanAll(&dao, rows)
+	if errors.Is(err, pgx.ErrNoRows) || len(dao) == 0 {
+		return []*model.List{}, nil
+	} else if err != nil {
+		return nil, formatError(queryName, err)
+	}
+
+	return dao, nil
+}
+
 func (r *ListRepository) GetRootID(ctx context.Context) (int, error) {
 	queryName := "ListRepository/GetRootID"
 	query := `select id from list where is_root = true`
@@ -43,7 +86,7 @@ func (r *ListRepository) GetRootID(ctx context.Context) (int, error) {
 		return 0, formatError(queryName, err)
 	}
 
-	return rootID, err
+	return rootID, nil
 }
 
 func (r *ListRepository) Create(ctx context.Context, list *model.List) (int, error) {
@@ -65,15 +108,13 @@ func (r *ListRepository) Update(ctx context.Context, list *model.List) error {
 	queryName := "ListRepository/Update"
 	query := `
 		update list
-		set parent_id = $2, name = $3
+		set name = $2
 		where id = $1`
 
 	dao := reverseMapListDAO(list)
 
-	_, err := r.db.Exec(ctx, query, dao.ID, dao.ParentID, dao.Name)
-	if errors.Is(err, pgx.ErrNoRows) {
-		return formatError(queryName, ErrNotFound)
-	} else if err != nil {
+	_, err := r.db.Exec(ctx, query, dao.ID, dao.Name)
+	if err != nil {
 		return formatError(queryName, err)
 	}
 
@@ -82,16 +123,15 @@ func (r *ListRepository) Update(ctx context.Context, list *model.List) error {
 
 func (r *ListRepository) Delete(ctx context.Context, listID int) error {
 	queryName := "ListRepository/Delete"
-	checkQueryName := "ListRepository/Delete.exists"
 	checkQuery := `select count(*) from list where id = $1`
 	query := `delete from list where id = $1`
 
 	var count int
 	err := r.db.Get(ctx, &count, checkQuery, listID)
-	if errors.Is(err, pgx.ErrNoRows) {
-		return formatError(checkQueryName, ErrNotFound)
-	} else if err != nil {
-		return formatError(checkQueryName, err)
+	if err != nil {
+		return formatError(queryName, err)
+	} else if count == 0 {
+		return formatError(queryName, ErrNotFound)
 	}
 
 	_, err = r.db.Exec(ctx, query, listID)

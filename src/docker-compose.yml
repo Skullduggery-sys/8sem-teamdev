@@ -1,30 +1,75 @@
 version: '3.0'
 services:
-  postgres:
-    # container_name: media-organizer
+  postgres-master:
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME_RW} -d postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    container_name: media-organizer-master
     image: postgres:15.4
     env_file:
       - .env
     environment:
-      - POSTGRES_USER=${DB_USERNAME}
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_USER=${DB_USERNAME_RW}
+      - POSTGRES_PASSWORD=${DB_PASSWORD_RW}
+    volumes:
+      # - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+      # - /var/lib/postgresql/data
+
+      - ./master/postgresql.conf:/etc/postgresql/postgresql.conf
+      - ./master/pg_hba.conf:/var/lib/postgresql/data-replics/pg_hba.conf
+      - ./master/initdb.d:/docker-entrypoint-initdb.d
+      - postgres-master-data:/var/lib/postgresql/data-replics
+    command: postgres -c config_file=/etc/postgresql/postgresql.conf
     ports:
       - '5436:5432'
-      # - '5432:5432'
+    networks:
+      - postgres-network
 
-  app:
-    # container_name: media-organizer
-    build:
-      # context: ./src
-      context: .
-      dockerfile: Dockerfile
-    depends_on:
-      # - migration
-      - postgres
+
+  postgres-slave:
+    container_name: media-organizer-slave
+    image: postgres:15.4
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_USER=${DB_USERNAME_RO}
+      - POSTGRES_PASSWORD=${DB_PASSWORD_RO}
+    # user: 999:999
+    volumes:
+      # - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+      # - /var/lib/postgresql/data
+
+      - ./slave/postgresql.conf:/etc/postgresql/postgresql.conf
+      - ./slave/standby.signal:/var/lib/postgresql/data-replics/standby.signal
+      - ./slave/entrypoint.sh:/docker-entrypoint-initdb.d/entrypoint.sh
+      # - postgres-slave-data:/var/lib/postgresql/data-replics
+      - ./slave-data:/var/lib/postgresql/data-replics
     ports:
-      - "9000:9000"
-  # migration:
-  #   build: .
-  #   command: make migration-up
+      - '5437:5432'
+    command: postgres -c config_file=/etc/postgresql/postgresql.conf
+    networks:
+      - postgres-network
+    depends_on:
+      postgres-master:
+        condition: service_healthy
+
+volumes:
+  postgres-master-data:
+  postgres-slave-data:
+networks:
+  postgres-network:
+    driver: bridge
+
+  # frontend:
+  #   image: node:16-alpine
+  #   working_dir: /app
+  #   volumes:
+  #     - ./frontend:/app
+  #   ports:
+  #     - "80:80"
   #   depends_on:
-  #     - postgres
+  #     - backend
+  #   command: >
+  #     sh -c "npm install && npm run dev"

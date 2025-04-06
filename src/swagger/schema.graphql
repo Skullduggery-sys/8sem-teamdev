@@ -1,0 +1,275 @@
+type Query {
+  """
+  get list
+  
+  Equivalent to GET /list
+  """
+  list(
+    """ListId"""
+    id: Int!
+
+    """User auth token"""
+    token: String!
+  ): JSON
+
+  """
+  get posters in list
+  
+  Equivalent to GET /list-poster
+  """
+  listPoster(
+    """ListId"""
+    listId: Int!
+
+    """User auth token"""
+    token: String!
+  ): JSON
+
+  """
+  get poster
+  
+  Equivalent to GET /poster
+  """
+  poster(
+    """PosterId"""
+    id: Int!
+
+    """User auth token"""
+    token: String!
+  ): JSON
+
+  """
+  get user records
+  
+  Equivalent to GET /poster-history
+  """
+  posterHistory(
+    """User auth token"""
+    token: String!
+
+    """UserId"""
+    userId: Int!
+  ): JSON
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
+
+type Mutation {
+  """
+  delete list
+  
+  Equivalent to DELETE /list
+  """
+  deleteList(
+    """ListId"""
+    id: Int!
+
+    """User auth token"""
+    token: String!
+  ): JSON
+
+  """
+  delete poster from list
+  
+  Equivalent to DELETE /list-poster
+  """
+  deleteListPoster(
+    """ListId"""
+    listId: Int!
+
+    """PosterId"""
+    posterId: Int!
+
+    """User auth token"""
+    token: String!
+  ): JSON
+
+  """
+  delete poster
+  
+  Equivalent to DELETE /poster
+  """
+  deletePoster(
+    """PosterId"""
+    id: Int!
+
+    """User auth token"""
+    token: String!
+  ): JSON
+
+  """
+  delete user record
+  
+  Equivalent to DELETE /poster-history
+  """
+  deletePosterHistory(
+    """PosterId"""
+    posterId: Int!
+
+    """User auth token"""
+    token: String!
+  ): JSON
+
+  """
+  create list
+  
+  Equivalent to POST /list
+  """
+  postList(
+    gitIu7BmstuRuVai20u117TestingSrcInternalModelListInput: GitIu7BmstuRuVai20u117TestingSrcInternalModelListInput!
+
+    """User auth token"""
+    token: String!
+  ): JSON
+
+  """
+  add poster in list
+  
+  Equivalent to POST /list-poster/add
+  """
+  postListPosterAdd(
+    """ListId"""
+    listId: Int!
+
+    """PosterId"""
+    posterId: Int!
+
+    """User auth token"""
+    token: String!
+  ): JSON
+
+  """
+  change poster position in list
+  
+  Equivalent to POST /list-poster/change-position
+  """
+  postListPosterChangePosition(
+    """ListId"""
+    listId: Int!
+
+    """NewPosition"""
+    position: Int!
+
+    """PosterId"""
+    posterId: Int!
+
+    """User auth token"""
+    token: String!
+  ): JSON
+
+  """
+  move poster from one list to another
+  
+  Equivalent to POST /list-poster/move
+  """
+  postListPosterMove(
+    """CurListId"""
+    curListId: Int!
+
+    """NewListId"""
+    newListId: Int!
+
+    """PosterId"""
+    posterId: Int!
+
+    """User auth token"""
+    token: String!
+  ): JSON
+
+  """
+  create poster
+  
+  Equivalent to POST /poster
+  """
+  postPoster(
+    gitIu7BmstuRuVai20u117TestingSrcInternalModelPosterInput: GitIu7BmstuRuVai20u117TestingSrcInternalModelPosterInput!
+
+    """User auth token"""
+    token: String!
+  ): JSON
+
+  """
+  create poster record
+  
+  Equivalent to POST /poster-history
+  """
+  postPosterHistory(
+    """PosterId"""
+    posterId: Int!
+
+    """User auth token"""
+    token: String!
+
+    """UserId"""
+    userId: Int!
+  ): JSON
+
+  """
+  sing in
+  
+  Equivalent to POST /sign-in
+  """
+  postSignIn(gitIu7BmstuRuVai20u117TestingSrcInternalModelUserInput: GitIu7BmstuRuVai20u117TestingSrcInternalModelUserInput!): JSON
+
+  """
+  sing up
+  
+  Equivalent to POST /sign-up
+  """
+  postSignUp(gitIu7BmstuRuVai20u117TestingSrcInternalModelUserInput: GitIu7BmstuRuVai20u117TestingSrcInternalModelUserInput!): JSON
+
+  """
+  update list
+  
+  Equivalent to PUT /list
+  """
+  putList(
+    gitIu7BmstuRuVai20u117TestingSrcInternalModelListInput: GitIu7BmstuRuVai20u117TestingSrcInternalModelListInput!
+
+    """User auth token"""
+    token: String!
+  ): JSON
+
+  """
+  update poster
+  
+  Equivalent to PUT /poster
+  """
+  putPoster(
+    gitIu7BmstuRuVai20u117TestingSrcInternalModelPosterInput: GitIu7BmstuRuVai20u117TestingSrcInternalModelPosterInput!
+
+    """User auth token"""
+    token: String!
+  ): JSON
+}
+
+input GitIu7BmstuRuVai20u117TestingSrcInternalModelListInput {
+  id: Int
+  name: String
+  parentId: Int
+  userId: Int
+}
+
+input GitIu7BmstuRuVai20u117TestingSrcInternalModelPosterInput {
+  chrono: Int
+
+  """will not be used, satisfy musttag linter"""
+  createdat: String
+  genres: [String]
+  id: Int
+  name: String
+  userId: Int
+  year: Int
+}
+
+input GitIu7BmstuRuVai20u117TestingSrcInternalModelUserInput {
+  admintoken: String
+  id: Int
+  login: String
+  name: String
+  password: String
+  role: String
+}

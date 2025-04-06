@@ -43,7 +43,7 @@ func (r *PosterRepository) Create(ctx context.Context, poster *model.Poster) (in
 	err := r.db.ExecQueryRow(ctx, query,
 		dao.Name, dao.Genres, dao.Year, dao.Chrono, dao.UserID).Scan(&id)
 	if err != nil {
-		return 0, formatError(queryName, err)
+		return id, formatError(queryName, err)
 	}
 
 	return id, nil

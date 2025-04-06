@@ -65,6 +65,14 @@ func (r *fakeListRepo) GetRootID(_ context.Context) (int, error) {
 	return 0, nil
 }
 
+func (*fakeListRepo) GetSublists(context.Context, int) ([]*model.List, error) {
+	return nil, nil
+}
+
+func (*fakeListRepo) GetUserRoot(context.Context, int, int) (*model.List, error) {
+	return nil, nil
+}
+
 func createFakeListRepo() *fakeListRepo {
 	return &fakeListRepo{
 		list: make(map[int]model.List),

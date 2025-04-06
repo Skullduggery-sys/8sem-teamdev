@@ -1,4 +1,10 @@
-port: "9000"
+app:
+  port1: 9000
+  port2: 9001
+  port3: 9002
 
 db:
+  host: "localhost"
+  port: "5436"
+  dbname: "postgres"
   sslmode: "disable"

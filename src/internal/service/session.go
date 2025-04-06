@@ -1,7 +1,10 @@
 package service
 
 import (
-	"github.com/google/uuid"
+	"os"
+	"time"
+
+	"github.com/golang-jwt/jwt/v5"
 )
 
 type Session struct {
@@ -10,10 +13,23 @@ type Session struct {
 	Role   string
 }
 
-func NewSession(userID int, role string) *Session {
+func NewSession(userID int, role string) (*Session, error) {
+	secret := os.Getenv("ADMIN_SECRET")
+	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"sub": role,
+		"iss": "media-organizer",
+		"aud": userID,
+		"exp": time.Now().Add(4 * time.Hour).Unix(),
+		"iat": time.Now().Unix(),
+	})
+	token, err := claims.SignedString([]byte(secret))
+	if err != nil {
+		return nil, err
+	}
+
 	return &Session{
-		Token:  uuid.NewString(),
+		Token:  token,
 		UserID: userID,
 		Role:   role,
-	}
+	}, nil
 }
