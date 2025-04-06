@@ -1,7 +1,5 @@
 app:
-  port1: 9000
-  port2: 9001
-  port3: 9002
+  port: 9000
 
 db:
   host: "localhost"

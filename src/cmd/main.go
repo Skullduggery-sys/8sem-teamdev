@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
-	"strconv"
 	"syscall"
 	"time"
 
@@ -38,15 +37,13 @@ func main() {
 
 	mustLoadConfigs()
 
-	choice := mustGetChoice()
-
-	database := mustLoadDB(ctx, choice)
+	database := mustLoadDB(ctx)
 	defer database.GetPool(ctx).Close()
 
 	controllerV1 := createControllerV1(database)
 	controllerV2 := createControllerV2(database)
 
-	serverPort := ":" + getAppPort(choice)
+	serverPort := ":" + getAppPort()
 	router := mux.NewRouter()
 	// controller.CreateRouter(router)
 	controllerV1.CreateRouter(router.PathPrefix("/api/v1").Subrouter())
@@ -163,13 +160,13 @@ func mustLoadConfigs() {
 	}
 }
 
-func mustLoadDB(ctx context.Context, choice int) *dbpostgres.Database {
+func mustLoadDB(ctx context.Context) *dbpostgres.Database {
 	database, err := dbpostgres.NewDB(ctx, &dbpostgres.DBConfig{
 		Host: viper.GetString("db.host"),
 		// Port:     viper.GetString("db.port"),
-		Port:     getDBPort(choice),
-		Username: getDBUsername(choice),
-		Password: getDBPassword(choice),
+		Port:     getDBPort(),
+		Username: getDBUsername(),
+		Password: getDBPassword(),
 		DBName:   viper.GetString("db.dbname"),
 		SSLMode:  viper.GetString("db.sslmode"),
 	})
@@ -186,51 +183,18 @@ func initConfig() error {
 	return viper.ReadInConfig()
 }
 
-func mustGetChoice() int {
-	choice, err := strconv.Atoi(os.Args[1])
-	if err != nil {
-		log.Fatal("failed to get choid, err: ", err)
-	}
-
-	return choice
+func getDBUsername() string {
+	return os.Getenv("DB_USERNAME")
 }
 
-func getDBUsername(choice int) string {
-	switch choice {
-	case 1:
-		return os.Getenv("DB_USERNAME_RW")
-	default:
-		return os.Getenv("DB_USERNAME_RO")
-	}
+func getDBPassword() string {
+	return os.Getenv("DB_PASSWORD")
 }
 
-func getDBPassword(choice int) string {
-	switch choice {
-	case 1:
-		return os.Getenv("DB_PASSWORD_RW")
-	default:
-		return os.Getenv("DB_PASSWORD_RO")
-	}
+func getDBPort() string {
+	return os.Getenv("DB_PORT")
 }
 
-func getDBPort(choice int) string {
-	switch choice {
-	case 1, 2, 3:
-		return os.Getenv("DB_PORT_MASTER")
-	default:
-		return os.Getenv("DB_PORT_SLAVE")
-	}
-}
-
-func getAppPort(choice int) string {
-	switch choice {
-	case 1:
-		return viper.GetString("app.port1")
-	case 2:
-		return viper.GetString("app.port2")
-	case 3:
-		return viper.GetString("app.port3")
-	default:
-		return viper.GetString("app.port1")
-	}
+func getAppPort() string {
+	return viper.GetString("app.port")
 }
