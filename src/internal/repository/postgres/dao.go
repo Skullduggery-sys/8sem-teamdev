@@ -26,6 +26,7 @@ type listDAO struct {
 
 type userDAO struct {
 	ID       int    `db:"id"`
+	TGID     string `db:"tg_id"`
 	Name     string `db:"name"`
 	Login    string `db:"login"`
 	Role     string `db:"role"`
@@ -88,6 +89,7 @@ func mapUserDAO(user *userDAO) *model.User {
 
 func reverseMapUserDAO(user *model.User) *userDAO {
 	return &userDAO{
+		TGID:     user.TGID,
 		ID:       user.ID,
 		Name:     user.Name,
 		Login:    user.Login,

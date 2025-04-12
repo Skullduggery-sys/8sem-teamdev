@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"git.iu7.bmstu.ru/vai20u117/testing/src/internal/model"
+	repository "git.iu7.bmstu.ru/vai20u117/testing/src/internal/repository/postgres"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -127,7 +128,7 @@ func TestFake_ListAddPoster_and_ListGetPosters(t *testing.T) {
 	err := service.AddPoster(ctx, testList1.ID, testPoster.ID)
 
 	// Assert
-	require.NoError(t, err)
+	require.ErrorIs(t, err, ErrCreated)
 
 	gotPosters, gotErr := service.GetPosters(ctx, testList1.ID)
 	require.NoError(t, gotErr)
@@ -151,7 +152,7 @@ func TestFake_ListMovePoster(t *testing.T) {
 	}
 
 	err := service.AddPoster(ctx, testList1.ID, testPoster.ID)
-	require.NoError(t, err)
+	require.ErrorIs(t, err, ErrCreated)
 
 	// Act
 	err = service.MovePoster(ctx, testList1.ID, testList2.ID, testPoster.ID)
@@ -176,7 +177,7 @@ func TestFake_ListDeletePoster(t *testing.T) {
 	service := NewListPosterService(repo)
 
 	err := service.AddPoster(ctx, testList1.ID, testPoster.ID)
-	require.NoError(t, err)
+	require.ErrorIs(t, err, ErrCreated)
 
 	// Act
 	err = service.DeletePoster(ctx, testList1.ID, testPoster.ID)
@@ -188,5 +189,5 @@ func TestFake_ListDeletePoster(t *testing.T) {
 }
 
 func (*fakeListPosterRepo) GetListIDByPosterID(context.Context, int) (int, error) {
-	return 0, nil
+	return 0, repository.ErrNotFound
 }

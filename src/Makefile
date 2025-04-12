@@ -49,6 +49,5 @@ nginx-test:
 # sudo truncate --size 0 /var/log/nginx/access.log
 
 swagger: $(SWAGGER_SRC)
-	swag init --parseDependency --parseInternal -g ./cmd/main.go -o ./swagger --exclude ./internal/api/v1
-
+	swag init --parseDependency --parseInternal -g ./cmd/main.go -o ./swagger
 .PHONY: fake-tests lint intergation-tests swagger

@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -41,13 +42,7 @@ func (c *Controller) CreateRouter(router *mux.Router) *mux.Router {
 	// /swagger/index.html
 	router.PathPrefix("/swagger").Handler(httpSwagger.WrapHandler)
 
-	router.HandleFunc("/get-user-token", c.handleGetUserTokenRequests).
-		Methods(http.MethodPost)
 	router.HandleFunc("/sign-up", c.handleSignUpRequests).
-		Methods(http.MethodPost)
-	router.HandleFunc("/sign-in", c.handleSignInRequests).
-		Methods(http.MethodPost)
-	router.HandleFunc("/sign-out", c.handleSignOutRequests).
 		Methods(http.MethodPost)
 
 	router.HandleFunc("/posters/{id}", c.handlePosterPathRequests).
@@ -76,8 +71,8 @@ func (c *Controller) CreateRouter(router *mux.Router) *mux.Router {
 	return router
 }
 
-func (c *Controller) getUserIDByToken(token string) (int, error) {
-	userID, err := c.auth.service.GetUserID(token)
+func (c *Controller) getUserIDByToken(ctx context.Context, token string) (int, error) {
+	user, err := c.auth.service.GetUserByTGID(ctx, token)
 	if errors.Is(err, service.ErrNotFound) {
 		slog.Warn("user_id by token not found", "token", token)
 		return 0, errUserNotFound
@@ -86,7 +81,7 @@ func (c *Controller) getUserIDByToken(token string) (int, error) {
 		return 0, err
 	}
 
-	return userID, nil
+	return user.ID, nil
 }
 
 // TODO: rename to writeErrorCode.
@@ -102,6 +97,8 @@ func writeError(w http.ResponseWriter, err error) {
 		w.WriteHeader(http.StatusBadRequest)
 	case errors.Is(err, errActionNotAuthorized):
 		w.WriteHeader(http.StatusUnauthorized)
+	case errors.Is(err, errUserAlreadyExists):
+		w.WriteHeader(http.StatusConflict)
 	default:
 		w.WriteHeader(http.StatusTeapot)
 		slog.Error("type of error is unknown to controller, returning teapot status", "error", err)

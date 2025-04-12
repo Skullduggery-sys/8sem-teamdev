@@ -56,7 +56,7 @@ func (s *ListPosterService) AddPoster(ctx context.Context, listID, posterID int)
 	case findErr != nil:
 		return findErr
 	default:
-		slog.Debug("moving poster...", "cur_list_id", curListID, "new_list_id", listID, "poster_id", posterID)
+		slog.Debug("moving poster instead adding...", "cur_list_id", curListID, "new_list_id", listID, "poster_id", posterID)
 		return s.MovePoster(ctx, curListID, listID, posterID)
 	}
 }

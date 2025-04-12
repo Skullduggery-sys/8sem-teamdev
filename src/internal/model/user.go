@@ -20,6 +20,7 @@ func (s RoleType) String() string {
 
 type User struct {
 	ID          int    `json:"id"`
+	TGID        string `json:"tg_id"`
 	Name        string `json:"name"`
 	Login       string `json:"login"`
 	Role        string `json:"role"`
