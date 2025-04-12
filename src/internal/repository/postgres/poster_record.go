@@ -34,7 +34,9 @@ func (r *PosterRecordRepository) GetUserRecords(ctx context.Context, userID int)
 
 	var records []*model.PosterRecord
 	err = r.db.ScanAll(&records, rows)
-	if err != nil {
+	if errors.Is(err, pgx.ErrNoRows) {
+		return nil, formatError(queryName, ErrNotFound)
+	} else if err != nil {
 		return nil, formatError(queryName, err)
 	} else if len(records) == 0 {
 		return nil, formatError(queryName, ErrNotFound)

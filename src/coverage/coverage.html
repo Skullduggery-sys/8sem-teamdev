@@ -1,0 +1,4279 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>cmd: Go Coverage Report</title>
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">git.iu7.bmstu.ru/vai20u117/testing/src/cmd/main.go (0.0%)</option>
+				
+				<option value="file1">git.iu7.bmstu.ru/vai20u117/testing/src/internal/controller/auth.go (0.0%)</option>
+				
+				<option value="file2">git.iu7.bmstu.ru/vai20u117/testing/src/internal/controller/controller.go (0.0%)</option>
+				
+				<option value="file3">git.iu7.bmstu.ru/vai20u117/testing/src/internal/controller/list.go (0.0%)</option>
+				
+				<option value="file4">git.iu7.bmstu.ru/vai20u117/testing/src/internal/controller/list_poster.go (0.0%)</option>
+				
+				<option value="file5">git.iu7.bmstu.ru/vai20u117/testing/src/internal/controller/poster.go (0.0%)</option>
+				
+				<option value="file6">git.iu7.bmstu.ru/vai20u117/testing/src/internal/controller/poster_record.go (0.0%)</option>
+				
+				<option value="file7">git.iu7.bmstu.ru/vai20u117/testing/src/internal/db/postgres/client.go (0.0%)</option>
+				
+				<option value="file8">git.iu7.bmstu.ru/vai20u117/testing/src/internal/db/postgres/database.go (0.0%)</option>
+				
+				<option value="file9">git.iu7.bmstu.ru/vai20u117/testing/src/internal/model/user.go (75.0%)</option>
+				
+				<option value="file10">git.iu7.bmstu.ru/vai20u117/testing/src/internal/repository/postgres/dao.go (100.0%)</option>
+				
+				<option value="file11">git.iu7.bmstu.ru/vai20u117/testing/src/internal/repository/postgres/errors.go (100.0%)</option>
+				
+				<option value="file12">git.iu7.bmstu.ru/vai20u117/testing/src/internal/repository/postgres/list.go (93.8%)</option>
+				
+				<option value="file13">git.iu7.bmstu.ru/vai20u117/testing/src/internal/repository/postgres/list_poster.go (81.8%)</option>
+				
+				<option value="file14">git.iu7.bmstu.ru/vai20u117/testing/src/internal/repository/postgres/poster.go (92.7%)</option>
+				
+				<option value="file15">git.iu7.bmstu.ru/vai20u117/testing/src/internal/repository/postgres/poster_record.go (90.3%)</option>
+				
+				<option value="file16">git.iu7.bmstu.ru/vai20u117/testing/src/internal/repository/postgres/user.go (93.8%)</option>
+				
+				<option value="file17">git.iu7.bmstu.ru/vai20u117/testing/src/internal/service/auth.go (86.0%)</option>
+				
+				<option value="file18">git.iu7.bmstu.ru/vai20u117/testing/src/internal/service/list.go (50.0%)</option>
+				
+				<option value="file19">git.iu7.bmstu.ru/vai20u117/testing/src/internal/service/list_poster.go (83.3%)</option>
+				
+				<option value="file20">git.iu7.bmstu.ru/vai20u117/testing/src/internal/service/poster.go (60.0%)</option>
+				
+				<option value="file21">git.iu7.bmstu.ru/vai20u117/testing/src/internal/service/poster_record.go (75.0%)</option>
+				
+				<option value="file22">git.iu7.bmstu.ru/vai20u117/testing/src/internal/service/session.go (100.0%)</option>
+				
+				<option value="file23">git.iu7.bmstu.ru/vai20u117/testing/src/internal/tests/postgres/db.go (0.0%)</option>
+				
+				<option value="file24">git.iu7.bmstu.ru/vai20u117/testing/src/swagger/docs.go (0.0%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">no coverage</span>
+				<span class="cov1">low coverage</span>
+				<span class="cov2">*</span>
+				<span class="cov3">*</span>
+				<span class="cov4">*</span>
+				<span class="cov5">*</span>
+				<span class="cov6">*</span>
+				<span class="cov7">*</span>
+				<span class="cov8">*</span>
+				<span class="cov9">*</span>
+				<span class="cov10">high coverage</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">package main
+
+import (
+        "context"
+        "log"
+        "log/slog"
+        "net/http"
+        "os"
+        "os/signal"
+        "syscall"
+        "time"
+
+        "git.iu7.bmstu.ru/vai20u117/testing/src/internal/controller"
+        dbpostgres "git.iu7.bmstu.ru/vai20u117/testing/src/internal/db/postgres"
+        repository "git.iu7.bmstu.ru/vai20u117/testing/src/internal/repository/postgres"
+        "git.iu7.bmstu.ru/vai20u117/testing/src/internal/service"
+
+        // _ "git.iu7.bmstu.ru/vai20u117/testing/src/swagger"
+        muxhandlers "github.com/gorilla/handlers"
+        "github.com/joho/godotenv"
+        "github.com/spf13/viper"
+)
+
+const requestsTimeout = 15 * time.Second
+
+func main() <span class="cov0" title="0">{
+        ctx, cancel := context.WithCancel(context.Background())
+        defer cancel()
+
+        slog.New(slog.NewTextHandler(os.Stderr, nil))
+        slog.SetLogLoggerLevel(slog.LevelInfo)
+
+        mustLoadConfigs()
+
+        database := mustLoadDB(ctx)
+        defer database.GetPool(ctx).Close()
+
+        controller := controller.NewController(
+                initPosterHandler(database),
+                initListHandler(database),
+                initListPosterHandler(database),
+                initPosterRecordHandler(database),
+                initAuthHandler(database, os.Getenv("ADMIN_SECRET")),
+        )
+
+        serverPort := ":" + viper.GetString("port")
+        router := controller.CreateRouter()
+        http.Handle("/", router)
+
+        server := &amp;http.Server{
+                Addr:         serverPort,
+                ReadTimeout:  requestsTimeout,
+                WriteTimeout: requestsTimeout,
+                Handler:      muxhandlers.CompressHandler(router),
+        }
+
+        go func() </span><span class="cov0" title="0">{
+                if err := server.ListenAndServe(); err != nil </span><span class="cov0" title="0">{
+                        log.Fatal("Failed to start server: ", err)
+                }</span>
+        }()
+
+        <span class="cov0" title="0">slog.Info("Server started")
+
+        quit := make(chan os.Signal, 1)
+        signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT)
+        &lt;-quit
+
+        slog.Info("Server shutting down")</span>
+}
+
+func initPosterHandler(database *dbpostgres.Database) *controller.PosterHandler <span class="cov0" title="0">{
+        posterRepository := repository.NewPosterRepository(database)
+        posterService := service.NewPosterService(posterRepository)
+        return controller.NewPosterHandler(posterService)
+}</span>
+
+func initListHandler(database *dbpostgres.Database) *controller.ListHandler <span class="cov0" title="0">{
+        listRepository := repository.NewListRepository(database)
+        listService := service.NewListService(listRepository)
+        return controller.NewListHandler(listService)
+}</span>
+
+func initListPosterHandler(database *dbpostgres.Database) *controller.ListPosterHandler <span class="cov0" title="0">{
+        listPosterRepository := repository.NewListPosterRepository(database)
+        listPosterService := service.NewListPosterService(listPosterRepository)
+        return controller.NewListPosterHandler(listPosterService)
+}</span>
+
+func initPosterRecordHandler(database *dbpostgres.Database) *controller.PosterRecordHandler <span class="cov0" title="0">{
+        historyRepository := repository.NewPosterRecordRepository(database)
+        historyService := service.NewPosterRecordService(historyRepository)
+        return controller.NewPosterRecordHandler(historyService)
+}</span>
+
+func initAuthHandler(database *dbpostgres.Database, adminToken string) *controller.AuthHandler <span class="cov0" title="0">{
+        userRepository := repository.NewUserRepository(database)
+        authService := service.NewAuthService(userRepository, adminToken)
+        return controller.NewAuthHandler(authService)
+}</span>
+
+func mustLoadConfigs() <span class="cov0" title="0">{
+        if err := initConfig(); err != nil </span><span class="cov0" title="0">{
+                log.Fatal("Failed to init configs: ", err)
+        }</span>
+        <span class="cov0" title="0">if err := godotenv.Load(); err != nil </span><span class="cov0" title="0">{
+                log.Fatal("Failed to load env variables: ", err)
+        }</span>
+}
+
+func mustLoadDB(ctx context.Context) *dbpostgres.Database <span class="cov0" title="0">{
+        database, err := dbpostgres.NewDB(ctx, &amp;dbpostgres.DBConfig{
+                Host:     viper.GetString("db.host"),
+                Port:     viper.GetString("db.port"),
+                Username: os.Getenv("DB_USERNAME"),
+                Password: os.Getenv("DB_PASSWORD"),
+                DBName:   viper.GetString("db.dbname"),
+                SSLMode:  viper.GetString("db.sslmode"),
+        })
+        if err != nil </span><span class="cov0" title="0">{
+                log.Fatal("Failed to create db: ", err)
+        }</span>
+
+        <span class="cov0" title="0">return database</span>
+}
+
+func initConfig() error <span class="cov0" title="0">{
+        viper.AddConfigPath("configs")
+        viper.SetConfigName("config")
+        return viper.ReadInConfig()
+}</span>
+</pre>
+		
+		<pre class="file" id="file1" style="display: none">package controller
+
+import (
+        "context"
+        "encoding/json"
+        "errors"
+        "fmt"
+        "io"
+        "log/slog"
+        "net/http"
+
+        "git.iu7.bmstu.ru/vai20u117/testing/src/internal/model"
+        servicePkg "git.iu7.bmstu.ru/vai20u117/testing/src/internal/service"
+)
+
+type authService interface {
+        GetUserTokenByAdmin(ctx context.Context, adminSecret, login string) (string, error)
+        GetUserID(token string) (int, error)
+        SignUp(ctx context.Context, user *model.User) (int, error)
+        SignIn(ctx context.Context, user *model.User) (string, error)
+        SignOut(ctx context.Context, token string) error
+}
+
+type AuthHandler struct {
+        service authService
+}
+
+func NewAuthHandler(service authService) *AuthHandler <span class="cov0" title="0">{
+        return &amp;AuthHandler{service: service}
+}</span>
+
+// @Summary        Sign in
+// @Description        sing in
+// @Tags auth
+// @Param adminSecret query string true "Admin secret"
+// @Param login query string true "User login"
+// @Accept json
+// @Success        200 {object} map[string]interface{}
+// @Failure        400        {object} map[string]interface{}
+// @Failure        404        {object} map[string]interface{}
+// @Failure        500        {object} map[string]interface{}
+// @Router /sign-in [post]
+func (h *AuthHandler) GetUserTokenByAdmin(ctx context.Context, adminSecret, login string) ([]byte, error) <span class="cov0" title="0">{
+        token, err := h.service.GetUserTokenByAdmin(ctx, adminSecret, login)
+        switch </span>{
+        case errors.Is(err, servicePkg.ErrAdminIsNotAuthtorized):<span class="cov0" title="0">
+                slog.Warn("this user is not allowed to be an admin")
+                return nil, errInvalidArguments</span>
+        case errors.Is(err, servicePkg.ErrNotFound):<span class="cov0" title="0">
+                slog.Warn("user by login is not found", "user_login", login)
+                return nil, errNotFound</span>
+        case err != nil:<span class="cov0" title="0">
+                slog.Error("unexpected error occurred while signing in", "error", err)
+                return nil, errInternal</span>
+        }
+
+        <span class="cov0" title="0">tokenJSON, err := json.Marshal(map[string]string{"token": token})
+        if err != nil </span><span class="cov0" title="0">{
+                slog.Error("unexpected error occurred while marshaling token", "error", err)
+                return nil, fmt.Errorf("%w: %w", errInternal, err)
+        }</span>
+
+        <span class="cov0" title="0">return tokenJSON, nil</span>
+}
+
+// @Summary        Sign up
+// @Description        sing up
+// @Tags auth
+// @Param input body model.User true "User body"
+// @Accept json
+// @Success        200 {object} map[string]interface{}
+// @Failure        400        {object} map[string]interface{}
+// @Failure        500        {object} map[string]interface{}
+// @Router /sign-up [post]
+func (h *AuthHandler) SignUp(ctx context.Context, user *model.User) ([]byte, error) <span class="cov0" title="0">{
+        userID, err := h.service.SignUp(ctx, user)
+        switch </span>{
+        case errors.Is(err, servicePkg.ErrAdminIsNotAuthtorized):<span class="cov0" title="0">
+                slog.Warn("this user is not allowed to be an admin")
+                return nil, errInvalidArguments</span>
+        case errors.Is(err, servicePkg.ErrLoginAlreadyExists):<span class="cov0" title="0">
+                slog.Warn("user with such login already exists", "login", user.Login)
+                return nil, errInvalidArguments</span>
+        case errors.Is(err, servicePkg.ErrGeneratingHash):<span class="cov0" title="0">
+                slog.Warn("failed to generate password hash", "error", err)
+                return nil, errInternal</span>
+        case err != nil:<span class="cov0" title="0">
+                slog.Error("unexpected error occurred while signing up", "error", err)
+                return nil, errInternal</span>
+        }
+
+        <span class="cov0" title="0">idJSON, err := json.Marshal(map[string]int{"id": userID})
+        if err != nil </span><span class="cov0" title="0">{
+                slog.Error("unexpected error occurred while marshaling id", "error", err)
+                return nil, fmt.Errorf("%w: %w", errInternal, err)
+        }</span>
+
+        <span class="cov0" title="0">return idJSON, nil</span>
+}
+
+// @Summary        Sign in
+// @Description        sing in
+// @Tags auth
+// @Param input body model.User true "User body"
+// @Accept json
+// @Success        200 {object} map[string]interface{}
+// @Failure        400        {object} map[string]interface{}
+// @Failure        404        {object} map[string]interface{}
+// @Failure        500        {object} map[string]interface{}
+// @Router /sign-in [post]
+func (h *AuthHandler) SignIn(ctx context.Context, user *model.User) ([]byte, error) <span class="cov0" title="0">{
+        token, err := h.service.SignIn(ctx, user)
+        switch </span>{
+        case errors.Is(err, servicePkg.ErrGeneratingHash):<span class="cov0" title="0">
+                slog.Warn("failed to generate password hash", "error", err)
+                return nil, errInternal</span>
+        case errors.Is(err, servicePkg.ErrNotFound):<span class="cov0" title="0">
+                slog.Warn("user by login is not found", "user_login", user.Login)
+                return nil, errNotFound</span>
+        case errors.Is(err, servicePkg.ErrBadPassword):<span class="cov0" title="0">
+                slog.Warn("user password is not matched", "user_login", user.Login)
+                return nil, errInvalidArguments</span>
+        case errors.Is(err, servicePkg.ErrAdminIsNotAuthtorized):<span class="cov0" title="0">
+                slog.Warn("this user is not allowed to be an admin")
+                return nil, errInvalidArguments</span>
+        case err != nil:<span class="cov0" title="0">
+                slog.Error("unexpected error occurred while signing in", "error", err)
+                return nil, errInternal</span>
+        }
+
+        <span class="cov0" title="0">tokenJSON, err := json.Marshal(map[string]string{"token": token})
+        if err != nil </span><span class="cov0" title="0">{
+                slog.Error("unexpected error occurred while marshaling token", "error", err)
+                return nil, fmt.Errorf("%w: %w", errInternal, err)
+        }</span>
+
+        <span class="cov0" title="0">return tokenJSON, nil</span>
+}
+
+// @Summary        Sign out
+// @Description        sing out
+// @Tags auth
+// @Param token query string true "User token"
+// @Accept json
+// @Success        200
+// @Failure        400        {object} map[string]interface{}
+// @Failure        404        {object} map[string]interface{}
+// @Failure        500        {object} map[string]interface{}
+// @Router /sign-out [post]
+func (h *AuthHandler) SignOut(ctx context.Context, token string) error <span class="cov0" title="0">{
+        if err := h.service.SignOut(ctx, token); errors.Is(err, servicePkg.ErrNotFound) </span><span class="cov0" title="0">{
+                slog.Warn("token is not found")
+                return errNotFound
+        }</span> else<span class="cov0" title="0"> if err != nil </span><span class="cov0" title="0">{
+                slog.Error("unexpected error occurred while signing out", "error", err)
+                return errInternal
+        }</span>
+
+        <span class="cov0" title="0">return nil</span>
+}
+
+func (c *Controller) handleGetUserTokenRequests(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+        ctx := r.Context()
+        switch r.Method </span>{
+        case http.MethodPost:<span class="cov0" title="0">
+                adminSecret := r.URL.Query().Get("admin_secret")
+                login := r.URL.Query().Get("login")
+                token, err := c.auth.GetUserTokenByAdmin(ctx, adminSecret, login)
+                if err != nil </span><span class="cov0" title="0">{
+                        writeError(w, err)
+                        break</span>
+                } else<span class="cov0" title="0"> if _, err = w.Write(token); err != nil </span><span class="cov0" title="0">{
+                        writeError(w, fmt.Errorf("%w: writing token body: %w", errInternal, err))
+                        break</span>
+                }
+
+                <span class="cov0" title="0">w.WriteHeader(http.StatusOK)</span>
+        default:<span class="cov0" title="0">
+                slog.Error("http method is not allowed", "method", r.Method)
+                w.WriteHeader(http.StatusForbidden)</span>
+        }
+}
+
+func (c *Controller) handleSignUpRequests(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+        ctx := r.Context()
+        switch r.Method </span>{
+        case http.MethodPost:<span class="cov0" title="0">
+                user, err := parseUser(r)
+                if err != nil </span><span class="cov0" title="0">{
+                        writeError(w, err)
+                        break</span>
+                }
+
+                <span class="cov0" title="0">id, err := c.auth.SignUp(ctx, user)
+                if err != nil </span><span class="cov0" title="0">{
+                        writeError(w, err)
+                        break</span>
+                } else<span class="cov0" title="0"> if _, err = w.Write(id); err != nil </span><span class="cov0" title="0">{
+                        writeError(w, fmt.Errorf("%w: writing user_id body: %w", errInternal, err))
+                        break</span>
+                }
+
+                <span class="cov0" title="0">w.WriteHeader(http.StatusOK)</span>
+        default:<span class="cov0" title="0">
+                slog.Error("http method is not allowed", "method", r.Method)
+                w.WriteHeader(http.StatusForbidden)</span>
+        }
+}
+
+func (c *Controller) handleSignInRequests(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+        ctx := r.Context()
+        switch r.Method </span>{
+        case http.MethodPost:<span class="cov0" title="0">
+                user, err := parseUser(r)
+                if err != nil </span><span class="cov0" title="0">{
+                        writeError(w, err)
+                        break</span>
+                }
+
+                <span class="cov0" title="0">token, err := c.auth.SignIn(ctx, user)
+                if err != nil </span><span class="cov0" title="0">{
+                        writeError(w, err)
+                        break</span>
+                } else<span class="cov0" title="0"> if _, err = w.Write(token); err != nil </span><span class="cov0" title="0">{
+                        writeError(w, fmt.Errorf("%w: writing token body: %w", errInternal, err))
+                        break</span>
+                }
+
+                <span class="cov0" title="0">w.WriteHeader(http.StatusOK)</span>
+        default:<span class="cov0" title="0">
+                slog.Error("http method is not allowed", "method", r.Method)
+                w.WriteHeader(http.StatusForbidden)</span>
+        }
+}
+
+func (c *Controller) handleSignOutRequests(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+        ctx := r.Context()
+        switch r.Method </span>{
+        case http.MethodPost:<span class="cov0" title="0">
+                token := r.URL.Query().Get("token")
+                if err := c.auth.SignOut(ctx, token); err != nil </span><span class="cov0" title="0">{
+                        writeError(w, err)
+                        break</span>
+                }
+
+                <span class="cov0" title="0">w.WriteHeader(http.StatusOK)</span>
+        default:<span class="cov0" title="0">
+                slog.Error("http method is not allowed", "method", r.Method)
+                w.WriteHeader(http.StatusForbidden)</span>
+        }
+}
+
+func parseUser(r *http.Request) (*model.User, error) <span class="cov0" title="0">{
+        var user model.User
+        body, err := io.ReadAll(r.Body)
+        if err != nil </span><span class="cov0" title="0">{
+                slog.Warn("user body cannot be read", "error", err)
+                return nil, fmt.Errorf("%w: %w", errInvalidArguments, err)
+        }</span>
+
+        <span class="cov0" title="0">if err = json.Unmarshal(body, &amp;user); err != nil </span><span class="cov0" title="0">{
+                slog.Warn("user cannot be unmarshalled", "error", err)
+                return nil, fmt.Errorf("%w: %w", errInvalidArguments, err)
+        }</span>
+
+        <span class="cov0" title="0">return &amp;user, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file2" style="display: none">package controller
+
+import (
+        "encoding/json"
+        "errors"
+        "fmt"
+        "log/slog"
+        "net/http"
+        "strconv"
+
+        "git.iu7.bmstu.ru/vai20u117/testing/src/internal/service"
+        "github.com/gorilla/mux"
+        httpSwagger "github.com/swaggo/http-swagger"
+)
+
+type Controller struct {
+        poster        *PosterHandler
+        list          *ListHandler
+        listPoster    *ListPosterHandler
+        posterHistory *PosterRecordHandler
+        auth          *AuthHandler
+}
+
+func NewController(
+        poster *PosterHandler,
+        list *ListHandler,
+        listPoster *ListPosterHandler,
+        posterHistory *PosterRecordHandler,
+        auth *AuthHandler,
+) *Controller <span class="cov0" title="0">{
+        return &amp;Controller{
+                poster:        poster,
+                list:          list,
+                listPoster:    listPoster,
+                posterHistory: posterHistory,
+                auth:          auth,
+        }
+}</span>
+
+func (c *Controller) CreateRouter() *mux.Router <span class="cov0" title="0">{
+        router := mux.NewRouter()
+
+        router.PathPrefix("/swagger").Handler(httpSwagger.WrapHandler)
+
+        router.HandleFunc("/get-user-token", c.handleGetUserTokenRequests).
+                Methods(http.MethodPost)
+        router.HandleFunc("/sign-up", c.handleSignUpRequests).
+                Methods(http.MethodPost)
+        router.HandleFunc("/sign-in", c.handleSignInRequests).
+                Methods(http.MethodPost)
+        router.HandleFunc("/sign-out", c.handleSignOutRequests).
+                Methods(http.MethodPost)
+
+        router.HandleFunc("/poster", c.handlePosterRequests).
+                Methods(http.MethodGet, http.MethodPost, http.MethodPut, http.MethodDelete)
+
+        router.HandleFunc("/list", c.handleListRequests).
+                Methods(http.MethodGet, http.MethodPost, http.MethodPut, http.MethodDelete)
+        router.HandleFunc("/list-poster", c.handleListPosterGetDeleteRequests).
+                Methods(http.MethodGet, http.MethodDelete)
+        router.HandleFunc("/list-poster/add", c.handleListPosterAddRequests).
+                Methods(http.MethodPost)
+        router.HandleFunc("/list-poster/move", c.handleListPosterMoveRequests).
+                Methods(http.MethodPost)
+        router.HandleFunc("/list-poster/change-position", c.handleListPosterChangePositionRequests).
+                Methods(http.MethodPost)
+
+        router.HandleFunc("/poster-history", c.handlePosterRecordRequests).
+                Methods(http.MethodGet, http.MethodPost, http.MethodPut, http.MethodDelete)
+        return router
+}</span>
+
+func (c *Controller) getUserIDByToken(token string) (int, error) <span class="cov0" title="0">{
+        userID, err := c.auth.service.GetUserID(token)
+        if errors.Is(err, service.ErrNotFound) </span><span class="cov0" title="0">{
+                slog.Warn("user_id by token not found", "token", token)
+                return 0, errUserNotFound
+        }</span> else<span class="cov0" title="0"> if err != nil </span><span class="cov0" title="0">{
+                slog.Error("failed to get user_id by token", "error", err)
+                return 0, err
+        }</span>
+
+        <span class="cov0" title="0">return userID, nil</span>
+}
+
+func (c *Controller) authorizeUserID(token string, userID int) error <span class="cov0" title="0">{
+        tokenUserID, err := c.getUserIDByToken(token)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        <span class="cov0" title="0">if tokenUserID != userID </span><span class="cov0" title="0">{
+                slog.Warn("action not authorized, userId in token is not matched in the request entity",
+                        "token_user_id", tokenUserID, "user_id", userID)
+                return errActionNotAuthorized
+        }</span>
+
+        <span class="cov0" title="0">return nil</span>
+}
+
+// TODO: rename to writeErrorCode.
+func writeError(w http.ResponseWriter, err error) <span class="cov0" title="0">{
+        switch </span>{
+        case errors.Is(err, errInvalidArguments):<span class="cov0" title="0">
+                w.WriteHeader(http.StatusBadRequest)</span>
+        case errors.Is(err, errNotFound):<span class="cov0" title="0">
+                w.WriteHeader(http.StatusNotFound)</span>
+        case errors.Is(err, errInternal):<span class="cov0" title="0">
+                w.WriteHeader(http.StatusInternalServerError)</span>
+        case errors.Is(err, errUserNotFound):<span class="cov0" title="0">
+                w.WriteHeader(http.StatusBadRequest)</span>
+        case errors.Is(err, errActionNotAuthorized):<span class="cov0" title="0">
+                w.WriteHeader(http.StatusUnauthorized)</span>
+        default:<span class="cov0" title="0">
+                w.WriteHeader(http.StatusTeapot)
+                slog.Error("type of error is unknown to controller, returning teapot status", "error", err)</span>
+        }
+
+        <span class="cov0" title="0">errJSON, errMarshal := json.Marshal(map[string]string{"error": err.Error()})
+        if errMarshal != nil </span><span class="cov0" title="0">{
+                slog.Error("cannot marshal error", "error", err, "marshal_error", errMarshal)
+        }</span>
+
+        <span class="cov0" title="0">if _, err := w.Write(errJSON); err != nil </span><span class="cov0" title="0">{
+                slog.Error("unexpected error occurred while write marshaled error", "error", err)
+        }</span>
+}
+
+func parseInt(r *http.Request, argName string) (int, error) <span class="cov0" title="0">{
+        idReq := r.URL.Query().Get(argName)
+        id, err := strconv.ParseInt(idReq, 10, 64)
+        if err != nil </span><span class="cov0" title="0">{
+                slog.Warn("cannot convert to int", "arg_name", argName, "arg_value", idReq)
+                return 0, fmt.Errorf("%w: %w", errInvalidArguments, err)
+        }</span>
+
+        <span class="cov0" title="0">return int(id), nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file3" style="display: none">package controller
+
+import (
+        "context"
+        "encoding/json"
+        "errors"
+        "fmt"
+        "io"
+        "log/slog"
+        "net/http"
+
+        "git.iu7.bmstu.ru/vai20u117/testing/src/internal/model"
+        servicePkg "git.iu7.bmstu.ru/vai20u117/testing/src/internal/service"
+)
+
+type listService interface {
+        Get(ctx context.Context, listID int) (*model.List, error)
+        Create(ctx context.Context, list *model.List) (int, error)
+        Update(ctx context.Context, list *model.List) error
+        Delete(ctx context.Context, listID int) error
+}
+
+type ListHandler struct {
+        service listService
+}
+
+func NewListHandler(service listService) *ListHandler <span class="cov0" title="0">{
+        return &amp;ListHandler{service: service}
+}</span>
+
+// @Summary        Get
+// @Description        get list
+// @Tags list
+// @Param token query string true "User auth token"
+// @Param id query integer true "ListId"
+// @Accept json
+// @Success        200 {object} map[string]interface{}
+// @Failure        400        {object} map[string]interface{}
+// @Failure        401        {object} map[string]interface{}
+// @Failure        404        {object} map[string]interface{}
+// @Failure        500        {object} map[string]interface{}
+// @Router /list [get]
+func (h *ListHandler) Get(ctx context.Context, listID int) ([]byte, error) <span class="cov0" title="0">{
+        list, err := h.service.Get(ctx, listID)
+        if errors.Is(err, servicePkg.ErrNotFound) </span><span class="cov0" title="0">{
+                slog.Warn("list not found", "list_id", listID)
+                return nil, errNotFound
+        }</span> else<span class="cov0" title="0"> if err != nil </span><span class="cov0" title="0">{
+                slog.Error("unexpected error occurred while getting list", "error", err)
+                return nil, fmt.Errorf("%w: %w", errInternal, err)
+        }</span>
+
+        <span class="cov0" title="0">listJSON, err := json.Marshal(list)
+        if err != nil </span><span class="cov0" title="0">{
+                slog.Error("unexpected error occurred while marshaling list", "error", err)
+                return nil, fmt.Errorf("%w: %w", errInternal, err)
+        }</span>
+
+        <span class="cov0" title="0">return listJSON, nil</span>
+}
+
+// @Summary        Create
+// @Description        create list
+// @Tags list
+// @Param input body model.List true "List body"
+// @Param token query string true "User auth token"
+// @Accept json
+// @Success        200 {object} map[string]interface{}
+// @Failure        400        {object} map[string]interface{}
+// @Failure        401        {object} map[string]interface{}
+// @Failure        500        {object} map[string]interface{}
+// @Router /list [post]
+func (h *ListHandler) Create(ctx context.Context, list *model.List) ([]byte, error) <span class="cov0" title="0">{
+        id, err := h.service.Create(ctx, list)
+        if err != nil </span><span class="cov0" title="0">{
+                slog.Error("unexpected error occurred while creating list", "error", err)
+                return nil, fmt.Errorf("%w: %w", errInternal, err)
+        }</span>
+
+        <span class="cov0" title="0">idJSON, err := json.Marshal(map[string]int{"id": id})
+        if err != nil </span><span class="cov0" title="0">{
+                slog.Error("unexpected error occurred while marshaling id", "error", err)
+                return nil, fmt.Errorf("%w: %w", errInternal, err)
+        }</span>
+
+        <span class="cov0" title="0">return idJSON, nil</span>
+}
+
+// @Summary        Update
+// @Description        update list
+// @Tags list
+// @Param input body model.List true "List body"
+// @Param token query string true "User auth token"
+// @Accept json
+// @Success        200 {object} map[string]interface{}
+// @Failure        400        {object} map[string]interface{}
+// @Failure        401        {object} map[string]interface{}
+// @Failure        500        {object} map[string]interface{}
+// @Router /list [put]
+func (h *ListHandler) Update(ctx context.Context, list *model.List) error <span class="cov0" title="0">{
+        err := h.service.Update(ctx, list)
+        if errors.Is(err, servicePkg.ErrNotFound) </span><span class="cov0" title="0">{
+                slog.Warn("list not found", "list_id", list.ID)
+                return errNotFound
+        }</span> else<span class="cov0" title="0"> if err != nil </span><span class="cov0" title="0">{
+                slog.Error("unexpected error occurred while updating list", "error", err)
+                return fmt.Errorf("%w: %w", errInternal, err)
+        }</span>
+
+        <span class="cov0" title="0">return nil</span>
+}
+
+// @Summary        Delete
+// @Description        delete list
+// @Tags list
+// @Param token query string true "User auth token"
+// @Param id query integer true "ListId"
+// @Accept json
+// @Success        200 {object} map[string]interface{}
+// @Failure        400        {object} map[string]interface{}
+// @Failure        401        {object} map[string]interface{}
+// @Failure        404        {object} map[string]interface{}
+// @Failure        500        {object} map[string]interface{}
+// @Router /list [delete]
+func (h *ListHandler) Delete(ctx context.Context, listID int) error <span class="cov0" title="0">{
+        if err := h.service.Delete(ctx, listID); errors.Is(err, servicePkg.ErrNotFound) </span><span class="cov0" title="0">{
+                slog.Warn("list not found", "list_id", listID)
+                return errNotFound
+        }</span> else<span class="cov0" title="0"> if err != nil </span><span class="cov0" title="0">{
+                slog.Error("unexpected error occurred while deleting list", "error", err)
+                return fmt.Errorf("%w: %w", errInternal, err)
+        }</span>
+
+        <span class="cov0" title="0">return nil</span>
+}
+
+//nolint:funlen,cyclop // http handler methods router
+func (c *Controller) handleListRequests(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+        token := r.URL.Query().Get("token")
+        ctx := r.Context()
+        switch r.Method </span>{
+        case http.MethodGet:<span class="cov0" title="0">
+                listID, err := parseInt(r, "id")
+                if err == nil </span><span class="cov0" title="0">{
+                        err = c.authorizeList(ctx, token, listID)
+                }</span>
+                <span class="cov0" title="0">if err != nil </span><span class="cov0" title="0">{
+                        writeError(w, err)
+                        break</span>
+                }
+
+                <span class="cov0" title="0">list, err := c.list.Get(ctx, listID)
+                if err != nil </span><span class="cov0" title="0">{
+                        writeError(w, err)
+                        break</span>
+                } else<span class="cov0" title="0"> if _, err = w.Write(list); err != nil </span><span class="cov0" title="0">{
+                        writeError(w, fmt.Errorf("%w: writing list body: %w", errInternal, err))
+                        break</span>
+                }
+
+                <span class="cov0" title="0">w.WriteHeader(http.StatusOK)</span>
+        case http.MethodPost:<span class="cov0" title="0">
+                list, err := c.parseList(r, token)
+                if err != nil </span><span class="cov0" title="0">{
+                        writeError(w, err)
+                        break</span>
+                }
+
+                <span class="cov0" title="0">id, err := c.list.Create(ctx, list)
+                if err != nil </span><span class="cov0" title="0">{
+                        writeError(w, err)
+                        break</span>
+                } else<span class="cov0" title="0"> if _, err = w.Write(id); err != nil </span><span class="cov0" title="0">{
+                        writeError(w, fmt.Errorf("%w: writing list id body: %w", errInternal, err))
+                        break</span>
+                }
+
+                <span class="cov0" title="0">w.WriteHeader(http.StatusOK)</span>
+        case http.MethodPut:<span class="cov0" title="0">
+                list, err := c.parseList(r, token)
+                if err != nil </span><span class="cov0" title="0">{
+                        writeError(w, err)
+                        break</span>
+                }
+
+                <span class="cov0" title="0">if err := c.list.Update(ctx, list); err != nil </span><span class="cov0" title="0">{
+                        writeError(w, err)
+                        break</span>
+                }
+
+                <span class="cov0" title="0">w.WriteHeader(http.StatusOK)</span>
+        case http.MethodDelete:<span class="cov0" title="0">
+                listID, err := parseInt(r, "id")
+                if err == nil </span><span class="cov0" title="0">{
+                        err = c.authorizeList(ctx, token, listID)
+                }</span>
+                <span class="cov0" title="0">if err != nil </span><span class="cov0" title="0">{
+                        writeError(w, err)
+                        break</span>
+                }
+
+                <span class="cov0" title="0">if err := c.list.Delete(ctx, listID); err != nil </span><span class="cov0" title="0">{
+                        writeError(w, err)
+                        break</span>
+                }
+
+                <span class="cov0" title="0">w.WriteHeader(http.StatusOK)</span>
+        default:<span class="cov0" title="0">
+                slog.Error("http method is not allowed", "method", r.Method)
+                w.WriteHeader(http.StatusForbidden)</span>
+        }
+}
+
+func (c *Controller) authorizeList(ctx context.Context, token string, listID int) error <span class="cov0" title="0">{
+        userID, err := c.getUserIDByToken(token)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        <span class="cov0" title="0">list, err := c.list.service.Get(ctx, listID)
+        if errors.Is(err, servicePkg.ErrNotFound) </span><span class="cov0" title="0">{
+                slog.Warn("list not found", "list_id", listID)
+                return fmt.Errorf("%w: list not found", errNotFound)
+        }</span> else<span class="cov0" title="0"> if err != nil </span><span class="cov0" title="0">{
+                slog.Error("unexpected error occurred while getting list", "error", err)
+                return fmt.Errorf("%w: %w", errInternal, err)
+        }</span>
+
+        <span class="cov0" title="0">if list.UserID != userID </span><span class="cov0" title="0">{
+                slog.Warn("list action is not authorized: lists' user_id is different",
+                        "user_id", userID, "list_user_id", list.UserID)
+                return errActionNotAuthorized
+        }</span>
+
+        <span class="cov0" title="0">return nil</span>
+}
+
+func (c *Controller) parseList(r *http.Request, token string) (*model.List, error) <span class="cov0" title="0">{
+        var list model.List
+        body, err := io.ReadAll(r.Body)
+        if err != nil </span><span class="cov0" title="0">{
+                slog.Warn("list body cannot be read", "error", err)
+                return nil, fmt.Errorf("%w: %w", errInvalidArguments, err)
+        }</span>
+
+        <span class="cov0" title="0">if err = json.Unmarshal(body, &amp;list); err != nil </span><span class="cov0" title="0">{
+                slog.Warn("list cannot be unmarshalled", "error", err)
+                return nil, fmt.Errorf("%w: %w", errInvalidArguments, err)
+        }</span>
+
+        <span class="cov0" title="0">if err = c.authorizeUserID(token, list.UserID); err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">return &amp;list, nil</span>
+}
+
+func validateList(list *model.List) error <span class="cov0" title="0">{
+        switch </span>{
+        case list.UserID == 0:<span class="cov0" title="0">
+                return fmt.Errorf("%w: list user_id is absent", errInvalidArguments)</span>
+        case list.Name == "":<span class="cov0" title="0">
+                return fmt.Errorf("%w: list name is absent", errInvalidArguments)</span>
+        }
+
+        <span class="cov0" title="0">return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file4" style="display: none">package controller
+
+import (
+        "context"
+        "encoding/json"
+        "errors"
+        "fmt"
+        "log/slog"
+        "net/http"
+
+        "git.iu7.bmstu.ru/vai20u117/testing/src/internal/model"
+        servicePkg "git.iu7.bmstu.ru/vai20u117/testing/src/internal/service"
+)
+
+type listPosterService interface {
+        GetPosters(ctx context.Context, listID int) ([]*model.ListPoster, error)
+        AddPoster(ctx context.Context, listID, posterID int) error
+        MovePoster(ctx context.Context, curListID, newListID, posterID int) error
+        ChangePosterPosition(ctx context.Context, listID, posterID, newPosition int) error
+        DeletePoster(ctx context.Context, listID, posterID int) error
+}
+
+type ListPosterHandler struct {
+        service listPosterService
+}
+
+func NewListPosterHandler(service listPosterService) *ListPosterHandler <span class="cov0" title="0">{
+        return &amp;ListPosterHandler{service: service}
+}</span>
+
+// @Summary        Get posters in list
+// @Description        get posters in list
+// @Tags list-poster
+// @Param token query string true "User auth token"
+// @Param list_id query integer true "ListId"
+// @Accept json
+// @Success        200 {object} map[string]interface{}
+// @Failure        400        {object} map[string]interface{}
+// @Failure        401        {object} map[string]interface{}
+// @Failure        404        {object} map[string]interface{}
+// @Failure        500        {object} map[string]interface{}
+// @Router /list-poster [get]
+func (h *ListPosterHandler) GetPosters(ctx context.Context, listID int) ([]byte, error) <span class="cov0" title="0">{
+        listPosters, err := h.service.GetPosters(ctx, listID)
+        if errors.Is(err, servicePkg.ErrNotFound) </span><span class="cov0" title="0">{
+                slog.Warn("posters not found by list id", "list_id", listID)
+                return nil, errNotFound
+        }</span> else<span class="cov0" title="0"> if err != nil </span><span class="cov0" title="0">{
+                slog.Error("unexpected error occurred while getting list posters by list id", "error", err)
+                return nil, fmt.Errorf("%w: %w", errInternal, err)
+        }</span>
+
+        <span class="cov0" title="0">listPostersJSON, err := json.Marshal(listPosters)
+        if err != nil </span><span class="cov0" title="0">{
+                slog.Error("unexpected error occurred while marshaling list posters", "error", err)
+                return nil, fmt.Errorf("%w: %w", errInternal, err)
+        }</span>
+
+        <span class="cov0" title="0">return listPostersJSON, nil</span>
+}
+
+// @Summary        Add poster in list
+// @Description        add poster in list
+// @Tags list-poster
+// @Param token query string true "User auth token"
+// @Param list_id query integer true "ListId"
+// @Param poster_id query integer true "PosterId"
+// @Accept json
+// @Success        200 {object} map[string]interface{}
+// @Failure        400        {object} map[string]interface{}
+// @Failure        401        {object} map[string]interface{}
+// @Failure        404        {object} map[string]interface{}
+// @Failure        500        {object} map[string]interface{}
+// @Router /list-poster/add [post]
+func (h *ListPosterHandler) AddPoster(ctx context.Context, listID, posterID int) error <span class="cov0" title="0">{
+        if err := h.service.AddPoster(ctx, listID, posterID); err != nil </span><span class="cov0" title="0">{
+                slog.Error("unexpected error occurred while adding poster in list", "error", err)
+                return fmt.Errorf("%w: %w", errInternal, err)
+        }</span>
+
+        <span class="cov0" title="0">return nil</span>
+}
+
+// @Summary        Move poster from one list to another
+// @Description        move poster from one list to another
+// @Tags list-poster
+// @Param token query string true "User auth token"
+// @Param cur_list_id query integer true "CurListId"
+// @Param new_list_id query integer true "NewListId"
+// @Param poster_id query integer true "PosterId"
+// @Accept json
+// @Success        200 {object} map[string]interface{}
+// @Failure        400        {object} map[string]interface{}
+// @Failure        401        {object} map[string]interface{}
+// @Failure        404        {object} map[string]interface{}
+// @Failure        500        {object} map[string]interface{}
+// @Router /list-poster/move [post]
+func (h *ListPosterHandler) MovePoster(ctx context.Context, curListID, newListID, posterID int) error <span class="cov0" title="0">{
+        if err := h.service.MovePoster(ctx, curListID, newListID, posterID); err != nil </span><span class="cov0" title="0">{
+                slog.Error("unexpected error occurred while moving poster", "error", err)
+                return fmt.Errorf("%w: %w", errInternal, err)
+        }</span>
+
+        <span class="cov0" title="0">return nil</span>
+}
+
+// @Summary        Change poster position in list
+// @Description        change poster position in list
+// @Tags list-poster
+// @Param token query string true "User auth token"
+// @Param list_id query integer true "ListId"
+// @Param poster_id query integer true "PosterId"
+// @Param position query integer true "NewPosition"
+// @Accept json
+// @Success        200 {object} map[string]interface{}
+// @Failure        400        {object} map[string]interface{}
+// @Failure        401        {object} map[string]interface{}
+// @Failure        404        {object} map[string]interface{}
+// @Failure        500        {object} map[string]interface{}
+// @Router /list-poster/change-position [post]
+func (h *ListPosterHandler) ChangePosterPosition(ctx context.Context, listID, posterID, newPosition int) error <span class="cov0" title="0">{
+        if err := h.service.ChangePosterPosition(ctx, listID, posterID, newPosition); err != nil </span><span class="cov0" title="0">{
+                slog.Error("unexpected error occurred while changing poster position", "error", err)
+                return fmt.Errorf("%w: %w", errInternal, err)
+        }</span>
+
+        <span class="cov0" title="0">return nil</span>
+}
+
+// @Summary        Delete poster from list
+// @Description        delete poster from list
+// @Tags list-poster
+// @Param token query string true "User auth token"
+// @Param list_id query integer true "ListId"
+// @Param poster_id query integer true "PosterId"
+// @Accept json
+// @Success        200 {object} map[string]interface{}
+// @Failure        400        {object} map[string]interface{}
+// @Failure        401        {object} map[string]interface{}
+// @Failure        404        {object} map[string]interface{}
+// @Failure        500        {object} map[string]interface{}
+// @Router /list-poster [delete]
+func (h *ListPosterHandler) DeletePoster(ctx context.Context, listID, posterID int) error <span class="cov0" title="0">{
+        if err := h.service.DeletePoster(ctx, listID, posterID); errors.Is(err, servicePkg.ErrNotFound) </span><span class="cov0" title="0">{
+                slog.Warn("poster in list not found", "list_id", listID)
+                return errNotFound
+        }</span> else<span class="cov0" title="0"> if err != nil </span><span class="cov0" title="0">{
+                slog.Error("unexpected error occurred while deleting poster in list", "error", err)
+                return fmt.Errorf("%w: %w", errInternal, err)
+        }</span>
+
+        <span class="cov0" title="0">return nil</span>
+}
+
+func (c *Controller) handleListPosterGetDeleteRequests(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+        token := r.URL.Query().Get("token")
+        ctx := r.Context()
+        switch r.Method </span>{
+        case http.MethodGet:<span class="cov0" title="0">
+                listID, err := parseInt(r, "list_id")
+                if err == nil </span><span class="cov0" title="0">{
+                        err = c.authorizeList(ctx, token, listID)
+                }</span>
+                <span class="cov0" title="0">if err != nil </span><span class="cov0" title="0">{
+                        writeError(w, err)
+                        break</span>
+                }
+
+                <span class="cov0" title="0">listPosters, err := c.listPoster.GetPosters(ctx, listID)
+                if err != nil </span><span class="cov0" title="0">{
+                        writeError(w, err)
+                        break</span>
+                } else<span class="cov0" title="0"> if _, err = w.Write(listPosters); err != nil </span><span class="cov0" title="0">{
+                        writeError(w, fmt.Errorf("%w: writing list posters body: %w", errInternal, err))
+                        break</span>
+                }
+
+                <span class="cov0" title="0">w.WriteHeader(http.StatusOK)</span>
+        case http.MethodDelete:<span class="cov0" title="0">
+                listID, err := parseInt(r, "list_id")
+                if err == nil </span><span class="cov0" title="0">{
+                        err = c.authorizeList(ctx, token, listID)
+                }</span>
+                <span class="cov0" title="0">if err != nil </span><span class="cov0" title="0">{
+                        writeError(w, err)
+                        break</span>
+                }
+
+                <span class="cov0" title="0">posterID, err := parseInt(r, "poster_id")
+                if err == nil </span><span class="cov0" title="0">{
+                        err = c.authorizePoster(ctx, token, posterID)
+                }</span>
+                <span class="cov0" title="0">if err != nil </span><span class="cov0" title="0">{
+                        writeError(w, err)
+                        break</span>
+                }
+
+                <span class="cov0" title="0">if err := c.listPoster.DeletePoster(ctx, listID, posterID); err != nil </span><span class="cov0" title="0">{
+                        writeError(w, err)
+                        break</span>
+                }
+
+                <span class="cov0" title="0">w.WriteHeader(http.StatusOK)</span>
+        default:<span class="cov0" title="0">
+                slog.Error("http method is not allowed", "method", r.Method)
+                w.WriteHeader(http.StatusForbidden)</span>
+        }
+}
+
+func (c *Controller) handleListPosterAddRequests(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+        token := r.URL.Query().Get("token")
+        ctx := r.Context()
+        switch r.Method </span>{
+        case http.MethodPost:<span class="cov0" title="0">
+                listID, err := parseInt(r, "list_id")
+                if err == nil </span><span class="cov0" title="0">{
+                        err = c.authorizeList(ctx, token, listID)
+                }</span>
+                <span class="cov0" title="0">if err != nil </span><span class="cov0" title="0">{
+                        writeError(w, err)
+                        break</span>
+                }
+
+                <span class="cov0" title="0">posterID, err := parseInt(r, "poster_id")
+                if err == nil </span><span class="cov0" title="0">{
+                        err = c.authorizePoster(ctx, token, posterID)
+                }</span>
+                <span class="cov0" title="0">if err != nil </span><span class="cov0" title="0">{
+                        writeError(w, err)
+                        break</span>
+                }
+
+                <span class="cov0" title="0">if err := c.listPoster.AddPoster(ctx, listID, posterID); err != nil </span><span class="cov0" title="0">{
+                        writeError(w, err)
+                        break</span>
+                }
+
+                <span class="cov0" title="0">w.WriteHeader(http.StatusOK)</span>
+        default:<span class="cov0" title="0">
+                slog.Error("http method is not allowed", "method", r.Method)
+                w.WriteHeader(http.StatusForbidden)</span>
+        }
+}
+
+func (c *Controller) handleListPosterMoveRequests(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+        token := r.URL.Query().Get("token")
+        ctx := r.Context()
+        switch r.Method </span>{
+        case http.MethodPost:<span class="cov0" title="0">
+                curListID, err := parseInt(r, "cur_list_id")
+                if err == nil </span><span class="cov0" title="0">{
+                        err = c.authorizeList(ctx, token, curListID)
+                }</span>
+                <span class="cov0" title="0">if err != nil </span><span class="cov0" title="0">{
+                        writeError(w, err)
+                        break</span>
+                }
+
+                <span class="cov0" title="0">newListID, err := parseInt(r, "new_list_id")
+                if err == nil </span><span class="cov0" title="0">{
+                        err = c.authorizeList(ctx, token, newListID)
+                }</span>
+                <span class="cov0" title="0">if err != nil </span><span class="cov0" title="0">{
+                        writeError(w, err)
+                        break</span>
+                }
+
+                <span class="cov0" title="0">posterID, err := parseInt(r, "poster_id")
+                if err == nil </span><span class="cov0" title="0">{
+                        err = c.authorizePoster(ctx, token, posterID)
+                }</span>
+                <span class="cov0" title="0">if err != nil </span><span class="cov0" title="0">{
+                        writeError(w, err)
+                        break</span>
+                }
+
+                <span class="cov0" title="0">if err := c.listPoster.MovePoster(ctx, curListID, newListID, posterID); err != nil </span><span class="cov0" title="0">{
+                        writeError(w, err)
+                        break</span>
+                }
+
+                <span class="cov0" title="0">w.WriteHeader(http.StatusOK)</span>
+        default:<span class="cov0" title="0">
+                slog.Error("http method is not allowed", "method", r.Method)
+                w.WriteHeader(http.StatusForbidden)</span>
+        }
+}
+
+func (c *Controller) handleListPosterChangePositionRequests(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+        token := r.URL.Query().Get("token")
+        ctx := r.Context()
+        switch r.Method </span>{
+        case http.MethodPost:<span class="cov0" title="0">
+                listID, err := parseInt(r, "list_id")
+                if err == nil </span><span class="cov0" title="0">{
+                        err = c.authorizeList(ctx, token, listID)
+                }</span>
+                <span class="cov0" title="0">if err != nil </span><span class="cov0" title="0">{
+                        writeError(w, err)
+                        break</span>
+                }
+
+                <span class="cov0" title="0">posterID, err := parseInt(r, "poster_id")
+                if err == nil </span><span class="cov0" title="0">{
+                        err = c.authorizePoster(ctx, token, posterID)
+                }</span>
+                <span class="cov0" title="0">if err != nil </span><span class="cov0" title="0">{
+                        writeError(w, err)
+                        break</span>
+                }
+
+                <span class="cov0" title="0">position, err := parseInt(r, "position")
+                if err != nil </span><span class="cov0" title="0">{
+                        writeError(w, err)
+                        break</span>
+                }
+
+                <span class="cov0" title="0">if err := c.listPoster.ChangePosterPosition(ctx, listID, posterID, position); err != nil </span><span class="cov0" title="0">{
+                        writeError(w, err)
+                        break</span>
+                }
+
+                <span class="cov0" title="0">w.WriteHeader(http.StatusOK)</span>
+        default:<span class="cov0" title="0">
+                slog.Error("http method is not allowed", "method", r.Method)
+                w.WriteHeader(http.StatusForbidden)</span>
+        }
+}
+</pre>
+		
+		<pre class="file" id="file5" style="display: none">package controller
+
+import (
+        "context"
+        "encoding/json"
+        "errors"
+        "fmt"
+        "io"
+        "log/slog"
+        "net/http"
+
+        "git.iu7.bmstu.ru/vai20u117/testing/src/internal/model"
+        servicePkg "git.iu7.bmstu.ru/vai20u117/testing/src/internal/service"
+)
+
+type posterService interface {
+        Get(ctx context.Context, posterID int) (*model.Poster, error)
+        Create(ctx context.Context, poster *model.Poster) (int, error)
+        Update(ctx context.Context, poster *model.Poster) error
+        Delete(ctx context.Context, posterID int) error
+}
+
+type PosterHandler struct {
+        service posterService
+}
+
+func NewPosterHandler(service posterService) *PosterHandler <span class="cov0" title="0">{
+        return &amp;PosterHandler{service: service}
+}</span>
+
+// @Summary        Get
+// @Description        get poster
+// @Tags poster
+// @Param token query string true "User auth token"
+// @Param id query integer true "PosterId"
+// @Accept json
+// @Success        200 {object} map[string]interface{}
+// @Failure        400        {object} map[string]interface{}
+// @Failure        401        {object} map[string]interface{}
+// @Failure        404        {object} map[string]interface{}
+// @Failure        500        {object} map[string]interface{}
+// @Router /poster [get]
+func (h *PosterHandler) Get(ctx context.Context, posterID int) ([]byte, error) <span class="cov0" title="0">{
+        poster, err := h.service.Get(ctx, posterID)
+        if errors.Is(err, servicePkg.ErrNotFound) </span><span class="cov0" title="0">{
+                slog.Warn("poster not found", "poster_id", posterID)
+                return nil, errNotFound
+        }</span> else<span class="cov0" title="0"> if err != nil </span><span class="cov0" title="0">{
+                slog.Error("unexpected error occurred while getting poster", "error", err)
+                return nil, fmt.Errorf("%w: %w", errInternal, err)
+        }</span>
+
+        <span class="cov0" title="0">posterJSON, err := json.Marshal(poster)
+        if err != nil </span><span class="cov0" title="0">{
+                slog.Error("unexpected error occurred while marshaling poster", "error", err)
+                return nil, fmt.Errorf("%w: %w", errInternal, err)
+        }</span>
+
+        <span class="cov0" title="0">return posterJSON, nil</span>
+}
+
+// @Summary        Create
+// @Description        create poster
+// @Tags poster
+// @Param input body model.Poster true "Poster body"
+// @Param token query string true "User auth token"
+// @Accept json
+// @Success        200 {object} map[string]interface{}
+// @Failure        400        {object} map[string]interface{}
+// @Failure        401        {object} map[string]interface{}
+// @Failure        500        {object} map[string]interface{}
+// @Router /poster [post]
+func (h *PosterHandler) Create(ctx context.Context, poster *model.Poster) ([]byte, error) <span class="cov0" title="0">{
+        id, err := h.service.Create(ctx, poster)
+        if err != nil </span><span class="cov0" title="0">{
+                slog.Error("unexpected error occurred while creating poster", "error", err)
+                return nil, fmt.Errorf("%w: %w", errInternal, err)
+        }</span>
+
+        <span class="cov0" title="0">idJSON, err := json.Marshal(map[string]int{"id": id})
+        if err != nil </span><span class="cov0" title="0">{
+                slog.Error("unexpected error occurred while marshaling id", "error", err)
+                return nil, fmt.Errorf("%w: %w", errInternal, err)
+        }</span>
+
+        <span class="cov0" title="0">return idJSON, nil</span>
+}
+
+// @Summary        Update
+// @Description        update poster
+// @Tags poster
+// @Param input body model.Poster true "Poster body"
+// @Param token query string true "User auth token"
+// @Accept json
+// @Success        200 {object} map[string]interface{}
+// @Failure        400        {object} map[string]interface{}
+// @Failure        401        {object} map[string]interface{}
+// @Failure        500        {object} map[string]interface{}
+// @Router /poster [put]
+func (h *PosterHandler) Update(ctx context.Context, poster *model.Poster) error <span class="cov0" title="0">{
+        err := h.service.Update(ctx, poster)
+        if errors.Is(err, servicePkg.ErrNotFound) </span><span class="cov0" title="0">{
+                slog.Warn("poster not found", "poster_id", poster.ID)
+                return errNotFound
+        }</span> else<span class="cov0" title="0"> if err != nil </span><span class="cov0" title="0">{
+                slog.Error("unexpected error occurred while updating poster", "error", err)
+                return fmt.Errorf("%w: %w", errInternal, err)
+        }</span>
+
+        <span class="cov0" title="0">return nil</span>
+}
+
+// @Summary        Delete
+// @Description        delete poster
+// @Tags poster
+// @Param token query string true "User auth token"
+// @Param id query integer true "PosterId"
+// @Accept json
+// @Success        200 {object} map[string]interface{}
+// @Failure        400        {object} map[string]interface{}
+// @Failure        401        {object} map[string]interface{}
+// @Failure        404        {object} map[string]interface{}
+// @Failure        500        {object} map[string]interface{}
+// @Router /poster [delete]
+func (h *PosterHandler) Delete(ctx context.Context, posterID int) error <span class="cov0" title="0">{
+        if err := h.service.Delete(ctx, posterID); errors.Is(err, servicePkg.ErrNotFound) </span><span class="cov0" title="0">{
+                slog.Warn("poster not found", "poster_id", posterID)
+                return errNotFound
+        }</span> else<span class="cov0" title="0"> if err != nil </span><span class="cov0" title="0">{
+                slog.Error("unexpected error occurred while deleting poster", "error", err)
+                return fmt.Errorf("%w: %w", errInternal, err)
+        }</span>
+
+        <span class="cov0" title="0">return nil</span>
+}
+
+//nolint:funlen,cyclop // http handler methods router
+func (c *Controller) handlePosterRequests(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+        token := r.URL.Query().Get("token")
+        ctx := r.Context()
+        switch r.Method </span>{
+        case http.MethodGet:<span class="cov0" title="0">
+                posterID, err := parseInt(r, "id")
+                if err == nil </span><span class="cov0" title="0">{
+                        err = c.authorizePoster(ctx, token, posterID)
+                }</span>
+                <span class="cov0" title="0">if err != nil </span><span class="cov0" title="0">{
+                        writeError(w, err)
+                        break</span>
+                }
+
+                <span class="cov0" title="0">poster, err := c.poster.Get(ctx, posterID)
+                if err != nil </span><span class="cov0" title="0">{
+                        writeError(w, err)
+                        break</span>
+                } else<span class="cov0" title="0"> if _, err = w.Write(poster); err != nil </span><span class="cov0" title="0">{
+                        writeError(w, fmt.Errorf("%w: writing poster body: %w", errInternal, err))
+                        break</span>
+                }
+
+                <span class="cov0" title="0">w.WriteHeader(http.StatusOK)</span>
+        case http.MethodPost:<span class="cov0" title="0">
+                poster, err := c.parsePoster(r, token)
+                if err != nil </span><span class="cov0" title="0">{
+                        writeError(w, err)
+                        break</span>
+                }
+
+                <span class="cov0" title="0">id, err := c.poster.Create(ctx, poster)
+                if err != nil </span><span class="cov0" title="0">{
+                        writeError(w, err)
+                        break</span>
+                } else<span class="cov0" title="0"> if _, err = w.Write(id); err != nil </span><span class="cov0" title="0">{
+                        writeError(w, fmt.Errorf("%w: writing poster_id body: %w", errInternal, err))
+                        break</span>
+                }
+
+                <span class="cov0" title="0">w.WriteHeader(http.StatusOK)</span>
+        case http.MethodPut:<span class="cov0" title="0">
+                poster, err := c.parsePoster(r, token)
+                if err != nil </span><span class="cov0" title="0">{
+                        writeError(w, err)
+                        break</span>
+                }
+
+                <span class="cov0" title="0">if err := c.poster.Update(ctx, poster); err != nil </span><span class="cov0" title="0">{
+                        writeError(w, err)
+                        break</span>
+                }
+
+                <span class="cov0" title="0">w.WriteHeader(http.StatusOK)</span>
+        case http.MethodDelete:<span class="cov0" title="0">
+                posterID, err := parseInt(r, "id")
+                if err == nil </span><span class="cov0" title="0">{
+                        err = c.authorizePoster(ctx, token, posterID)
+                }</span>
+                <span class="cov0" title="0">if err != nil </span><span class="cov0" title="0">{
+                        writeError(w, err)
+                        break</span>
+                }
+
+                <span class="cov0" title="0">if err := c.poster.Delete(ctx, posterID); err != nil </span><span class="cov0" title="0">{
+                        writeError(w, err)
+                        break</span>
+                }
+
+                <span class="cov0" title="0">w.WriteHeader(http.StatusOK)</span>
+        default:<span class="cov0" title="0">
+                slog.Error("http method is not allowed", "method", r.Method)
+                w.WriteHeader(http.StatusForbidden)</span>
+        }
+}
+
+func (c *Controller) authorizePoster(ctx context.Context, token string, posterID int) error <span class="cov0" title="0">{
+        userID, err := c.auth.service.GetUserID(token)
+        if errors.Is(err, servicePkg.ErrNotFound) </span><span class="cov0" title="0">{
+                slog.Warn("token not found in sessions")
+                return fmt.Errorf("%w: token not found in sessions", errNotFound)
+        }</span> else<span class="cov0" title="0"> if err != nil </span><span class="cov0" title="0">{
+                slog.Error("unexpected error occurred while getting user_id by token", "error", err)
+                return err
+        }</span>
+
+        <span class="cov0" title="0">poster, err := c.poster.service.Get(ctx, posterID)
+        if errors.Is(err, servicePkg.ErrNotFound) </span><span class="cov0" title="0">{
+                slog.Warn("poster not found", "poster_id", posterID)
+                return fmt.Errorf("%w: poster not found", errNotFound)
+        }</span> else<span class="cov0" title="0"> if err != nil </span><span class="cov0" title="0">{
+                slog.Error("unexpected error occurred while getting poster", "error", err)
+                return fmt.Errorf("%w: %w", errInternal, err)
+        }</span>
+
+        <span class="cov0" title="0">if poster.UserID != userID </span><span class="cov0" title="0">{
+                slog.Warn("poster action is not authorized: posters' user_id is different",
+                        "user_id", userID, "poster_user_id", poster.UserID)
+                return errActionNotAuthorized
+        }</span>
+
+        <span class="cov0" title="0">return nil</span>
+}
+
+func (c *Controller) parsePoster(r *http.Request, token string) (*model.Poster, error) <span class="cov0" title="0">{
+        var poster model.Poster
+        body, err := io.ReadAll(r.Body)
+        if err != nil </span><span class="cov0" title="0">{
+                slog.Warn("poster body cannot be read", "error", err)
+                return nil, fmt.Errorf("%w: %w", errInvalidArguments, err)
+        }</span>
+
+        <span class="cov0" title="0">if err = json.Unmarshal(body, &amp;poster); err != nil </span><span class="cov0" title="0">{
+                slog.Warn("poster cannot be unmarshalled", "error", err)
+                return nil, fmt.Errorf("%w: %w", errInvalidArguments, err)
+        }</span>
+
+        <span class="cov0" title="0">if err = c.authorizeUserID(token, poster.UserID); err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">if err = validatePoster(&amp;poster); err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">return &amp;poster, nil</span>
+}
+
+func validatePoster(poster *model.Poster) error <span class="cov0" title="0">{
+        switch </span>{
+        case poster.UserID == 0:<span class="cov0" title="0">
+                return fmt.Errorf("%w: poster user_id is absent", errInvalidArguments)</span>
+        case poster.Name == "":<span class="cov0" title="0">
+                return fmt.Errorf("%w: poster name is absent", errInvalidArguments)</span>
+        }
+
+        <span class="cov0" title="0">return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file6" style="display: none">package controller
+
+import (
+        "context"
+        "encoding/json"
+        "errors"
+        "fmt"
+        "log/slog"
+        "net/http"
+
+        "git.iu7.bmstu.ru/vai20u117/testing/src/internal/model"
+        servicePkg "git.iu7.bmstu.ru/vai20u117/testing/src/internal/service"
+)
+
+type PosterRecordService interface {
+        GetUserRecords(ctx context.Context, userID int) ([]*model.PosterRecord, error)
+        CreateRecord(ctx context.Context, posterID, userID int) (int, error)
+        DeleteRecord(ctx context.Context, posterID int) error
+}
+
+type PosterRecordHandler struct {
+        service PosterRecordService
+}
+
+func NewPosterRecordHandler(service PosterRecordService) *PosterRecordHandler <span class="cov0" title="0">{
+        return &amp;PosterRecordHandler{service: service}
+}</span>
+
+// @Summary        Get user records
+// @Description        get user records
+// @Tags poster-history
+// @Param token query string true "User auth token"
+// @Param user_id query integer true "UserId"
+// @Accept json
+// @Success        200 {object} map[string]interface{}
+// @Failure        400        {object} map[string]interface{}
+// @Failure        401        {object} map[string]interface{}
+// @Failure        404        {object} map[string]interface{}
+// @Failure        500        {object} map[string]interface{}
+// @Router /poster-history [get]
+func (h *PosterRecordHandler) GetUserRecords(ctx context.Context, userID int) ([]byte, error) <span class="cov0" title="0">{
+        records, err := h.service.GetUserRecords(ctx, userID)
+        if err != nil </span><span class="cov0" title="0">{
+                slog.Error("unexpected error occurred while getting all history records", "error", err)
+                return nil, fmt.Errorf("%w: %w", errInternal, err)
+        }</span>
+
+        <span class="cov0" title="0">recordsJSON, err := json.Marshal(records)
+        if err != nil </span><span class="cov0" title="0">{
+                slog.Error("unexpected error occurred while marshaling history records", "error", err)
+                return nil, fmt.Errorf("%w: %w", errInternal, err)
+        }</span>
+
+        <span class="cov0" title="0">return recordsJSON, nil</span>
+}
+
+// @Summary        Create poster record
+// @Description        create poster record
+// @Tags poster-history
+// @Param token query string true "User auth token"
+// @Param poster_id query integer true "PosterId"
+// @Param user_id query integer true "UserId"
+// @Accept json
+// @Success        200 {object} map[string]interface{}
+// @Failure        400        {object} map[string]interface{}
+// @Failure        401        {object} map[string]interface{}
+// @Failure        404        {object} map[string]interface{}
+// @Failure        500        {object} map[string]interface{}
+// @Router /poster-history [post]
+func (h *PosterRecordHandler) CreateRecord(ctx context.Context, posterID, userID int) ([]byte, error) <span class="cov0" title="0">{
+        id, err := h.service.CreateRecord(ctx, posterID, userID)
+        if err != nil </span><span class="cov0" title="0">{
+                slog.Error("unexpected error occurred while creating record", "error", err)
+                return nil, fmt.Errorf("%w: %w", errInternal, err)
+        }</span>
+
+        <span class="cov0" title="0">idJSON, err := json.Marshal(map[string]int{"id": id})
+        if err != nil </span><span class="cov0" title="0">{
+                slog.Error("unexpected error occurred while marshaling id", "error", err)
+                return nil, fmt.Errorf("%w: %w", errInternal, err)
+        }</span>
+
+        <span class="cov0" title="0">return idJSON, nil</span>
+}
+
+// @Summary        Delete user record
+// @Description        delete user record
+// @Tags poster-history
+// @Param token query string true "User auth token"
+// @Param poster_id query integer true "PosterId"
+// @Accept json
+// @Success        200 {object} map[string]interface{}
+// @Failure        400        {object} map[string]interface{}
+// @Failure        401        {object} map[string]interface{}
+// @Failure        404        {object} map[string]interface{}
+// @Failure        500        {object} map[string]interface{}
+// @Router /poster-history [delete]
+func (h *PosterRecordHandler) DeleteRecord(ctx context.Context, posterID int) error <span class="cov0" title="0">{
+        if err := h.service.DeleteRecord(ctx, posterID); errors.Is(err, servicePkg.ErrNotFound) </span><span class="cov0" title="0">{
+                slog.Warn("record not found", "record_id", posterID)
+                return errNotFound
+        }</span> else<span class="cov0" title="0"> if err != nil </span><span class="cov0" title="0">{
+                slog.Error("unexpected error occurred while deleting record", "error", err)
+                return fmt.Errorf("%w: %w", errInternal, err)
+        }</span>
+
+        <span class="cov0" title="0">return nil</span>
+}
+
+//nolint:cyclop // http handler methods router
+func (c *Controller) handlePosterRecordRequests(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+        token := r.URL.Query().Get("token")
+        ctx := r.Context()
+        switch r.Method </span>{
+        case http.MethodGet:<span class="cov0" title="0">
+                userID, err := c.getUserIDByToken(token)
+                if err != nil </span><span class="cov0" title="0">{
+                        writeError(w, err)
+                        break</span>
+                }
+
+                <span class="cov0" title="0">records, err := c.posterHistory.GetUserRecords(ctx, userID)
+                if err != nil </span><span class="cov0" title="0">{
+                        writeError(w, err)
+                        break</span>
+                } else<span class="cov0" title="0"> if _, err = w.Write(records); err != nil </span><span class="cov0" title="0">{
+                        writeError(w, fmt.Errorf("%w: writing records body: %w", errInternal, err))
+                        break</span>
+                }
+
+                <span class="cov0" title="0">w.WriteHeader(http.StatusOK)</span>
+        case http.MethodPost:<span class="cov0" title="0">
+                userID, err := c.getUserIDByToken(token)
+                if err != nil </span><span class="cov0" title="0">{
+                        writeError(w, err)
+                        break</span>
+                }
+
+                <span class="cov0" title="0">posterID, err := parseInt(r, "id")
+                if err == nil </span><span class="cov0" title="0">{
+                        err = c.authorizePoster(ctx, token, posterID)
+                }</span>
+                <span class="cov0" title="0">if err != nil </span><span class="cov0" title="0">{
+                        writeError(w, err)
+                        break</span>
+                }
+
+                <span class="cov0" title="0">id, err := c.posterHistory.CreateRecord(ctx, posterID, userID)
+                if err != nil </span><span class="cov0" title="0">{
+                        writeError(w, err)
+                        break</span>
+                } else<span class="cov0" title="0"> if _, err = w.Write(id); err != nil </span><span class="cov0" title="0">{
+                        writeError(w, fmt.Errorf("%w: writing record id body: %w", errInternal, err))
+                        break</span>
+                }
+
+                <span class="cov0" title="0">w.WriteHeader(http.StatusOK)</span>
+        case http.MethodDelete:<span class="cov0" title="0">
+                posterID, err := parseInt(r, "id")
+                if err == nil </span><span class="cov0" title="0">{
+                        err = c.authorizePoster(ctx, token, posterID)
+                }</span>
+                <span class="cov0" title="0">if err != nil </span><span class="cov0" title="0">{
+                        writeError(w, err)
+                        break</span>
+                }
+
+                <span class="cov0" title="0">if err := c.posterHistory.DeleteRecord(ctx, posterID); err != nil </span><span class="cov0" title="0">{
+                        writeError(w, err)
+                        break</span>
+                }
+
+                <span class="cov0" title="0">w.WriteHeader(http.StatusOK)</span>
+        default:<span class="cov0" title="0">
+                slog.Error("http method is not allowed", "method", r.Method)
+                w.WriteHeader(http.StatusForbidden)</span>
+        }
+}
+</pre>
+		
+		<pre class="file" id="file7" style="display: none">package dbpostgres
+
+import (
+        "context"
+        "fmt"
+
+        "github.com/jackc/pgx/v4/pgxpool"
+)
+
+type DBConfig struct {
+        Host     string
+        Port     string
+        Username string
+        Password string
+        DBName   string
+        SSLMode  string
+}
+
+func NewDB(ctx context.Context, cfg *DBConfig) (*Database, error) <span class="cov0" title="0">{
+        pool, err := pgxpool.Connect(ctx,
+                fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=%s",
+                        cfg.Host, cfg.Port, cfg.Username, cfg.DBName, cfg.Password, cfg.SSLMode))
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+        <span class="cov0" title="0">return newDatabase(pool), nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file8" style="display: none">package dbpostgres
+
+import (
+        "context"
+
+        "github.com/georgysavva/scany/pgxscan"
+        "github.com/jackc/pgconn"
+        "github.com/jackc/pgx/v4"
+        "github.com/jackc/pgx/v4/pgxpool"
+)
+
+type DBops interface {
+        GetPool(_ context.Context) *pgxpool.Pool
+        Get(ctx context.Context, dest interface{}, query string, args ...interface{}) error
+        Select(ctx context.Context, dest interface{}, query string, args ...interface{}) error
+        ScanAll(dst interface{}, rows pgx.Rows) error
+        Exec(ctx context.Context, query string, args ...interface{}) (pgconn.CommandTag, error)
+        ExecQueryRow(ctx context.Context, query string, args ...interface{}) pgx.Row
+        Query(ctx context.Context, sql string, args ...interface{}) (pgx.Rows, error)
+        TxBegin(ctx context.Context) (pgx.Tx, error)
+        TxExec(ctx context.Context, tx pgx.Tx, sql string, args ...interface{}) (commandTag pgconn.CommandTag, err error)
+        TxQuery(ctx context.Context, tx pgx.Tx, sql string, args ...interface{}) (pgx.Rows, error)
+}
+
+type Database struct {
+        cluster *pgxpool.Pool
+}
+
+func newDatabase(cluster *pgxpool.Pool) *Database <span class="cov0" title="0">{
+        return &amp;Database{cluster: cluster}
+}</span>
+
+func (db Database) GetPool(_ context.Context) *pgxpool.Pool <span class="cov0" title="0">{
+        return db.cluster
+}</span>
+
+func (db Database) Get(ctx context.Context, dest interface{}, query string, args ...interface{}) error <span class="cov0" title="0">{
+        return pgxscan.Get(ctx, db.cluster, dest, query, args...)
+}</span>
+
+func (db Database) Select(ctx context.Context, dest interface{}, query string, args ...interface{}) error <span class="cov0" title="0">{
+        return pgxscan.Select(ctx, db.cluster, dest, query, args...)
+}</span>
+
+func (db Database) ScanAll(dst interface{}, rows pgx.Rows) error <span class="cov0" title="0">{
+        return pgxscan.ScanAll(dst, rows)
+}</span>
+
+func (db Database) Exec(ctx context.Context, query string, args ...interface{}) (pgconn.CommandTag, error) <span class="cov0" title="0">{
+        return db.cluster.Exec(ctx, query, args...)
+}</span>
+
+func (db Database) ExecQueryRow(ctx context.Context, query string, args ...interface{}) pgx.Row <span class="cov0" title="0">{
+        return db.cluster.QueryRow(ctx, query, args...)
+}</span>
+
+func (db Database) Query(ctx context.Context, sql string, args ...interface{}) (pgx.Rows, error) <span class="cov0" title="0">{
+        return db.cluster.Query(ctx, sql, args...)
+}</span>
+
+func (db Database) TxBegin(ctx context.Context) (pgx.Tx, error) <span class="cov0" title="0">{
+        return db.cluster.Begin(ctx)
+}</span>
+
+func (db Database) TxExec(ctx context.Context, tx pgx.Tx, sql string, args ...interface{}) (
+        commandTag pgconn.CommandTag, err error,
+) <span class="cov0" title="0">{
+        return tx.Exec(ctx, sql, args...)
+}</span>
+
+func (db Database) TxQuery(ctx context.Context, tx pgx.Tx, sql string, args ...interface{}) (pgx.Rows, error) <span class="cov0" title="0">{
+        return tx.Query(ctx, sql, args...)
+}</span>
+</pre>
+		
+		<pre class="file" id="file9" style="display: none">package model
+
+type RoleType int64
+
+const (
+        DefaultUser RoleType = iota
+        Admin
+)
+
+func (s RoleType) String() string <span class="cov10" title="6">{
+        switch s </span>{
+        case DefaultUser:<span class="cov1" title="1">
+                return "user"</span>
+        case Admin:<span class="cov9" title="5">
+                return "admin"</span>
+        }
+
+        <span class="cov0" title="0">return "unknown"</span>
+}
+
+type User struct {
+        ID          int    `json:"id"`
+        Name        string `json:"name"`
+        Login       string `json:"login"`
+        Role        string `json:"role"`
+        Password    string `json:"password"`
+        AdminSecret string `json:"admintoken"`
+}
+</pre>
+		
+		<pre class="file" id="file10" style="display: none">package postgres
+
+import (
+        "strings"
+        "time"
+
+        "git.iu7.bmstu.ru/vai20u117/testing/src/internal/model"
+)
+
+type posterDAO struct {
+        ID        int       `db:"id"`
+        Name      string    `db:"name"`
+        Year      int       `db:"year"`
+        Genres    string    `db:"genres"`
+        Chrono    int       `db:"chrono"`
+        UserID    int       `db:"user_id"`
+        CreatedAt time.Time `db:"created_at"`
+}
+
+type listDAO struct {
+        ID       int    `db:"id"`
+        ParentID int    `db:"parent_id"`
+        Name     string `db:"name"`
+        UserID   int    `db:"user_id"`
+}
+
+type userDAO struct {
+        ID       int    `db:"id"`
+        Name     string `db:"name"`
+        Login    string `db:"login"`
+        Role     string `db:"role"`
+        Password string `db:"password"`
+}
+
+func mapListDAO(list *listDAO) *model.List <span class="cov10" title="4">{
+        return &amp;model.List{
+                ID:       list.ID,
+                ParentID: list.ParentID,
+                Name:     list.Name,
+                UserID:   list.UserID,
+        }
+}</span>
+
+func reverseMapListDAO(list *model.List) *listDAO <span class="cov10" title="4">{
+        return &amp;listDAO{
+                ID:       list.ID,
+                ParentID: list.ParentID,
+                Name:     list.Name,
+                UserID:   list.UserID,
+        }
+}</span>
+
+func mapPosterDAO(poster *posterDAO) *model.Poster <span class="cov10" title="4">{
+        genres := strings.Split(poster.Genres, ",")
+        return &amp;model.Poster{
+                ID:        poster.ID,
+                Name:      poster.Name,
+                Year:      poster.Year,
+                Genres:    genres,
+                Chrono:    poster.Chrono,
+                UserID:    poster.UserID,
+                CreatedAt: poster.CreatedAt,
+        }
+}</span>
+
+func reverseMapPosterDAO(poster *model.Poster) *posterDAO <span class="cov10" title="4">{
+        genres := strings.Join(poster.Genres, ",")
+        return &amp;posterDAO{
+                ID:        poster.ID,
+                Name:      poster.Name,
+                Year:      poster.Year,
+                Genres:    genres,
+                Chrono:    poster.Chrono,
+                UserID:    poster.UserID,
+                CreatedAt: poster.CreatedAt,
+        }
+}</span>
+
+func mapUserDAO(user *userDAO) *model.User <span class="cov8" title="3">{
+        return &amp;model.User{
+                ID:       user.ID,
+                Name:     user.Name,
+                Login:    user.Login,
+                Role:     user.Role,
+                Password: user.Password,
+        }
+}</span>
+
+func reverseMapUserDAO(user *model.User) *userDAO <span class="cov5" title="2">{
+        return &amp;userDAO{
+                ID:       user.ID,
+                Name:     user.Name,
+                Login:    user.Login,
+                Role:     user.Role,
+                Password: user.Password,
+        }
+}</span>
+</pre>
+		
+		<pre class="file" id="file11" style="display: none">package postgres
+
+import (
+        "errors"
+        "fmt"
+)
+
+var (
+        ErrNotFound      = errors.New("entity not found")
+        ErrNotModified   = errors.New("no rows modified")
+        ErrAlreadyExists = errors.New("entity already exists")
+)
+
+func formatError(queryName string, err error) error <span class="cov10" title="27">{
+        return fmt.Errorf("executing %s: %w", queryName, err)
+}</span>
+</pre>
+		
+		<pre class="file" id="file12" style="display: none">package postgres
+
+import (
+        "context"
+        "errors"
+
+        dbpostgres "git.iu7.bmstu.ru/vai20u117/testing/src/internal/db/postgres"
+        "git.iu7.bmstu.ru/vai20u117/testing/src/internal/model"
+        "github.com/jackc/pgx/v4"
+)
+
+type ListRepository struct {
+        db dbpostgres.DBops
+}
+
+func NewListRepository(db dbpostgres.DBops) *ListRepository <span class="cov10" title="11">{
+        return &amp;ListRepository{db: db}
+}</span>
+
+func (r *ListRepository) Get(ctx context.Context, listID int) (*model.List, error) <span class="cov3" title="2">{
+        queryName := "ListRepository/Get"
+        query := `select id,name,user_id,parent_id from list where id = $1`
+
+        dao := listDAO{}
+
+        err := r.db.Get(ctx, &amp;dao, query, listID)
+        if errors.Is(err, pgx.ErrNoRows) </span><span class="cov1" title="1">{
+                return nil, formatError(queryName, ErrNotFound)
+        }</span> else<span class="cov1" title="1"> if err != nil </span><span class="cov0" title="0">{
+                return nil, formatError(queryName, err)
+        }</span>
+
+        <span class="cov1" title="1">return mapListDAO(&amp;dao), err</span>
+}
+
+func (r *ListRepository) GetRootID(ctx context.Context) (int, error) <span class="cov3" title="2">{
+        queryName := "ListRepository/GetRootID"
+        query := `select id from list where is_root = true`
+
+        var rootID int
+        err := r.db.Get(ctx, &amp;rootID, query)
+        if err != nil </span><span class="cov1" title="1">{
+                return 0, formatError(queryName, err)
+        }</span>
+
+        <span class="cov1" title="1">return rootID, err</span>
+}
+
+func (r *ListRepository) Create(ctx context.Context, list *model.List) (int, error) <span class="cov3" title="2">{
+        queryName := "ListRepository/Create"
+        query := `insert into list(parent_id,name,user_id) values($1,$2,$3) returning id`
+
+        dao := reverseMapListDAO(list)
+
+        var id int
+        err := r.db.ExecQueryRow(ctx, query, dao.ParentID, dao.Name, dao.UserID).Scan(&amp;id)
+        if err != nil </span><span class="cov1" title="1">{
+                return id, formatError(queryName, err)
+        }</span>
+
+        <span class="cov1" title="1">return id, nil</span>
+}
+
+func (r *ListRepository) Update(ctx context.Context, list *model.List) error <span class="cov3" title="2">{
+        queryName := "ListRepository/Update"
+        query := `
+                update list
+                set parent_id = $2, name = $3
+                where id = $1`
+
+        dao := reverseMapListDAO(list)
+
+        _, err := r.db.Exec(ctx, query, dao.ID, dao.ParentID, dao.Name)
+        if errors.Is(err, pgx.ErrNoRows) </span><span class="cov1" title="1">{
+                return formatError(queryName, ErrNotFound)
+        }</span> else<span class="cov1" title="1"> if err != nil </span><span class="cov0" title="0">{
+                return formatError(queryName, err)
+        }</span>
+
+        <span class="cov1" title="1">return nil</span>
+}
+
+func (r *ListRepository) Delete(ctx context.Context, listID int) error <span class="cov5" title="3">{
+        queryName := "ListRepository/Delete"
+        checkQueryName := "ListRepository/Delete.exists"
+        checkQuery := `select count(*) from list where id = $1`
+        query := `delete from list where id = $1`
+
+        var count int
+        err := r.db.Get(ctx, &amp;count, checkQuery, listID)
+        if errors.Is(err, pgx.ErrNoRows) </span><span class="cov1" title="1">{
+                return formatError(checkQueryName, ErrNotFound)
+        }</span> else<span class="cov3" title="2"> if err != nil </span><span class="cov0" title="0">{
+                return formatError(checkQueryName, err)
+        }</span>
+
+        <span class="cov3" title="2">_, err = r.db.Exec(ctx, query, listID)
+        if err != nil </span><span class="cov1" title="1">{
+                return formatError(queryName, err)
+        }</span>
+
+        <span class="cov1" title="1">return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file13" style="display: none">package postgres
+
+import (
+        "context"
+        "errors"
+        "fmt"
+
+        dbpostgres "git.iu7.bmstu.ru/vai20u117/testing/src/internal/db/postgres"
+        "git.iu7.bmstu.ru/vai20u117/testing/src/internal/model"
+        "github.com/jackc/pgx/v4"
+)
+
+type ListPosterRepository struct {
+        db dbpostgres.DBops
+}
+
+func NewListPosterRepository(db dbpostgres.DBops) *ListPosterRepository <span class="cov10" title="13">{
+        return &amp;ListPosterRepository{db: db}
+}</span>
+
+func (r *ListPosterRepository) GetPosters(ctx context.Context, listID int) ([]*model.ListPoster, error) <span class="cov4" title="3">{
+        queryName := "ListPosterRepository/GetPosters"
+        query := `select id,list_id,poster_id,position from listposter where list_id = $1 order by position`
+
+        rows, err := r.db.Query(ctx, query, listID)
+        if errors.Is(err, pgx.ErrNoRows) </span><span class="cov1" title="1">{
+                return nil, formatError(queryName, ErrNotFound)
+        }</span> else<span class="cov3" title="2"> if err != nil </span><span class="cov0" title="0">{
+                return nil, formatError(queryName, err)
+        }</span> else<span class="cov3" title="2"> if err = rows.Err(); err != nil </span><span class="cov0" title="0">{
+                return nil, formatError(queryName, fmt.Errorf("rows: %w", err))
+        }</span>
+        <span class="cov3" title="2">defer rows.Close()
+
+        var dao []*model.ListPoster
+        err = r.db.ScanAll(&amp;dao, rows)
+        if err != nil </span><span class="cov1" title="1">{
+                return nil, formatError(queryName, err)
+        }</span> else<span class="cov1" title="1"> if len(dao) == 0 </span><span class="cov0" title="0">{
+                return nil, formatError(queryName, ErrNotFound)
+        }</span>
+
+        <span class="cov1" title="1">return dao, nil</span>
+}
+
+func (r *ListPosterRepository) AddPoster(ctx context.Context, listID, posterID int) error <span class="cov4" title="3">{
+        queryName := "ListPosterRepository/AddPoster"
+        //nolint:goconst // test maintanin convenience // TODO remove stupid nolints
+        query := `insert into listposter(list_id,poster_id,position) values ($1,$2,$3)`
+        //nolint:goconst // test maintanin convenience
+        queryCount := `select count(*) from listposter where list_id = $1`
+
+        // count posters in list
+        var count int
+        err := r.db.Get(ctx, &amp;count, queryCount, listID)
+        if err != nil </span><span class="cov1" title="1">{
+                return formatError(queryName+".count", err)
+        }</span>
+
+        // add poster in list
+        <span class="cov3" title="2">position := count + 1
+        _, err = r.db.Exec(ctx, query, listID, posterID, position)
+        if err != nil </span><span class="cov1" title="1">{
+                return formatError(queryName, err)
+        }</span>
+
+        <span class="cov1" title="1">return nil</span>
+}
+
+func (r *ListPosterRepository) MovePoster(ctx context.Context, curListID, newListID, posterID int) error <span class="cov3" title="2">{
+        queryName := "ListPosterRepository/MovePoster"
+        //nolint:goconst // test maintanin convenience
+        queryDelete := `delete from listposter where list_id = $1 and poster_id = $2`
+        queryCount := `select count(*) from listposter where list_id = $1`
+        queryAdd := `insert into listposter(list_id,poster_id,position) values ($1,$2,$3)`
+
+        // count posters in new list
+        var count int
+        err := r.db.Get(ctx, &amp;count, queryCount, newListID)
+        if err != nil </span><span class="cov0" title="0">{
+                return formatError(queryName, err)
+        }</span>
+
+        <span class="cov3" title="2">position := count + 1 // insert in the end of list
+
+        tx, err := r.db.TxBegin(ctx)
+        if err != nil </span><span class="cov0" title="0">{
+                return formatError(queryName, fmt.Errorf("tx init: %w", err))
+        }</span>
+
+        <span class="cov3" title="2">_, err = r.db.TxExec(ctx, tx, queryDelete, curListID, posterID)
+        if err != nil </span><span class="cov0" title="0">{
+                errRollback := tx.Rollback(ctx)
+                err = errors.Join(err, errRollback)
+
+                return formatError(queryName, fmt.Errorf("deleting from old list: %w", err))
+        }</span>
+
+        <span class="cov3" title="2">_, err = r.db.TxExec(ctx, tx, queryAdd, newListID, posterID, position)
+        if err != nil </span><span class="cov1" title="1">{
+                errRollback := tx.Rollback(ctx)
+                err = errors.Join(err, errRollback)
+
+                return formatError(queryName, fmt.Errorf("adding poster in the new list: %w", err))
+        }</span>
+
+        <span class="cov1" title="1">err = tx.Commit(ctx)
+        if err != nil </span><span class="cov0" title="0">{
+                return formatError(queryName, fmt.Errorf("committing tx: %w", err))
+        }</span>
+
+        <span class="cov1" title="1">return nil</span>
+}
+
+func (r *ListPosterRepository) ChangePosterPosition(ctx context.Context, listID, posterID, newPosition int) error <span class="cov3" title="2">{
+        queryName := "ListPosterRepository/ChangePosterPosition"
+        queryGetCurPos := `select position from listposter where list_id = $1 and poster_id = $2`
+        querySetNewPos := `update listposter set position = $3 where list_id = $1 and poster_id = $2`
+        queryBetweenPos := `
+                update listposter
+                set position = position + $4
+                where
+                        list_id = $1 and
+                        position between $2 and $3`
+
+        var curPosition int
+        err := r.db.Get(ctx, &amp;curPosition, queryGetCurPos, listID, posterID)
+        if err != nil </span><span class="cov0" title="0">{
+                return formatError(queryName+".countCurPosition", err)
+        }</span> else<span class="cov3" title="2"> if curPosition == 0 </span><span class="cov0" title="0">{
+                return formatError(queryName+".countCurPosition", ErrNotFound)
+        }</span>
+
+        // if old pos &lt; new: decrement (old, new], otherwise increment [new, old) positions
+        <span class="cov3" title="2">startPos, endPos, increment := curPosition+1, newPosition, -1
+        if curPosition &gt; newPosition </span><span class="cov0" title="0">{
+                startPos, endPos, increment = newPosition, curPosition-1, 1
+        }</span>
+
+        <span class="cov3" title="2">tx, err := r.db.TxBegin(ctx)
+        if err != nil </span><span class="cov0" title="0">{
+                return formatError(queryName+".txbegin", fmt.Errorf("tx init: %w", err))
+        }</span>
+
+        <span class="cov3" title="2">_, err = r.db.TxExec(ctx, tx, queryBetweenPos, listID, startPos, endPos, increment)
+        if err != nil </span><span class="cov0" title="0">{
+                errRollback := tx.Rollback(ctx)
+                err = errors.Join(err, errRollback)
+
+                return formatError(queryName+".txChangePositions", fmt.Errorf("changing positions: %w", err))
+        }</span>
+
+        <span class="cov3" title="2">_, err = r.db.TxExec(ctx, tx, querySetNewPos, listID, posterID, newPosition)
+        if err != nil </span><span class="cov1" title="1">{
+                errRollback := tx.Rollback(ctx)
+                err = errors.Join(err, errRollback)
+
+                return formatError(queryName+".txChangePositions", fmt.Errorf("setting new pos: %w", err))
+        }</span>
+
+        <span class="cov1" title="1">err = tx.Commit(ctx)
+        if err != nil </span><span class="cov0" title="0">{
+                return formatError(queryName, fmt.Errorf("committing tx: %w", err))
+        }</span>
+
+        <span class="cov1" title="1">return nil</span>
+}
+
+func (r *ListPosterRepository) DeletePoster(ctx context.Context, listID, posterID int) error <span class="cov4" title="3">{
+        queryName := "ListPosterRepository/DeletePoster"
+        checkQuery := `select count(*) from listposter where list_id = $1 and poster_id = $2`
+        query := `delete from listposter where list_id = $1 and poster_id = $2`
+
+        var count int
+        err := r.db.Get(ctx, &amp;count, checkQuery, listID, posterID)
+        if err != nil </span><span class="cov0" title="0">{
+                return formatError(queryName, err)
+        }</span> else<span class="cov4" title="3"> if count == 0 </span><span class="cov1" title="1">{
+                return formatError(queryName, ErrNotFound)
+        }</span>
+
+        <span class="cov3" title="2">_, err = r.db.Exec(ctx, query, listID, posterID)
+        if err != nil </span><span class="cov1" title="1">{
+                return formatError(queryName, err)
+        }</span>
+
+        <span class="cov1" title="1">return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file14" style="display: none">package postgres
+
+import (
+        "context"
+        "errors"
+
+        dbpostgres "git.iu7.bmstu.ru/vai20u117/testing/src/internal/db/postgres"
+        "git.iu7.bmstu.ru/vai20u117/testing/src/internal/model"
+        "github.com/jackc/pgx/v4"
+)
+
+type PosterRepository struct {
+        db dbpostgres.DBops
+}
+
+func NewPosterRepository(db dbpostgres.DBops) *PosterRepository <span class="cov10" title="9">{
+        return &amp;PosterRepository{db: db}
+}</span>
+
+func (r *PosterRepository) Get(ctx context.Context, posterID int) (*model.Poster, error) <span class="cov3" title="2">{
+        queryName := "PosterRepository/Get"
+        query := `select id,name,year,genres,chrono,user_id,created_at from poster where id = $1`
+
+        dao := posterDAO{}
+
+        err := r.db.Get(ctx, &amp;dao, query, posterID)
+        if errors.Is(err, pgx.ErrNoRows) </span><span class="cov1" title="1">{
+                return nil, formatError(queryName, ErrNotFound)
+        }</span> else<span class="cov1" title="1"> if err != nil </span><span class="cov0" title="0">{
+                return nil, formatError(queryName, err)
+        }</span>
+
+        <span class="cov1" title="1">return mapPosterDAO(&amp;dao), nil</span>
+}
+
+func (r *PosterRepository) Create(ctx context.Context, poster *model.Poster) (int, error) <span class="cov3" title="2">{
+        queryName := "PosterRepository/Create"
+        query := `insert into poster(name,genres,year,chrono,user_id) values($1,$2,$3,$4,$5) returning id`
+
+        dao := reverseMapPosterDAO(poster)
+
+        var id int
+        err := r.db.ExecQueryRow(ctx, query,
+                dao.Name, dao.Genres, dao.Year, dao.Chrono, dao.UserID).Scan(&amp;id)
+        if err != nil </span><span class="cov1" title="1">{
+                return 0, formatError(queryName, err)
+        }</span>
+
+        <span class="cov1" title="1">return id, nil</span>
+}
+
+func (r *PosterRepository) Update(ctx context.Context, poster *model.Poster) error <span class="cov3" title="2">{
+        queryName := "PosterRepository/Update"
+        query := `
+                update Poster
+                set name = $2, year = $3, genres = $4, chrono = $5
+                where id = $1`
+
+        dao := reverseMapPosterDAO(poster)
+
+        _, err := r.db.Exec(ctx, query, dao.ID, dao.Name, dao.Year, dao.Genres, dao.Chrono)
+        if errors.Is(err, pgx.ErrNoRows) </span><span class="cov1" title="1">{
+                return formatError(queryName, ErrNotFound)
+        }</span> else<span class="cov1" title="1"> if err != nil </span><span class="cov0" title="0">{
+                return formatError(queryName, err)
+        }</span>
+
+        <span class="cov1" title="1">return nil</span>
+}
+
+func (r *PosterRepository) Delete(ctx context.Context, posterID int) error <span class="cov5" title="3">{
+        queryName := "PosterRepository/Delete"
+        checkQueryName := "PosterRepository/Delete.exists"
+        query := `delete from poster where id = $1`
+        checkQuery := `select id from poster where id = $1`
+
+        var id int
+        err := r.db.Get(ctx, &amp;id, checkQuery, posterID)
+        if errors.Is(err, pgx.ErrNoRows) </span><span class="cov1" title="1">{
+                return formatError(checkQueryName, ErrNotFound)
+        }</span> else<span class="cov3" title="2"> if err != nil </span><span class="cov0" title="0">{
+                return formatError(checkQueryName, err)
+        }</span>
+
+        <span class="cov3" title="2">_, err = r.db.Exec(ctx, query, posterID)
+        if err != nil </span><span class="cov1" title="1">{
+                return formatError(queryName, err)
+        }</span>
+
+        <span class="cov1" title="1">return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file15" style="display: none">package postgres
+
+import (
+        "context"
+        "errors"
+        "fmt"
+
+        dbpostgres "git.iu7.bmstu.ru/vai20u117/testing/src/internal/db/postgres"
+        "git.iu7.bmstu.ru/vai20u117/testing/src/internal/model"
+        "github.com/jackc/pgx/v4"
+)
+
+type PosterRecordRepository struct {
+        db dbpostgres.DBops
+}
+
+func NewPosterRecordRepository(db dbpostgres.DBops) *PosterRecordRepository <span class="cov10" title="7">{
+        return &amp;PosterRecordRepository{db: db}
+}</span>
+
+func (r *PosterRecordRepository) GetUserRecords(ctx context.Context, userID int) ([]*model.PosterRecord, error) <span class="cov6" title="3">{
+        queryName := "PosterRecordRepository/GetUserRecords"
+        query := `select id,poster_id,created_at from PosterRecord where user_id = $1`
+
+        rows, err := r.db.Query(ctx, query, userID)
+        if errors.Is(err, pgx.ErrNoRows) </span><span class="cov1" title="1">{
+                return nil, formatError(queryName, ErrNotFound)
+        }</span> else<span class="cov4" title="2"> if err != nil </span><span class="cov0" title="0">{
+                return nil, formatError(queryName, err)
+        }</span> else<span class="cov4" title="2"> if err = rows.Err(); err != nil </span><span class="cov0" title="0">{
+                return nil, formatError(queryName, fmt.Errorf("rows: %w", err))
+        }</span>
+        <span class="cov4" title="2">defer rows.Close()
+
+        var records []*model.PosterRecord
+        err = r.db.ScanAll(&amp;records, rows)
+        if err != nil </span><span class="cov1" title="1">{
+                return nil, formatError(queryName, err)
+        }</span> else<span class="cov1" title="1"> if len(records) == 0 </span><span class="cov0" title="0">{
+                return nil, formatError(queryName, ErrNotFound)
+        }</span>
+
+        <span class="cov1" title="1">return records, nil</span>
+}
+
+func (r *PosterRecordRepository) CreateRecord(ctx context.Context, posterID, userID int) (int, error) <span class="cov4" title="2">{
+        queryName := "PosterRecordRepository/CreateRecord"
+        query := `insert into PosterRecord (poster_id, user_id) values ($1,$2) returning id`
+
+        var id int
+        err := r.db.ExecQueryRow(ctx, query, posterID, userID).Scan(&amp;id)
+        if err != nil </span><span class="cov1" title="1">{
+                return id, formatError(queryName, err)
+        }</span>
+
+        <span class="cov1" title="1">return id, nil</span>
+}
+
+func (r *PosterRecordRepository) DeleteRecord(ctx context.Context, posterID int) error <span class="cov4" title="2">{
+        queryName := "PosterRecordRepository/DeleteRecord"
+        query := `delete from PosterRecord where poster_id = $1`
+
+        _, err := r.db.Exec(ctx, query, posterID)
+        if err != nil </span><span class="cov1" title="1">{
+                return formatError(queryName, err)
+        }</span>
+
+        <span class="cov1" title="1">return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file16" style="display: none">package postgres
+
+import (
+        "context"
+        "errors"
+
+        dbpostgres "git.iu7.bmstu.ru/vai20u117/testing/src/internal/db/postgres"
+        "git.iu7.bmstu.ru/vai20u117/testing/src/internal/model"
+        "github.com/jackc/pgx/v4"
+)
+
+type UserRepository struct {
+        db dbpostgres.DBops
+}
+
+func NewUserRepository(db dbpostgres.DBops) *UserRepository <span class="cov10" title="7">{
+        return &amp;UserRepository{db: db}
+}</span>
+
+func (r *UserRepository) GetByLogin(ctx context.Context, login string) (*model.User, error) <span class="cov4" title="2">{
+        queryName := "UserRepository/GetByLogin"
+        query := `select id,name,login,role,password from appuser where login = $1`
+
+        dao := userDAO{}
+
+        err := r.db.Get(ctx, &amp;dao, query, login)
+        if errors.Is(err, pgx.ErrNoRows) </span><span class="cov1" title="1">{
+                return nil, formatError(queryName, ErrNotFound)
+        }</span> else<span class="cov1" title="1"> if err != nil </span><span class="cov0" title="0">{
+                return nil, formatError(queryName, err)
+        }</span>
+
+        <span class="cov1" title="1">return mapUserDAO(&amp;dao), nil</span>
+}
+
+func (r *UserRepository) Create(ctx context.Context, user *model.User) (int, error) <span class="cov4" title="2">{
+        queryName := "UserRepository/Create"
+        query := `insert into appuser(name,login,role,password) values($1,$2,$3,$4) returning id`
+
+        dao := reverseMapUserDAO(user)
+
+        var id int
+        err := r.db.ExecQueryRow(ctx, query,
+                dao.Name, dao.Login, dao.Role, dao.Password).Scan(&amp;id)
+        if err != nil </span><span class="cov1" title="1">{
+                return id, formatError(queryName, err)
+        }</span>
+
+        <span class="cov1" title="1">return id, nil</span>
+}
+
+func (r *UserRepository) Delete(ctx context.Context, userID int) error <span class="cov6" title="3">{
+        queryName := "UserRepository/Delete"
+        checkQueryName := "UserRepository/Delete.exists"
+        query := `delete from appuser where id = $1`
+        checkQuery := `select id from appuser where id = $1`
+
+        var id int
+        err := r.db.Get(ctx, &amp;id, checkQuery, userID)
+        if errors.Is(err, pgx.ErrNoRows) </span><span class="cov1" title="1">{
+                return formatError(checkQueryName, ErrNotFound)
+        }</span> else<span class="cov4" title="2"> if err != nil </span><span class="cov0" title="0">{
+                return formatError(checkQueryName, err)
+        }</span>
+
+        <span class="cov4" title="2">_, err = r.db.Exec(ctx, query, userID)
+        if err != nil </span><span class="cov1" title="1">{
+                return formatError(queryName, err)
+        }</span>
+
+        <span class="cov1" title="1">return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file17" style="display: none">package service
+
+import (
+        "context"
+        "errors"
+        "fmt"
+        "log/slog"
+        "sync"
+
+        "git.iu7.bmstu.ru/vai20u117/testing/src/internal/model"
+        repository "git.iu7.bmstu.ru/vai20u117/testing/src/internal/repository/postgres"
+        "golang.org/x/crypto/bcrypt"
+)
+
+const passwordCost = 14
+
+type UserRepository interface {
+        Create(ctx context.Context, user *model.User) (int, error)
+        GetByLogin(ctx context.Context, login string) (*model.User, error)
+}
+
+type AuthService struct {
+        mx          sync.RWMutex
+        sessions    map[string]*Session
+        adminSecret string
+
+        userRepo UserRepository
+}
+
+func NewAuthService(userRepo UserRepository, adminSecret string) *AuthService <span class="cov10" title="12">{
+        return &amp;AuthService{
+                mx:          sync.RWMutex{},
+                sessions:    make(map[string]*Session),
+                adminSecret: adminSecret,
+                userRepo:    userRepo,
+        }
+}</span>
+
+func (a *AuthService) GetUserID(token string) (int, error) <span class="cov3" title="2">{
+        session, ok := a.sessions[token]
+        if !ok </span><span class="cov1" title="1">{
+                return 0, ErrNotFound
+        }</span>
+
+        <span class="cov1" title="1">return session.UserID, nil</span>
+}
+
+func (a *AuthService) GetUserTokenByAdmin(ctx context.Context, adminSecret, login string) (string, error) <span class="cov4" title="3">{
+        if adminSecret != a.adminSecret </span><span class="cov1" title="1">{
+                return "", ErrAdminIsNotAuthtorized
+        }</span>
+
+        <span class="cov3" title="2">userInDB, err := a.userRepo.GetByLogin(ctx, login)
+        if errors.Is(err, repository.ErrNotFound) </span><span class="cov1" title="1">{
+                return "", ErrNotFound
+        }</span> else<span class="cov1" title="1"> if err != nil </span><span class="cov0" title="0">{
+                return "", err
+        }</span>
+
+        <span class="cov1" title="1">session := NewSession(userInDB.ID, model.DefaultUser.String())
+
+        a.mx.Lock()
+        a.sessions[session.Token] = session
+        a.mx.Unlock()
+
+        return session.Token, nil</span>
+}
+
+func (a *AuthService) SignUp(ctx context.Context, user *model.User) (int, error) <span class="cov4" title="3">{
+        if user.Role == model.Admin.String() &amp;&amp; user.AdminSecret != a.adminSecret </span><span class="cov1" title="1">{
+                return 0, ErrAdminIsNotAuthtorized
+        }</span>
+
+        <span class="cov3" title="2">if _, err := a.userRepo.GetByLogin(ctx, user.Login); err == nil </span><span class="cov1" title="1">{
+                return 0, ErrLoginAlreadyExists
+        }</span>
+
+        <span class="cov1" title="1">bytes, err := bcrypt.GenerateFromPassword([]byte(user.Password), passwordCost)
+        if err != nil </span><span class="cov0" title="0">{
+                return 0, fmt.Errorf("%w: %w", ErrGeneratingHash, err)
+        }</span>
+
+        <span class="cov1" title="1">user.Password = string(bytes)
+
+        return a.userRepo.Create(ctx, user)</span>
+}
+
+func (a *AuthService) SignIn(ctx context.Context, user *model.User) (string, error) <span class="cov3" title="2">{
+        userInDB, err := a.userRepo.GetByLogin(ctx, user.Login)
+        if errors.Is(err, repository.ErrNotFound) </span><span class="cov1" title="1">{
+                return "", ErrNotFound
+        }</span> else<span class="cov1" title="1"> if err != nil </span><span class="cov0" title="0">{
+                return "", err
+        }</span>
+
+        <span class="cov1" title="1">hashedDBUser, err := bcrypt.GenerateFromPassword([]byte(user.Password), passwordCost)
+        if err != nil </span><span class="cov0" title="0">{
+                return "", fmt.Errorf("%w: %w", ErrGeneratingHash, err)
+        }</span>
+
+        <span class="cov1" title="1">if err = bcrypt.CompareHashAndPassword(hashedDBUser, []byte(user.Password)); err != nil </span><span class="cov0" title="0">{
+                slog.Warn("password mismatch", "error", err)
+                return "", ErrBadPassword
+        }</span> else<span class="cov1" title="1"> if user.Role == model.Admin.String() &amp;&amp; userInDB.Role != model.Admin.String() </span><span class="cov0" title="0">{
+                return "", ErrAdminIsNotAuthtorized
+        }</span>
+
+        <span class="cov1" title="1">session := NewSession(userInDB.ID, user.Role)
+
+        a.mx.Lock()
+        a.sessions[session.Token] = session
+        a.mx.Unlock()
+
+        return session.Token, nil</span>
+}
+
+func (a *AuthService) SignOut(_ context.Context, token string) error <span class="cov3" title="2">{
+        if _, ok := a.sessions[token]; !ok </span><span class="cov1" title="1">{
+                return ErrNotFound
+        }</span>
+
+        <span class="cov1" title="1">a.mx.Lock()
+        delete(a.sessions, token)
+        a.mx.Unlock()
+
+        return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file18" style="display: none">package service
+
+import (
+        "context"
+
+        "git.iu7.bmstu.ru/vai20u117/testing/src/internal/model"
+)
+
+type listRepository interface {
+        Get(ctx context.Context, listID int) (*model.List, error)
+        GetRootID(ctx context.Context) (int, error)
+        Create(ctx context.Context, list *model.List) (int, error)
+        Update(ctx context.Context, list *model.List) error
+        Delete(ctx context.Context, listID int) error
+}
+
+type ListService struct {
+        repo listRepository
+}
+
+func NewListService(repo listRepository) *ListService <span class="cov10" title="5">{
+        return &amp;ListService{repo: repo}
+}</span>
+
+func (s *ListService) Get(ctx context.Context, listID int) (*model.List, error) <span class="cov0" title="0">{
+        return s.repo.Get(ctx, listID)
+}</span>
+
+func (s *ListService) Create(ctx context.Context, list *model.List) (int, error) <span class="cov1" title="1">{
+        if list.ParentID == 0 </span><span class="cov0" title="0">{
+                rootID, err := s.repo.GetRootID(ctx)
+                if err != nil </span><span class="cov0" title="0">{
+                        return 0, err
+                }</span>
+
+                <span class="cov0" title="0">list.ParentID = rootID</span>
+        }
+
+        <span class="cov1" title="1">return s.repo.Create(ctx, list)</span>
+}
+
+func (s *ListService) Update(ctx context.Context, list *model.List) error <span class="cov4" title="2">{
+        return s.repo.Update(ctx, list)
+}</span>
+
+func (s *ListService) Delete(ctx context.Context, listID int) error <span class="cov4" title="2">{
+        // TODO change parentID of all posters that belong to this list to parentID of this list.
+        return s.repo.Delete(ctx, listID)
+}</span>
+</pre>
+		
+		<pre class="file" id="file19" style="display: none">package service
+
+import (
+        "context"
+
+        "git.iu7.bmstu.ru/vai20u117/testing/src/internal/model"
+)
+
+type listPosterRepository interface {
+        GetPosters(ctx context.Context, listID int) ([]*model.ListPoster, error)
+        AddPoster(ctx context.Context, listID, posterID int) error
+        MovePoster(ctx context.Context, curListID, newListID, posterID int) error
+        ChangePosterPosition(ctx context.Context, listID, posterID, newPosition int) error
+        DeletePoster(ctx context.Context, listID, posterID int) error
+}
+
+type ListPosterService struct {
+        repo listPosterRepository
+}
+
+func NewListPosterService(repo listPosterRepository) *ListPosterService <span class="cov8" title="3">{
+        return &amp;ListPosterService{repo: repo}
+}</span>
+
+func (s *ListPosterService) GetPosters(ctx context.Context, listID int) ([]*model.ListPoster, error) <span class="cov10" title="4">{
+        return s.repo.GetPosters(ctx, listID)
+}</span>
+
+func (s *ListPosterService) AddPoster(ctx context.Context, listID, posterID int) error <span class="cov8" title="3">{
+        return s.repo.AddPoster(ctx, listID, posterID)
+}</span>
+
+func (s *ListPosterService) MovePoster(ctx context.Context, curListID, newListID, posterID int) error <span class="cov1" title="1">{
+        return s.repo.MovePoster(ctx, curListID, newListID, posterID)
+}</span>
+
+func (s *ListPosterService) ChangePosterPosition(ctx context.Context, listID, posterID, newPosition int) error <span class="cov0" title="0">{
+        return s.repo.ChangePosterPosition(ctx, listID, posterID, newPosition)
+}</span>
+
+func (s *ListPosterService) DeletePoster(ctx context.Context, listID, posterID int) error <span class="cov1" title="1">{
+        return s.repo.DeletePoster(ctx, listID, posterID)
+}</span>
+</pre>
+		
+		<pre class="file" id="file20" style="display: none">package service
+
+import (
+        "context"
+        "errors"
+
+        "git.iu7.bmstu.ru/vai20u117/testing/src/internal/model"
+        repository "git.iu7.bmstu.ru/vai20u117/testing/src/internal/repository/postgres"
+)
+
+type posterRepository interface {
+        Get(ctx context.Context, posterID int) (*model.Poster, error)
+        Create(ctx context.Context, poster *model.Poster) (int, error)
+        Update(ctx context.Context, poster *model.Poster) error
+        Delete(ctx context.Context, posterID int) error
+}
+
+type PosterService struct {
+        repo posterRepository
+}
+
+func NewPosterService(repo posterRepository) *PosterService <span class="cov10" title="5">{
+        return &amp;PosterService{repo: repo}
+}</span>
+
+func (s *PosterService) Get(ctx context.Context, posterID int) (*model.Poster, error) <span class="cov0" title="0">{
+        poster, err := s.repo.Get(ctx, posterID)
+        if errors.Is(err, repository.ErrNotFound) </span><span class="cov0" title="0">{
+                return nil, ErrNotFound
+        }</span> else<span class="cov0" title="0"> if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">return poster, nil</span>
+}
+
+func (s *PosterService) Create(ctx context.Context, poster *model.Poster) (int, error) <span class="cov7" title="3">{
+        return s.repo.Create(ctx, poster)
+}</span>
+
+func (s *PosterService) Update(ctx context.Context, poster *model.Poster) error <span class="cov4" title="2">{
+        err := s.repo.Update(ctx, poster)
+        if errors.Is(err, repository.ErrNotFound) </span><span class="cov0" title="0">{
+                return ErrNotFound
+        }</span> else<span class="cov4" title="2"> if err != nil </span><span class="cov1" title="1">{
+                return err
+        }</span>
+
+        <span class="cov1" title="1">return nil</span>
+}
+
+func (s *PosterService) Delete(ctx context.Context, posterID int) error <span class="cov4" title="2">{
+        err := s.repo.Delete(ctx, posterID)
+        if errors.Is(err, repository.ErrNotFound) </span><span class="cov0" title="0">{
+                return ErrNotFound
+        }</span> else<span class="cov4" title="2"> if err != nil </span><span class="cov1" title="1">{
+                return err
+        }</span>
+
+        <span class="cov1" title="1">return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file21" style="display: none">package service
+
+import (
+        "context"
+
+        "git.iu7.bmstu.ru/vai20u117/testing/src/internal/model"
+)
+
+type PosterRecordRepository interface {
+        GetUserRecords(ctx context.Context, userID int) ([]*model.PosterRecord, error)
+        CreateRecord(ctx context.Context, posterID, userID int) (int, error)
+        DeleteRecord(ctx context.Context, posterID int) error
+}
+
+type PosterRecordService struct {
+        repo PosterRecordRepository
+}
+
+func NewPosterRecordService(repo PosterRecordRepository) *PosterRecordService <span class="cov10" title="2">{
+        return &amp;PosterRecordService{repo: repo}
+}</span>
+
+func (s *PosterRecordService) GetUserRecords(ctx context.Context, userID int) ([]*model.PosterRecord, error) <span class="cov0" title="0">{
+        return s.repo.GetUserRecords(ctx, userID)
+}</span>
+
+func (s *PosterRecordService) CreateRecord(ctx context.Context, posterID, userID int) (int, error) <span class="cov10" title="2">{
+        return s.repo.CreateRecord(ctx, posterID, userID)
+}</span>
+
+func (s *PosterRecordService) DeleteRecord(ctx context.Context, posterID int) error <span class="cov1" title="1">{
+        return s.repo.DeleteRecord(ctx, posterID)
+}</span>
+</pre>
+		
+		<pre class="file" id="file22" style="display: none">package service
+
+import (
+        "github.com/google/uuid"
+)
+
+type Session struct {
+        Token  string
+        UserID int
+        Role   string
+}
+
+func NewSession(userID int, role string) *Session <span class="cov10" title="2">{
+        return &amp;Session{
+                Token:  uuid.NewString(),
+                UserID: userID,
+                Role:   role,
+        }
+}</span>
+</pre>
+		
+		<pre class="file" id="file23" style="display: none">package postgres
+
+import (
+        "context"
+        "os"
+        "strings"
+        "sync"
+        "testing"
+
+        dbpostgres "git.iu7.bmstu.ru/vai20u117/testing/src/internal/db/postgres"
+        "github.com/spf13/viper"
+)
+
+//nolint:gocritic // (embed mutex) testDB
+type TDB struct {
+        DB dbpostgres.DBops
+        sync.Mutex
+}
+
+func NewFromEnv() *TDB <span class="cov0" title="0">{
+        db, err := dbpostgres.NewDB(context.Background(), &amp;dbpostgres.DBConfig{
+                Host:     viper.GetString("db.host"),
+                Port:     viper.GetString("db.port"),
+                Username: os.Getenv("DB_USERNAME"),
+                Password: os.Getenv("DB_PASSWORD"),
+                DBName:   viper.GetString("db.dbname"),
+                SSLMode:  viper.GetString("db.sslmode"),
+        })
+        if err != nil </span><span class="cov0" title="0">{
+                panic(err)</span>
+        }
+
+        <span class="cov0" title="0">return &amp;TDB{DB: db}</span>
+}
+
+func (d *TDB) SetUp(t *testing.T, args ...interface{}) <span class="cov0" title="0">{
+        t.Helper()
+        d.Lock()
+        d.Truncate(context.Background())
+}</span>
+
+func (d *TDB) TearDown() <span class="cov0" title="0">{
+        defer d.Unlock()
+        d.Truncate(context.Background())
+}</span>
+
+func (d *TDB) Truncate(ctx context.Context) <span class="cov0" title="0">{
+        var tables []string
+        err := d.DB.Select(ctx, &amp;tables, `
+                select table_name from information_schema.tables
+                where table_schema = 'public'
+                        and table_type = 'BASE TABLE'
+                        and table_name != 'goose_db_version'`)
+        if err != nil </span><span class="cov0" title="0">{
+                panic(err)</span>
+        }
+        <span class="cov0" title="0">if len(tables) == 0 </span><span class="cov0" title="0">{
+                panic("run migration plz")</span>
+        }
+
+        <span class="cov0" title="0">q := "Truncate table " + strings.Join(tables, ",")
+        if _, err := d.DB.Exec(ctx, q); err != nil </span><span class="cov0" title="0">{
+                panic(err)</span>
+        }
+}
+
+func (d *TDB) CreateGenesisList(ctx context.Context, userID int) int <span class="cov0" title="0">{
+        query := `insert into list(id,parent_id,name,user_id,is_root) values(default,null,'root',$1,true) returning id`
+
+        var id int
+        if err := d.DB.ExecQueryRow(ctx, query, userID).Scan(&amp;id); err != nil </span><span class="cov0" title="0">{
+                panic("creating genesis list: " + err.Error())</span>
+        }
+        <span class="cov0" title="0">return id</span>
+}
+
+func (d *TDB) CreateGenesisUser(ctx context.Context) int <span class="cov0" title="0">{
+        query := `insert into appuser(id,name,login,role,password) values(1,'test','test','admin','test') returning id`
+
+        var id int
+        if err := d.DB.ExecQueryRow(ctx, query).Scan(&amp;id); err != nil </span><span class="cov0" title="0">{
+                panic("creating genesis list: " + err.Error())</span>
+        }
+        <span class="cov0" title="0">return id</span>
+}
+</pre>
+		
+		<pre class="file" id="file24" style="display: none">// Package swagger Code generated by swaggo/swag. DO NOT EDIT
+package swagger
+
+import "github.com/swaggo/swag"
+
+const docTemplate = `{
+    "schemes": {{ marshal .Schemes }},
+    "swagger": "2.0",
+    "info": {
+        "description": "{{escape .Description}}",
+        "title": "{{.Title}}",
+        "contact": {},
+        "version": "{{.Version}}"
+    },
+    "host": "{{.Host}}",
+    "basePath": "{{.BasePath}}",
+    "paths": {
+        "/list": {
+            "get": {
+                "description": "get list",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "list"
+                ],
+                "summary": "Get",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User auth token",
+                        "name": "token",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "ListId",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "update list",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "list"
+                ],
+                "summary": "Update",
+                "parameters": [
+                    {
+                        "description": "List body",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_model.List"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "User auth token",
+                        "name": "token",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create list",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "list"
+                ],
+                "summary": "Create",
+                "parameters": [
+                    {
+                        "description": "List body",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_model.List"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "User auth token",
+                        "name": "token",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "delete list",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "list"
+                ],
+                "summary": "Delete",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User auth token",
+                        "name": "token",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "ListId",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/list-poster": {
+            "get": {
+                "description": "get posters in list",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "list-poster"
+                ],
+                "summary": "Get posters in list",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User auth token",
+                        "name": "token",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "ListId",
+                        "name": "list_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "delete poster from list",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "list-poster"
+                ],
+                "summary": "Delete poster from list",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User auth token",
+                        "name": "token",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "ListId",
+                        "name": "list_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "PosterId",
+                        "name": "poster_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/list-poster/add": {
+            "post": {
+                "description": "add poster in list",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "list-poster"
+                ],
+                "summary": "Add poster in list",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User auth token",
+                        "name": "token",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "ListId",
+                        "name": "list_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "PosterId",
+                        "name": "poster_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/list-poster/change-position": {
+            "post": {
+                "description": "change poster position in list",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "list-poster"
+                ],
+                "summary": "Change poster position in list",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User auth token",
+                        "name": "token",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "ListId",
+                        "name": "list_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "PosterId",
+                        "name": "poster_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "NewPosition",
+                        "name": "position",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/list-poster/move": {
+            "post": {
+                "description": "move poster from one list to another",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "list-poster"
+                ],
+                "summary": "Move poster from one list to another",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User auth token",
+                        "name": "token",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "CurListId",
+                        "name": "cur_list_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "NewListId",
+                        "name": "new_list_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "PosterId",
+                        "name": "poster_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/poster": {
+            "get": {
+                "description": "get poster",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "poster"
+                ],
+                "summary": "Get",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User auth token",
+                        "name": "token",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "PosterId",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "update poster",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "poster"
+                ],
+                "summary": "Update",
+                "parameters": [
+                    {
+                        "description": "Poster body",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_model.Poster"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "User auth token",
+                        "name": "token",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create poster",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "poster"
+                ],
+                "summary": "Create",
+                "parameters": [
+                    {
+                        "description": "Poster body",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_model.Poster"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "User auth token",
+                        "name": "token",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "delete poster",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "poster"
+                ],
+                "summary": "Delete",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User auth token",
+                        "name": "token",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "PosterId",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/poster-history": {
+            "get": {
+                "description": "get user records",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "poster-history"
+                ],
+                "summary": "Get user records",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User auth token",
+                        "name": "token",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "UserId",
+                        "name": "user_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create poster record",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "poster-history"
+                ],
+                "summary": "Create poster record",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User auth token",
+                        "name": "token",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "PosterId",
+                        "name": "poster_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "UserId",
+                        "name": "user_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "delete user record",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "poster-history"
+                ],
+                "summary": "Delete user record",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User auth token",
+                        "name": "token",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "PosterId",
+                        "name": "poster_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/sign-in": {
+            "post": {
+                "description": "sing in",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Sign in",
+                "parameters": [
+                    {
+                        "description": "User body",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_model.User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/sign-out": {
+            "post": {
+                "description": "sing out",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Sign out",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User token",
+                        "name": "token",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/sign-up": {
+            "post": {
+                "description": "sing up",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Sign up",
+                "parameters": [
+                    {
+                        "description": "User body",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_model.User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "git_iu7_bmstu_ru_vai20u117_testing_src_internal_model.List": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "parentId": {
+                    "type": "integer"
+                },
+                "userId": {
+                    "type": "integer"
+                }
+            }
+        },
+        "git_iu7_bmstu_ru_vai20u117_testing_src_internal_model.Poster": {
+            "type": "object",
+            "properties": {
+                "chrono": {
+                    "type": "integer"
+                },
+                "createdat": {
+                    "description": "will not be used, satisfy musttag linter",
+                    "type": "string"
+                },
+                "genres": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "integer"
+                },
+                "year": {
+                    "type": "integer"
+                }
+            }
+        },
+        "git_iu7_bmstu_ru_vai20u117_testing_src_internal_model.User": {
+            "type": "object",
+            "properties": {
+                "admintoken": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "login": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}`
+
+// SwaggerInfo holds exported Swagger Info so clients can modify it
+var SwaggerInfo = &amp;swag.Spec{
+        Version:          "",
+        Host:             "",
+        BasePath:         "",
+        Schemes:          []string{},
+        Title:            "",
+        Description:      "",
+        InfoInstanceName: "swagger",
+        SwaggerTemplate:  docTemplate,
+        LeftDelim:        "{{",
+        RightDelim:       "}}",
+}
+
+func init() <span class="cov0" title="0">{
+        swag.Register(SwaggerInfo.InstanceName(), SwaggerInfo)
+}</span>
+</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>

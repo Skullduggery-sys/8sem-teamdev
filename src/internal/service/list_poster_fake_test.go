@@ -186,3 +186,7 @@ func TestFake_ListDeletePoster(t *testing.T) {
 	_, errGet := service.GetPosters(ctx, testList1.ID)
 	require.ErrorIs(t, errGet, errFakeListPosterNotFound)
 }
+
+func (*fakeListPosterRepo) GetListIDByPosterID(context.Context, int) (int, error) {
+	return 0, nil
+}

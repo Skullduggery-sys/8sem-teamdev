@@ -32,6 +32,7 @@ func (r *ListPosterRepository) GetPosters(ctx context.Context, listID int) ([]*m
 	}
 	defer rows.Close()
 
+	// TODO: use dao instead
 	var dao []*model.ListPoster
 	err = r.db.ScanAll(&dao, rows)
 	if err != nil {
@@ -185,4 +186,19 @@ func (r *ListPosterRepository) DeletePoster(ctx context.Context, listID, posterI
 	}
 
 	return nil
+}
+
+func (r *ListPosterRepository) GetListIDByPosterID(ctx context.Context, posterID int) (int, error) {
+	queryName := "ListPosterRepository/GetListIDByPosterID"
+	query := `select list_id from listposter where poster_id = $1`
+
+	var listID int
+	err := r.db.Get(ctx, &listID, query, posterID)
+	if errors.Is(err, pgx.ErrNoRows) {
+		return 0, formatError(queryName, ErrNotFound)
+	} else if err != nil {
+		return 0, formatError(queryName, err)
+	}
+
+	return listID, nil
 }

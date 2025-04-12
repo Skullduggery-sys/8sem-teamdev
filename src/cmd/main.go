@@ -10,72 +10,44 @@ import (
 	"syscall"
 	"time"
 
-	"git.iu7.bmstu.ru/vai20u117/testing/src/internal/controller"
+	apiv1 "git.iu7.bmstu.ru/vai20u117/testing/src/internal/api/v1/controller"
+	apiv2 "git.iu7.bmstu.ru/vai20u117/testing/src/internal/api/v2/controller"
 	dbpostgres "git.iu7.bmstu.ru/vai20u117/testing/src/internal/db/postgres"
 	repository "git.iu7.bmstu.ru/vai20u117/testing/src/internal/repository/postgres"
 	"git.iu7.bmstu.ru/vai20u117/testing/src/internal/service"
-
-	// _ "git.iu7.bmstu.ru/vai20u117/testing/src/swagger"
+	_ "git.iu7.bmstu.ru/vai20u117/testing/src/swagger"
 	muxhandlers "github.com/gorilla/handlers"
+	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
-	"github.com/opentracing/opentracing-go"
 	"github.com/spf13/viper"
-	"github.com/uber/jaeger-client-go"
-	"github.com/uber/jaeger-client-go/config"
 )
 
-const requestsTimeout = 15 * time.Second
+const (
+	requestsTimeout = 15 * time.Second
 
-const jaegerHostPort = "172.17.0.1:16686"
-
-// const jaegerHostPort = "localhost:16686"
+	adminSecretEnv = "ADMIN_SECRET"
+)
 
 func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
 	slog.New(slog.NewTextHandler(os.Stderr, nil))
-	slog.SetLogLoggerLevel(slog.LevelDebug)
+	slog.SetLogLoggerLevel(slog.LevelInfo)
 
 	mustLoadConfigs()
-
-	traceCfg := config.Configuration{
-		ServiceName: "media-organizer-app",
-		Sampler: &config.SamplerConfig{
-			Type:  jaeger.SamplerTypeConst,
-			Param: 1,
-		},
-		Reporter: &config.ReporterConfig{
-			LogSpans:            true,
-			BufferFlushInterval: 1 * time.Second,
-			// LocalAgentHostPort:  jaegerHostPort,
-			// CollectorEndpoint: fmt.Sprintf("http://%s/api/traces", jaegerHostPort),
-			CollectorEndpoint: "http://localhost:14268/api/traces",
-		},
-	}
-
-	tracer, closer, err := traceCfg.NewTracer(config.Logger(jaeger.StdLogger))
-	if err != nil {
-		log.Fatal("Failed to create tracer: ", err)
-	}
-	defer closer.Close()
-
-	opentracing.SetGlobalTracer(tracer)
 
 	database := mustLoadDB(ctx)
 	defer database.GetPool(ctx).Close()
 
-	controller := controller.NewController(
-		initPosterHandler(database),
-		initListHandler(database),
-		initListPosterHandler(database),
-		initPosterRecordHandler(database),
-		initAuthHandler(database, os.Getenv("ADMIN_SECRET")),
-	)
+	controllerV1 := createControllerV1(database)
+	controllerV2 := createControllerV2(database)
 
-	serverPort := ":" + "9000" // viper.GetString("port")
-	router := controller.CreateRouter()
-	http.Handle("/", router)
+	serverPort := ":" + getAppPort()
+	router := mux.NewRouter()
+	// controller.CreateRouter(router)
+	controllerV1.CreateRouter(router.PathPrefix("/api/v1").Subrouter())
+	controllerV2.CreateRouter(router.PathPrefix("/api/v2").Subrouter())
 
 	server := &http.Server{
 		Addr:         serverPort,
@@ -99,40 +71,90 @@ func main() {
 	slog.Info("Server shutting down")
 }
 
-func initPosterHandler(database *dbpostgres.Database) *controller.PosterHandler {
+func createControllerV1(database *dbpostgres.Database) *apiv1.Controller {
+	return apiv1.NewController(
+		initPosterHandlerV1(database),
+		initListHandlerV1(database),
+		initListPosterHandlerV1(database),
+		initPosterRecordHandlerV1(database),
+		initAuthHandlerV1(database, os.Getenv(adminSecretEnv)),
+	)
+}
+
+func createControllerV2(database *dbpostgres.Database) *apiv2.Controller {
+	return apiv2.NewController(
+		initPosterHandlerV2(database),
+		initListHandlerV2(database),
+		initListPosterHandlerV2(database),
+		initPosterRecordHandlerV2(database),
+		initAuthHandlerV2(database, os.Getenv(adminSecretEnv)),
+	)
+}
+
+func initPosterHandlerV1(database *dbpostgres.Database) *apiv1.PosterHandler {
 	posterRepository := repository.NewPosterRepository(database)
 	posterService := service.NewPosterService(posterRepository)
-	return controller.NewPosterHandler(posterService)
+	return apiv1.NewPosterHandler(posterService)
 }
 
-func initListHandler(database *dbpostgres.Database) *controller.ListHandler {
+func initListHandlerV1(database *dbpostgres.Database) *apiv1.ListHandler {
 	listRepository := repository.NewListRepository(database)
 	listService := service.NewListService(listRepository)
-	return controller.NewListHandler(listService)
+	return apiv1.NewListHandler(listService)
 }
 
-func initListPosterHandler(database *dbpostgres.Database) *controller.ListPosterHandler {
+func initListPosterHandlerV1(database *dbpostgres.Database) *apiv1.ListPosterHandler {
 	listPosterRepository := repository.NewListPosterRepository(database)
 	listPosterService := service.NewListPosterService(listPosterRepository)
-	return controller.NewListPosterHandler(listPosterService)
+	return apiv1.NewListPosterHandler(listPosterService)
 }
 
-func initPosterRecordHandler(database *dbpostgres.Database) *controller.PosterRecordHandler {
+func initPosterRecordHandlerV1(database *dbpostgres.Database) *apiv1.PosterRecordHandler {
 	historyRepository := repository.NewPosterRecordRepository(database)
 	historyService := service.NewPosterRecordService(historyRepository)
-	return controller.NewPosterRecordHandler(historyService)
+	return apiv1.NewPosterRecordHandler(historyService)
 }
 
-func initAuthHandler(database *dbpostgres.Database, adminToken string) *controller.AuthHandler {
+func initAuthHandlerV1(database *dbpostgres.Database, adminToken string) *apiv1.AuthHandler {
 	userRepository := repository.NewUserRepository(database)
 	authService := service.NewAuthService(userRepository, adminToken)
-	return controller.NewAuthHandler(authService)
+	return apiv1.NewAuthHandler(authService)
+}
+
+func initPosterHandlerV2(database *dbpostgres.Database) *apiv2.PosterHandler {
+	posterRepository := repository.NewPosterRepository(database)
+	posterService := service.NewPosterService(posterRepository)
+	return apiv2.NewPosterHandler(posterService)
+}
+
+func initListHandlerV2(database *dbpostgres.Database) *apiv2.ListHandler {
+	listRepository := repository.NewListRepository(database)
+	listService := service.NewListService(listRepository)
+	return apiv2.NewListHandler(listService)
+}
+
+func initListPosterHandlerV2(database *dbpostgres.Database) *apiv2.ListPosterHandler {
+	listPosterRepository := repository.NewListPosterRepository(database)
+	listPosterService := service.NewListPosterService(listPosterRepository)
+	return apiv2.NewListPosterHandler(listPosterService)
+}
+
+func initPosterRecordHandlerV2(database *dbpostgres.Database) *apiv2.PosterRecordHandler {
+	historyRepository := repository.NewPosterRecordRepository(database)
+	historyService := service.NewPosterRecordService(historyRepository)
+	return apiv2.NewPosterRecordHandler(historyService)
+}
+
+func initAuthHandlerV2(database *dbpostgres.Database, adminToken string) *apiv2.AuthHandler {
+	userRepository := repository.NewUserRepository(database)
+	authService := service.NewAuthService(userRepository, adminToken)
+	return apiv2.NewAuthHandler(authService)
 }
 
 func mustLoadConfigs() {
-	// if err := initConfig(); err != nil {
-	// 	log.Fatal("Failed to init configs: ", err)
-	// }
+	if err := initConfig(); err != nil {
+		log.Fatal("Failed to init configs: ", err)
+	}
 	if err := godotenv.Load(); err != nil {
 		log.Fatal("Failed to load env variables: ", err)
 	}
@@ -140,11 +162,13 @@ func mustLoadConfigs() {
 
 func mustLoadDB(ctx context.Context) *dbpostgres.Database {
 	database, err := dbpostgres.NewDB(ctx, &dbpostgres.DBConfig{
-		Host:     os.Getenv("DB_HOST"),
-		Port:     os.Getenv("DB_PORT"),
-		Username: os.Getenv("DB_USERNAME"),
-		Password: os.Getenv("DB_PASSWORD"),
-		DBName:   os.Getenv("DB_NAME"),
+		Host: viper.GetString("db.host"),
+		// Port:     viper.GetString("db.port"),
+		Port:     getDBPort(),
+		Username: getDBUsername(),
+		Password: getDBPassword(),
+		DBName:   viper.GetString("db.dbname"),
+		SSLMode:  viper.GetString("db.sslmode"),
 	})
 	if err != nil {
 		log.Fatal("Failed to create db: ", err)
@@ -157,4 +181,20 @@ func initConfig() error {
 	viper.AddConfigPath("configs")
 	viper.SetConfigName("config")
 	return viper.ReadInConfig()
+}
+
+func getDBUsername() string {
+	return os.Getenv("DB_USERNAME")
+}
+
+func getDBPassword() string {
+	return os.Getenv("DB_PASSWORD")
+}
+
+func getDBPort() string {
+	return os.Getenv("DB_PORT")
+}
+
+func getAppPort() string {
+	return viper.GetString("app.port")
 }
