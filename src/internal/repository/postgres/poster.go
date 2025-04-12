@@ -19,7 +19,7 @@ func NewPosterRepository(db dbpostgres.DBops) *PosterRepository {
 
 func (r *PosterRepository) Get(ctx context.Context, posterID int) (*model.Poster, error) {
 	queryName := "PosterRepository/Get"
-	query := `select id,name,year,genres,chrono,user_id,created_at from poster where id = $1`
+	query := `select id,name,year,genres,chrono,user_id,kp_id,image_url,created_at from poster where id = $1`
 
 	dao := posterDAO{}
 
@@ -35,13 +35,13 @@ func (r *PosterRepository) Get(ctx context.Context, posterID int) (*model.Poster
 
 func (r *PosterRepository) Create(ctx context.Context, poster *model.Poster) (int, error) {
 	queryName := "PosterRepository/Create"
-	query := `insert into poster(name,genres,year,chrono,user_id) values($1,$2,$3,$4,$5) returning id`
+	query := `insert into poster(name,genres,year,chrono,user_id,kp_id,image_url) values($1,$2,$3,$4,$5,$6,$7) returning id`
 
 	dao := reverseMapPosterDAO(poster)
 
 	var id int
 	err := r.db.ExecQueryRow(ctx, query,
-		dao.Name, dao.Genres, dao.Year, dao.Chrono, dao.UserID).Scan(&id)
+		dao.Name, dao.Genres, dao.Year, dao.Chrono, dao.UserID, dao.KPID, dao.ImageURL).Scan(&id)
 	if err != nil {
 		return id, formatError(queryName, err)
 	}
@@ -53,12 +53,12 @@ func (r *PosterRepository) Update(ctx context.Context, poster *model.Poster) err
 	queryName := "PosterRepository/Update"
 	query := `
 		update Poster
-		set name = $2, year = $3, genres = $4, chrono = $5
+		set name = $2, year = $3, genres = $4, chrono = $5, kp_id = $6, image_url = $7
 		where id = $1`
 
 	dao := reverseMapPosterDAO(poster)
 
-	_, err := r.db.Exec(ctx, query, dao.ID, dao.Name, dao.Year, dao.Genres, dao.Chrono)
+	_, err := r.db.Exec(ctx, query, dao.ID, dao.Name, dao.Year, dao.Genres, dao.Chrono, dao.KPID, dao.ImageURL)
 	if errors.Is(err, pgx.ErrNoRows) {
 		return formatError(queryName, ErrNotFound)
 	} else if err != nil {
