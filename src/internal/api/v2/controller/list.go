@@ -245,7 +245,7 @@ func (c *Controller) handleListUserRequests(w http.ResponseWriter, r *http.Reque
 	ctx := r.Context()
 	switch r.Method {
 	case http.MethodGet:
-		userID, err := c.getUserIDByToken(token)
+		userID, err := c.getUserIDByToken(ctx, token)
 		if err != nil {
 			writeError(w, err)
 			break
@@ -295,9 +295,9 @@ func (c *Controller) handleListPathRequests(w http.ResponseWriter, r *http.Reque
 
 		w.WriteHeader(http.StatusOK)
 	case http.MethodPut:
-		sess, err := parseJWT(token)
+		userID, err := c.getUserIDByToken(ctx, token)
 		if err != nil {
-			writeError(w, fmt.Errorf("%w: %w", errInternal, err))
+			writeError(w, err)
 			break
 		}
 
@@ -310,7 +310,7 @@ func (c *Controller) handleListPathRequests(w http.ResponseWriter, r *http.Reque
 			break
 		}
 
-		list, err := reqModelPkg.ParseListUpdateRequest(r, sess.UserID)
+		list, err := reqModelPkg.ParseListUpdateRequest(r, userID)
 		if err != nil {
 			writeError(w, fmt.Errorf("%w: %w", errInvalidArguments, err))
 			break
@@ -355,13 +355,13 @@ func (c *Controller) handleListDefaultRequests(w http.ResponseWriter, r *http.Re
 	ctx := r.Context()
 	switch r.Method {
 	case http.MethodPost:
-		sess, err := parseJWT(token)
+		userID, err := c.getUserIDByToken(ctx, token)
 		if err != nil {
-			writeError(w, fmt.Errorf("%w: %w", errInternal, err))
+			writeError(w, err)
 			break
 		}
 
-		list, err := reqModelPkg.ParseListCreateRequest(r, sess.UserID)
+		list, err := reqModelPkg.ParseListCreateRequest(r, userID)
 		if err != nil {
 			writeError(w, fmt.Errorf("%w: %w", errInvalidArguments, err))
 			break
@@ -384,7 +384,7 @@ func (c *Controller) handleListDefaultRequests(w http.ResponseWriter, r *http.Re
 }
 
 func (c *Controller) authorizeList(ctx context.Context, token string, listID int) error {
-	userID, err := c.getUserIDByToken(token)
+	userID, err := c.getUserIDByToken(ctx, token)
 	if err != nil {
 		return err
 	}

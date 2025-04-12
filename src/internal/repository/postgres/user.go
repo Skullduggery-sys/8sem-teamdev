@@ -33,15 +33,31 @@ func (r *UserRepository) GetByLogin(ctx context.Context, login string) (*model.U
 	return mapUserDAO(&dao), nil
 }
 
+func (r *UserRepository) GetByTGID(ctx context.Context, tgID string) (*model.User, error) {
+	queryName := "UserRepository/GetByTGID"
+	query := `select id,tg_id from appuser where tg_id = $1`
+
+	dao := userDAO{}
+
+	err := r.db.Get(ctx, &dao, query, tgID)
+	if errors.Is(err, pgx.ErrNoRows) {
+		return nil, formatError(queryName, ErrNotFound)
+	} else if err != nil {
+		return nil, formatError(queryName, err)
+	}
+
+	return mapUserDAO(&dao), nil
+}
+
 func (r *UserRepository) Create(ctx context.Context, user *model.User) (int, error) {
 	queryName := "UserRepository/Create"
-	query := `insert into appuser(name,login,role,password) values($1,$2,$3,$4) returning id`
+	query := `insert into appuser(tg_id,name,login,role,password) values($1,$2,$3,$4,$5) returning id`
 
 	dao := reverseMapUserDAO(user)
 
 	var id int
 	err := r.db.ExecQueryRow(ctx, query,
-		dao.Name, dao.Login, dao.Role, dao.Password).Scan(&id)
+		dao.TGID, dao.Name, dao.Login, dao.Role, dao.Password).Scan(&id)
 	if err != nil {
 		return id, formatError(queryName, err)
 	}

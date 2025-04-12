@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -76,8 +77,8 @@ func (c *Controller) CreateRouter(router *mux.Router) *mux.Router {
 	return router
 }
 
-func (c *Controller) getUserIDByToken(token string) (int, error) {
-	userID, err := c.auth.service.GetUserID(token)
+func (c *Controller) getUserIDByToken(ctx context.Context, token string) (int, error) {
+	user, err := c.auth.service.GetUserByTGID(ctx, token)
 	if errors.Is(err, service.ErrNotFound) {
 		slog.Warn("user_id by token not found", "token", token)
 		return 0, errUserNotFound
@@ -86,7 +87,7 @@ func (c *Controller) getUserIDByToken(token string) (int, error) {
 		return 0, err
 	}
 
-	return userID, nil
+	return user.ID, nil
 }
 
 // TODO: rename to writeErrorCode.

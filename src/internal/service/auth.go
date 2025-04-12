@@ -17,11 +17,13 @@ const passwordCost = 14
 type UserRepository interface {
 	Create(ctx context.Context, user *model.User) (int, error)
 	GetByLogin(ctx context.Context, login string) (*model.User, error)
+	GetByTGID(ctx context.Context, tgID string) (*model.User, error)
 }
 
 type AuthService struct {
 	mx          sync.RWMutex
 	sessions    map[string]*Session
+	users       map[string]*model.User
 	adminSecret string
 
 	userRepo UserRepository
@@ -31,9 +33,32 @@ func NewAuthService(userRepo UserRepository, adminSecret string) *AuthService {
 	return &AuthService{
 		mx:          sync.RWMutex{},
 		sessions:    make(map[string]*Session),
+		users:       make(map[string]*model.User),
 		adminSecret: adminSecret,
 		userRepo:    userRepo,
 	}
+}
+
+func (a *AuthService) GetUserByTGID(ctx context.Context, tgID string) (*model.User, error) {
+	a.mx.RLock()
+	if user, ok := a.users[tgID]; ok {
+		a.mx.RUnlock()
+		return user, nil
+	}
+	a.mx.RUnlock()
+
+	user, err := a.userRepo.GetByTGID(ctx, tgID)
+	if errors.Is(err, repository.ErrNotFound) {
+		return nil, ErrNotFound
+	} else if err != nil {
+		return nil, err
+	}
+
+	a.mx.Lock()
+	a.users[tgID] = user
+	a.mx.Unlock()
+
+	return user, nil
 }
 
 func (a *AuthService) GetUserID(token string) (int, error) {

@@ -167,9 +167,9 @@ func (c *Controller) handlePosterPathRequests(w http.ResponseWriter, r *http.Req
 
 		w.WriteHeader(http.StatusOK)
 	case http.MethodPut:
-		sess, err := parseJWT(token)
+		userID, err := c.getUserIDByToken(ctx, token)
 		if err != nil {
-			writeError(w, fmt.Errorf("%w: %w", errInternal, err))
+			writeError(w, err)
 			break
 		}
 
@@ -182,7 +182,7 @@ func (c *Controller) handlePosterPathRequests(w http.ResponseWriter, r *http.Req
 			break
 		}
 
-		poster, err := reqModelPkg.ParsePosterRequest(r, sess.UserID)
+		poster, err := reqModelPkg.ParsePosterRequest(r, userID)
 		if err != nil {
 			writeError(w, err)
 			break
@@ -227,13 +227,13 @@ func (c *Controller) handlePosterBodyRequests(w http.ResponseWriter, r *http.Req
 	ctx := r.Context()
 	switch r.Method {
 	case http.MethodPost:
-		sess, err := parseJWT(token)
+		userID, err := c.getUserIDByToken(ctx, token)
 		if err != nil {
-			writeError(w, fmt.Errorf("%w: %w", errInternal, err))
+			writeError(w, err)
 			break
 		}
 
-		poster, err := reqModelPkg.ParsePosterRequest(r, sess.UserID)
+		poster, err := reqModelPkg.ParsePosterRequest(r, userID)
 		if err != nil {
 			writeError(w, fmt.Errorf("%w: %w", errInvalidArguments, err))
 			break
@@ -256,10 +256,10 @@ func (c *Controller) handlePosterBodyRequests(w http.ResponseWriter, r *http.Req
 }
 
 func (c *Controller) authorizePoster(ctx context.Context, token string, posterID int) error {
-	userID, err := c.auth.service.GetUserID(token)
+	user, err := c.auth.service.GetUserByTGID(ctx, token)
 	if errors.Is(err, servicePkg.ErrNotFound) {
-		slog.Warn("token not found in sessions")
-		return fmt.Errorf("%w: token not found in sessions", errNotFound)
+		slog.Warn("user not found in db by token", "token", token)
+		return fmt.Errorf("%w: user not found with such tg-id", errNotFound)
 	} else if err != nil {
 		slog.Error("unexpected error occurred while getting user_id by token", "error", err)
 		return err
@@ -275,9 +275,9 @@ func (c *Controller) authorizePoster(ctx context.Context, token string, posterID
 	}
 
 	// TODO add token.role == admin check to skip
-	if poster.UserID != userID {
+	if poster.UserID != user.ID {
 		slog.Warn("poster action is not authorized: posters' user_id is different",
-			"user_id", userID, "poster_user_id", poster.UserID)
+			"user_id", user.ID, "poster_user_id", poster.UserID)
 		return errActionNotAuthorized
 	}
 

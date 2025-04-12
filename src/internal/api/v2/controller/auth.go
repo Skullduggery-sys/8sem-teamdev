@@ -7,12 +7,10 @@ import (
 	"fmt"
 	"log/slog"
 	"net/http"
-	"os"
 
 	reqModelPkg "git.iu7.bmstu.ru/vai20u117/testing/src/internal/api/v2/model"
 	"git.iu7.bmstu.ru/vai20u117/testing/src/internal/model"
 	servicePkg "git.iu7.bmstu.ru/vai20u117/testing/src/internal/service"
-	"github.com/golang-jwt/jwt/v5"
 )
 
 const (
@@ -22,6 +20,7 @@ const (
 type authService interface {
 	GetUserTokenByAdmin(ctx context.Context, adminSecret, login string) (string, error)
 	GetUserID(token string) (int, error)
+	GetUserByTGID(ctx context.Context, tgID string) (*model.User, error)
 	SignUp(ctx context.Context, user *model.User) (int, error)
 	SignIn(ctx context.Context, user *model.User) (string, error)
 	SignOut(ctx context.Context, token string) error
@@ -263,20 +262,4 @@ func (c *Controller) handleSignOutRequests(w http.ResponseWriter, r *http.Reques
 		slog.Error("http method is not allowed", "method", r.Method)
 		w.WriteHeader(http.StatusForbidden)
 	}
-}
-
-func parseJWT(token string) (*servicePkg.Session, error) {
-	claims := jwt.MapClaims{}
-	_, err := jwt.ParseWithClaims(token, claims, func(t *jwt.Token) (interface{}, error) {
-		return []byte(os.Getenv("ADMIN_SECRET")), nil
-	})
-	if err != nil {
-		return nil, err
-	}
-
-	return &servicePkg.Session{
-		Token:  token,
-		Role:   claims["sub"].(string),
-		UserID: int(claims["aud"].(float64)),
-	}, nil
 }

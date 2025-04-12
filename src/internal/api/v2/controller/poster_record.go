@@ -121,7 +121,7 @@ func (c *Controller) handlePosterRecordPathRequests(w http.ResponseWriter, r *ht
 	ctx := r.Context()
 	switch r.Method {
 	case http.MethodPost:
-		userID, err := c.getUserIDByToken(token)
+		userID, err := c.getUserIDByToken(ctx, token)
 		if err != nil {
 			writeError(w, err)
 			break
@@ -178,7 +178,7 @@ func (c *Controller) handlePosterRecordDefaultRequests(w http.ResponseWriter, r 
 	ctx := r.Context()
 	switch r.Method {
 	case http.MethodGet:
-		userID, err := c.getUserIDByToken(token)
+		userID, err := c.getUserIDByToken(ctx, token)
 		if err != nil {
 			writeError(w, err)
 			break
