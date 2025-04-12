@@ -9,5 +9,7 @@ type Poster struct {
 	Genres    []string  `json:"genres"`
 	Chrono    int       `json:"chrono"`
 	UserID    int       `json:"userId"`
+	KPID      string    `json:"kp_id"`
+	ImageURL  string    `json:"image_url"`
 	CreatedAt time.Time `json:"createdat"` // will not be used, satisfy musttag linter
 }

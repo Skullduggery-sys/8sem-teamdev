@@ -14,6 +14,8 @@ type posterDAO struct {
 	Genres    string    `db:"genres"`
 	Chrono    int       `db:"chrono"`
 	UserID    int       `db:"user_id"`
+	KPID      string    `db:"kp_id"`
+	ImageURL  string    `db:"image_url"`
 	CreatedAt time.Time `db:"created_at"`
 }
 
@@ -60,6 +62,8 @@ func mapPosterDAO(poster *posterDAO) *model.Poster {
 		Genres:    genres,
 		Chrono:    poster.Chrono,
 		UserID:    poster.UserID,
+		KPID:      poster.KPID,
+		ImageURL:  poster.ImageURL,
 		CreatedAt: poster.CreatedAt,
 	}
 }
@@ -73,6 +77,8 @@ func reverseMapPosterDAO(poster *model.Poster) *posterDAO {
 		Genres:    genres,
 		Chrono:    poster.Chrono,
 		UserID:    poster.UserID,
+		KPID:      poster.KPID,
+		ImageURL:  poster.ImageURL,
 		CreatedAt: poster.CreatedAt,
 	}
 }
