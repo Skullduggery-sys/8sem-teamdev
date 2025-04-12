@@ -8,6 +8,7 @@ import (
 	"log/slog"
 	"net/http"
 
+	reqModelPkg "git.iu7.bmstu.ru/vai20u117/testing/src/internal/api/v2/model"
 	"git.iu7.bmstu.ru/vai20u117/testing/src/internal/model"
 	servicePkg "git.iu7.bmstu.ru/vai20u117/testing/src/internal/service"
 )
@@ -15,6 +16,8 @@ import (
 const (
 	tokenHeader = "X-User-Token"
 )
+
+var _ = reqModelPkg.ErrorResponse{} // for swagger definition
 
 type authService interface {
 	GetUserByTGID(ctx context.Context, tgID string) (*model.User, error)
@@ -58,8 +61,7 @@ func (h *AuthHandler) SignUp(ctx context.Context, tgID string) ([]byte, error) {
 // @Summary	Sign up
 // @Description	sing up
 // @Tags auth/v2
-// @Param input body reqModelPkg.SignUpRequest true "User body"
-// @Param admin_secret query string false "Admin auth secret"
+// @Param X-User-Token header string true "TG-ID token"
 // @Accept json
 // @Success	201 {integer} int "ID"
 // @Failure	400	{object} reqModelPkg.ErrorResponse "Error"

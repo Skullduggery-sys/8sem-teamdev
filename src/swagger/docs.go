@@ -37,7 +37,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "description": "JWT-format token",
+                        "description": "TG-ID token",
                         "name": "X-User-Token",
                         "in": "header",
                         "required": true
@@ -84,7 +84,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "JWT-format token",
+                        "description": "TG-ID token",
                         "name": "X-User-Token",
                         "in": "header",
                         "required": true
@@ -137,7 +137,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "JWT-format token",
+                        "description": "TG-ID token",
                         "name": "X-User-Token",
                         "in": "header",
                         "required": true
@@ -211,7 +211,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "description": "JWT-format token",
+                        "description": "TG-ID token",
                         "name": "X-User-Token",
                         "in": "header",
                         "required": true
@@ -259,7 +259,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "JWT-format token",
+                        "description": "TG-ID token",
                         "name": "X-User-Token",
                         "in": "header",
                         "required": true
@@ -313,7 +313,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "JWT-format token",
+                        "description": "TG-ID token",
                         "name": "X-User-Token",
                         "in": "header",
                         "required": true
@@ -376,7 +376,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "JWT-format token",
+                        "description": "TG-ID token",
                         "name": "X-User-Token",
                         "in": "header",
                         "required": true
@@ -444,7 +444,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "JWT-format token",
+                        "description": "TG-ID token",
                         "name": "X-User-Token",
                         "in": "header",
                         "required": true
@@ -509,7 +509,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "JWT-format token",
+                        "description": "TG-ID token",
                         "name": "X-User-Token",
                         "in": "header",
                         "required": true
@@ -573,7 +573,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "JWT-format token",
+                        "description": "TG-ID token",
                         "name": "X-User-Token",
                         "in": "header",
                         "required": true
@@ -629,7 +629,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "JWT-format token",
+                        "description": "TG-ID token",
                         "name": "X-User-Token",
                         "in": "header",
                         "required": true
@@ -687,7 +687,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "JWT-format token",
+                        "description": "TG-ID token",
                         "name": "X-User-Token",
                         "in": "header",
                         "required": true
@@ -753,7 +753,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "description": "JWT-format token",
+                        "description": "TG-ID token",
                         "name": "X-User-Token",
                         "in": "header",
                         "required": true
@@ -800,7 +800,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "JWT-format token",
+                        "description": "TG-ID token",
                         "name": "X-User-Token",
                         "in": "header",
                         "required": true
@@ -874,7 +874,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "description": "JWT-format token",
+                        "description": "TG-ID token",
                         "name": "X-User-Token",
                         "in": "header",
                         "required": true
@@ -922,7 +922,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "JWT-format token",
+                        "description": "TG-ID token",
                         "name": "X-User-Token",
                         "in": "header",
                         "required": true
@@ -966,111 +966,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v2/sign-in": {
-            "post": {
-                "description": "sing in",
-                "consumes": [
-                    "application/json"
-                ],
-                "tags": [
-                    "auth/v2"
-                ],
-                "summary": "Sign in",
-                "parameters": [
-                    {
-                        "description": "User body",
-                        "name": "input",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.SignInRequest"
-                        }
-                    },
-                    {
-                        "type": "string",
-                        "description": "Admin auth secret",
-                        "name": "admin_secret",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Token",
-                        "schema": {
-                            "$ref": "#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.TokenResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Error",
-                        "schema": {
-                            "$ref": "#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Error",
-                        "schema": {
-                            "$ref": "#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Error",
-                        "schema": {
-                            "$ref": "#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Error",
-                        "schema": {
-                            "$ref": "#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/v2/sign-out": {
-            "post": {
-                "description": "sing out",
-                "consumes": [
-                    "application/json"
-                ],
-                "tags": [
-                    "auth/v2"
-                ],
-                "summary": "Sign out",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "JWT-format token",
-                        "name": "X-User-Token",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    },
-                    "400": {
-                        "description": "Error",
-                        "schema": {
-                            "$ref": "#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Error",
-                        "schema": {
-                            "$ref": "#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Error",
-                        "schema": {
-                            "$ref": "#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
         "/api/v2/sign-up": {
             "post": {
                 "description": "sing up",
@@ -1083,19 +978,11 @@ const docTemplate = `{
                 "summary": "Sign up",
                 "parameters": [
                     {
-                        "description": "User body",
-                        "name": "input",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.SignUpRequest"
-                        }
-                    },
-                    {
                         "type": "string",
-                        "description": "Admin auth secret",
-                        "name": "admin_secret",
-                        "in": "query"
+                        "description": "TG-ID token",
+                        "name": "X-User-Token",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -1111,8 +998,8 @@ const docTemplate = `{
                             "$ref": "#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse"
                         }
                     },
-                    "401": {
-                        "description": "Error",
+                    "409": {
+                        "description": "user already exists",
                         "schema": {
                             "$ref": "#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse"
                         }
@@ -1139,7 +1026,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "JWT-format token",
+                        "description": "TG-ID token",
                         "name": "X-User-Token",
                         "in": "header",
                         "required": true
@@ -1325,43 +1212,6 @@ const docTemplate = `{
                 },
                 "year": {
                     "type": "integer"
-                }
-            }
-        },
-        "git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.SignInRequest": {
-            "type": "object",
-            "properties": {
-                "login": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                }
-            }
-        },
-        "git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.SignUpRequest": {
-            "type": "object",
-            "properties": {
-                "login": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                },
-                "role": {
-                    "type": "string"
-                }
-            }
-        },
-        "git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.TokenResponse": {
-            "type": "object",
-            "properties": {
-                "token": {
-                    "type": "string",
-                    "example": "jwt-format token"
                 }
             }
         }
