@@ -4,10 +4,10 @@ create type role_type as enum ('user', 'admin');
 
 create table AppUser (
     id serial primary key,
-    name text not null,
-    login text not null,
+    name text,
+    login text,
     role role_type default 'user',
-    password text not null
+    password text
 );
 
 create table Poster (

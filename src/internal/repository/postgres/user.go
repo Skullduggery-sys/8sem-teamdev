@@ -51,13 +51,12 @@ func (r *UserRepository) GetByTGID(ctx context.Context, tgID string) (*model.Use
 
 func (r *UserRepository) Create(ctx context.Context, user *model.User) (int, error) {
 	queryName := "UserRepository/Create"
-	query := `insert into appuser(tg_id,name,login,role,password) values($1,$2,$3,$4,$5) returning id`
+	query := `insert into appuser(tg_id) values($1) returning id`
 
 	dao := reverseMapUserDAO(user)
 
 	var id int
-	err := r.db.ExecQueryRow(ctx, query,
-		dao.TGID, dao.Name, dao.Login, dao.Role, dao.Password).Scan(&id)
+	err := r.db.ExecQueryRow(ctx, query, dao.TGID).Scan(&id)
 	if err != nil {
 		return id, formatError(queryName, err)
 	}

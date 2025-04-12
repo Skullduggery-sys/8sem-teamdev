@@ -10,7 +10,6 @@ import (
 	"syscall"
 	"time"
 
-	apiv1 "git.iu7.bmstu.ru/vai20u117/testing/src/internal/api/v1/controller"
 	apiv2 "git.iu7.bmstu.ru/vai20u117/testing/src/internal/api/v2/controller"
 	dbpostgres "git.iu7.bmstu.ru/vai20u117/testing/src/internal/db/postgres"
 	repository "git.iu7.bmstu.ru/vai20u117/testing/src/internal/repository/postgres"
@@ -40,13 +39,11 @@ func main() {
 	database := mustLoadDB(ctx)
 	defer database.GetPool(ctx).Close()
 
-	controllerV1 := createControllerV1(database)
 	controllerV2 := createControllerV2(database)
 
 	serverPort := ":" + getAppPort()
 	router := mux.NewRouter()
 	// controller.CreateRouter(router)
-	controllerV1.CreateRouter(router.PathPrefix("/api/v1").Subrouter())
 	controllerV2.CreateRouter(router.PathPrefix("/api/v2").Subrouter())
 
 	server := &http.Server{
@@ -71,16 +68,6 @@ func main() {
 	slog.Info("Server shutting down")
 }
 
-func createControllerV1(database *dbpostgres.Database) *apiv1.Controller {
-	return apiv1.NewController(
-		initPosterHandlerV1(database),
-		initListHandlerV1(database),
-		initListPosterHandlerV1(database),
-		initPosterRecordHandlerV1(database),
-		initAuthHandlerV1(database, os.Getenv(adminSecretEnv)),
-	)
-}
-
 func createControllerV2(database *dbpostgres.Database) *apiv2.Controller {
 	return apiv2.NewController(
 		initPosterHandlerV2(database),
@@ -89,36 +76,6 @@ func createControllerV2(database *dbpostgres.Database) *apiv2.Controller {
 		initPosterRecordHandlerV2(database),
 		initAuthHandlerV2(database, os.Getenv(adminSecretEnv)),
 	)
-}
-
-func initPosterHandlerV1(database *dbpostgres.Database) *apiv1.PosterHandler {
-	posterRepository := repository.NewPosterRepository(database)
-	posterService := service.NewPosterService(posterRepository)
-	return apiv1.NewPosterHandler(posterService)
-}
-
-func initListHandlerV1(database *dbpostgres.Database) *apiv1.ListHandler {
-	listRepository := repository.NewListRepository(database)
-	listService := service.NewListService(listRepository)
-	return apiv1.NewListHandler(listService)
-}
-
-func initListPosterHandlerV1(database *dbpostgres.Database) *apiv1.ListPosterHandler {
-	listPosterRepository := repository.NewListPosterRepository(database)
-	listPosterService := service.NewListPosterService(listPosterRepository)
-	return apiv1.NewListPosterHandler(listPosterService)
-}
-
-func initPosterRecordHandlerV1(database *dbpostgres.Database) *apiv1.PosterRecordHandler {
-	historyRepository := repository.NewPosterRecordRepository(database)
-	historyService := service.NewPosterRecordService(historyRepository)
-	return apiv1.NewPosterRecordHandler(historyService)
-}
-
-func initAuthHandlerV1(database *dbpostgres.Database, adminToken string) *apiv1.AuthHandler {
-	userRepository := repository.NewUserRepository(database)
-	authService := service.NewAuthService(userRepository, adminToken)
-	return apiv1.NewAuthHandler(authService)
 }
 
 func initPosterHandlerV2(database *dbpostgres.Database) *apiv2.PosterHandler {

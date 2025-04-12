@@ -30,7 +30,7 @@ func NewPosterRecordHandler(service PosterRecordService) *PosterRecordHandler {
 // @Summary	List all user records
 // @Description	lists all user records
 // @Tags poster-records/v2
-// @Param X-User-Token header string true "JWT-format token"
+// @Param X-User-Token header string true "TG-ID token"
 // @Accept json
 // @Success	200 {array} reqModelPkg.PosterRecordResponse
 // @Failure	400	{object} reqModelPkg.ErrorResponse "Error"
@@ -61,7 +61,7 @@ func (h *PosterRecordHandler) GetUserRecords(ctx context.Context, userID int) ([
 // @Summary	Create poster record
 // @Description	create poster record
 // @Tags poster-records/v2
-// @Param X-User-Token header string true "JWT-format token"
+// @Param X-User-Token header string true "TG-ID token"
 // @Param poster_id path integer true "PosterId"
 // @Accept json
 // @Success	201 {object} reqModelPkg.IDResponse "id"
@@ -89,7 +89,7 @@ func (h *PosterRecordHandler) CreateRecord(ctx context.Context, posterID, userID
 // @Summary	Delete user record
 // @Description	delete user record
 // @Tags poster-records/v2
-// @Param X-User-Token header string true "JWT-format token"
+// @Param X-User-Token header string true "TG-ID token"
 // @Param poster_id path integer true "PosterId"
 // @Accept json
 // @Success	200
@@ -113,10 +113,6 @@ func (h *PosterRecordHandler) DeleteRecord(ctx context.Context, posterID int) er
 //nolint:cyclop // http handler methods router
 func (c *Controller) handlePosterRecordPathRequests(w http.ResponseWriter, r *http.Request) {
 	token := r.Header.Get(tokenHeader)
-	if authErr := c.auth.service.Authorize(token); authErr != nil {
-		writeError(w, fmt.Errorf("%w: %w", errActionNotAuthorized, authErr))
-		return
-	}
 
 	ctx := r.Context()
 	switch r.Method {
@@ -170,10 +166,6 @@ func (c *Controller) handlePosterRecordPathRequests(w http.ResponseWriter, r *ht
 
 func (c *Controller) handlePosterRecordDefaultRequests(w http.ResponseWriter, r *http.Request) {
 	token := r.Header.Get(tokenHeader)
-	if authErr := c.auth.service.Authorize(token); authErr != nil {
-		writeError(w, fmt.Errorf("%w: %w", errActionNotAuthorized, authErr))
-		return
-	}
 
 	ctx := r.Context()
 	switch r.Method {

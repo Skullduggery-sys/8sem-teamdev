@@ -34,7 +34,7 @@ func NewListHandler(service listService) *ListHandler {
 // @Summary	Get
 // @Description	get list
 // @Tags lists/v2
-// @Param X-User-Token header string true "JWT-format token"
+// @Param X-User-Token header string true "TG-ID token"
 // @Param id path integer true "ListId"
 // @Accept json
 // @Success	200 {object} reqModelPkg.ListResponse
@@ -66,7 +66,7 @@ func (h *ListHandler) Get(ctx context.Context, listID int) ([]byte, error) {
 // @Summary	Get user root list
 // @Description	get user root list
 // @Tags lists/v2
-// @Param X-User-Token header string true "JWT-format token"
+// @Param X-User-Token header string true "TG-ID token"
 // @Accept json
 // @Success	200 {object} reqModelPkg.ListResponse
 // @Failure	400	{object} reqModelPkg.ErrorResponse "Error"
@@ -77,8 +77,8 @@ func (h *ListHandler) Get(ctx context.Context, listID int) ([]byte, error) {
 func (h *ListHandler) GetUserRoot(ctx context.Context, userID int) ([]byte, error) {
 	list, err := h.service.GetUserRoot(ctx, userID)
 	if errors.Is(err, servicePkg.ErrNotFound) {
-		slog.Warn("list not found", "list_id", userID)
-		return nil, fmt.Errorf("%w: %w", errNotFound, err)
+		slog.Warn("user root-list not found", "user_id", userID)
+		return nil, fmt.Errorf("%w: user has no root list yet", errNotFound)
 	} else if err != nil {
 		slog.Error("unexpected error occurred while getting list", "error", err)
 		return nil, fmt.Errorf("%w: %w", errInternal, err)
@@ -97,7 +97,7 @@ func (h *ListHandler) GetUserRoot(ctx context.Context, userID int) ([]byte, erro
 // @Summary	Get sublists
 // @Description	get sublists of the list
 // @Tags lists/v2
-// @Param X-User-Token header string true "JWT-format token"
+// @Param X-User-Token header string true "TG-ID token"
 // @Param id path integer true "ListId"
 // @Accept json
 // @Success	200 {array} reqModelPkg.ListResponse
@@ -133,7 +133,7 @@ func (h *ListHandler) GetSublists(ctx context.Context, listID int) ([]byte, erro
 // @Description	create list
 // @Tags lists/v2
 // @Param input body reqModelPkg.ListCreateRequest true "List body"
-// @Param X-User-Token header string true "JWT-format token"
+// @Param X-User-Token header string true "TG-ID token"
 // @Accept json
 // @Success	201 {object} reqModelPkg.IDResponse "id"
 // @Failure	400	{object} reqModelPkg.ErrorResponse "Error"
@@ -161,7 +161,7 @@ func (h *ListHandler) Create(ctx context.Context, list *model.List) ([]byte, err
 // @Tags lists/v2
 // @Param input body reqModelPkg.ListUpdateRequest true "List body"
 // @Param id path integer true "ListId"
-// @Param X-User-Token header string true "JWT-format token"
+// @Param X-User-Token header string true "TG-ID token"
 // @Accept json
 // @Success	200
 // @Failure	400	{object} reqModelPkg.ErrorResponse "Error"
@@ -185,7 +185,7 @@ func (h *ListHandler) Update(ctx context.Context, list *model.List) error {
 // @Summary	Delete
 // @Description	delete list
 // @Tags lists/v2
-// @Param X-User-Token header string true "JWT-format token"
+// @Param X-User-Token header string true "TG-ID token"
 // @Param id path integer true "ListId"
 // @Accept json
 // @Success	200
@@ -207,11 +207,7 @@ func (h *ListHandler) Delete(ctx context.Context, listID int) error {
 }
 
 func (c *Controller) handleSublistsRequests(w http.ResponseWriter, r *http.Request) {
-	token := r.Header.Get(tokenHeader)
-	if authErr := c.auth.service.Authorize(token); authErr != nil {
-		writeError(w, fmt.Errorf("%w: %w", errActionNotAuthorized, authErr))
-		return
-	}
+	_ = r.Header.Get(tokenHeader) // TODO: fix auth-disabled handler
 
 	ctx := r.Context()
 	switch r.Method {
@@ -237,10 +233,6 @@ func (c *Controller) handleSublistsRequests(w http.ResponseWriter, r *http.Reque
 
 func (c *Controller) handleListUserRequests(w http.ResponseWriter, r *http.Request) {
 	token := r.Header.Get(tokenHeader)
-	if authErr := c.auth.service.Authorize(token); authErr != nil {
-		writeError(w, fmt.Errorf("%w: %w", errActionNotAuthorized, authErr))
-		return
-	}
 
 	ctx := r.Context()
 	switch r.Method {
@@ -267,10 +259,6 @@ func (c *Controller) handleListUserRequests(w http.ResponseWriter, r *http.Reque
 //nolint:funlen,cyclop // http handler methods router
 func (c *Controller) handleListPathRequests(w http.ResponseWriter, r *http.Request) {
 	token := r.Header.Get(tokenHeader)
-	if authErr := c.auth.service.Authorize(token); authErr != nil {
-		writeError(w, fmt.Errorf("%w: %w", errActionNotAuthorized, authErr))
-		return
-	}
 
 	ctx := r.Context()
 	switch r.Method {
@@ -347,10 +335,6 @@ func (c *Controller) handleListPathRequests(w http.ResponseWriter, r *http.Reque
 
 func (c *Controller) handleListDefaultRequests(w http.ResponseWriter, r *http.Request) {
 	token := r.Header.Get(tokenHeader)
-	if authErr := c.auth.service.Authorize(token); authErr != nil {
-		writeError(w, fmt.Errorf("%w: %w", errActionNotAuthorized, authErr))
-		return
-	}
 
 	ctx := r.Context()
 	switch r.Method {

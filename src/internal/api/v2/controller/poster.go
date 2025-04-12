@@ -31,7 +31,7 @@ func NewPosterHandler(service posterService) *PosterHandler {
 // @Summary	Get
 // @Description	get poster
 // @Tags posters/v2
-// @Param X-User-Token header string true "JWT-format token"
+// @Param X-User-Token header string true "TG-ID token"
 // @Param id path integer true "PosterId"
 // @Accept json
 // @Success	200 {object} reqModelPkg.PosterResponse "Poster"
@@ -64,7 +64,7 @@ func (h *PosterHandler) Get(ctx context.Context, posterID int) ([]byte, error) {
 // @Description	create poster
 // @Tags posters/v2
 // @Param input body reqModelPkg.PosterRequest true "Poster body"
-// @Param X-User-Token header string true "JWT-format token"
+// @Param X-User-Token header string true "TG-ID token"
 // @Accept json
 // @Success	201 {object} reqModelPkg.IDResponse "id"
 // @Failure	400	{object} reqModelPkg.ErrorResponse "Error"
@@ -92,7 +92,7 @@ func (h *PosterHandler) Create(ctx context.Context, poster *model.Poster) ([]byt
 // @Tags posters/v2
 // @Param input body reqModelPkg.PosterRequest true "Poster body"
 // @Param id path integer true "PosterId"
-// @Param X-User-Token header string true "JWT-format token"
+// @Param X-User-Token header string true "TG-ID token"
 // @Accept json
 // @Success	200
 // @Failure	400	{object} reqModelPkg.ErrorResponse "Error"
@@ -116,7 +116,7 @@ func (h *PosterHandler) Update(ctx context.Context, poster *model.Poster) error 
 // @Summary	Delete
 // @Description	delete poster
 // @Tags posters/v2
-// @Param X-User-Token header string true "JWT-format token"
+// @Param X-User-Token header string true "TG-ID token"
 // @Param id path integer true "PosterId"
 // @Accept json
 // @Success	200
@@ -139,10 +139,6 @@ func (h *PosterHandler) Delete(ctx context.Context, posterID int) error {
 
 func (c *Controller) handlePosterPathRequests(w http.ResponseWriter, r *http.Request) {
 	token := r.Header.Get(tokenHeader)
-	if authErr := c.auth.service.Authorize(token); authErr != nil {
-		writeError(w, fmt.Errorf("%w: %w", errActionNotAuthorized, authErr))
-		return
-	}
 
 	ctx := r.Context()
 	switch r.Method {
@@ -219,10 +215,6 @@ func (c *Controller) handlePosterPathRequests(w http.ResponseWriter, r *http.Req
 
 func (c *Controller) handlePosterBodyRequests(w http.ResponseWriter, r *http.Request) {
 	token := r.Header.Get(tokenHeader)
-	if authErr := c.auth.service.Authorize(token); authErr != nil {
-		writeError(w, fmt.Errorf("%w: %w", errActionNotAuthorized, authErr))
-		return
-	}
 
 	ctx := r.Context()
 	switch r.Method {

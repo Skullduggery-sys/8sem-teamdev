@@ -42,13 +42,7 @@ func (c *Controller) CreateRouter(router *mux.Router) *mux.Router {
 	// /swagger/index.html
 	router.PathPrefix("/swagger").Handler(httpSwagger.WrapHandler)
 
-	router.HandleFunc("/get-user-token", c.handleGetUserTokenRequests).
-		Methods(http.MethodPost)
 	router.HandleFunc("/sign-up", c.handleSignUpRequests).
-		Methods(http.MethodPost)
-	router.HandleFunc("/sign-in", c.handleSignInRequests).
-		Methods(http.MethodPost)
-	router.HandleFunc("/sign-out", c.handleSignOutRequests).
 		Methods(http.MethodPost)
 
 	router.HandleFunc("/posters/{id}", c.handlePosterPathRequests).
@@ -103,6 +97,8 @@ func writeError(w http.ResponseWriter, err error) {
 		w.WriteHeader(http.StatusBadRequest)
 	case errors.Is(err, errActionNotAuthorized):
 		w.WriteHeader(http.StatusUnauthorized)
+	case errors.Is(err, errUserAlreadyExists):
+		w.WriteHeader(http.StatusConflict)
 	default:
 		w.WriteHeader(http.StatusTeapot)
 		slog.Error("type of error is unknown to controller, returning teapot status", "error", err)

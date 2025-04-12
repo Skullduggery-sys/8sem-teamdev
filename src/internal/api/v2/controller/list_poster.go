@@ -33,7 +33,7 @@ func NewListPosterHandler(service listPosterService) *ListPosterHandler {
 // @Summary	Get posters in list
 // @Description	get posters in list
 // @Tags lists/v2
-// @Param X-User-Token header string true "JWT-format token"
+// @Param X-User-Token header string true "TG-ID token"
 // @Param list_id path integer true "ListId"
 // @Success	200 {array} reqModelPkg.ListPosterResponse
 // @Failure	400	{object} reqModelPkg.ErrorResponse "Error"
@@ -66,7 +66,7 @@ func (h *ListPosterHandler) GetPosters(ctx context.Context, listID int) ([]byte,
 // @Summary	Add poster in list
 // @Description	Adds poster in list. If poster already exists in some list, it will be moved to new list.
 // @Tags lists/v2
-// @Param X-User-Token header string true "JWT-format token"
+// @Param X-User-Token header string true "TG-ID token"
 // @Param list_id path integer true "ListId"
 // @Param poster_id path integer true "PosterId"
 // @Success	200 "Poster moved"
@@ -93,7 +93,7 @@ func (h *ListPosterHandler) AddPoster(ctx context.Context, listID, posterID int)
 // @Summary	Change poster position in list
 // @Description	change poster position in list
 // @Tags lists/v2
-// @Param X-User-Token header string true "JWT-format token"
+// @Param X-User-Token header string true "TG-ID token"
 // @Param list_id path integer true "ListId"
 // @Param poster_id path integer true "PosterId"
 // @Param position body reqModelPkg.ListPositionRequest true "Change position body"
@@ -116,7 +116,7 @@ func (h *ListPosterHandler) ChangePosterPosition(ctx context.Context, listID, po
 // @Summary	Delete poster from list
 // @Description	delete poster from list
 // @Tags lists/v2
-// @Param X-User-Token header string true "JWT-format token"
+// @Param X-User-Token header string true "TG-ID token"
 // @Param list_id path integer true "ListId"
 // @Param poster_id path integer true "PosterId"
 // @Accept json
@@ -140,10 +140,6 @@ func (h *ListPosterHandler) DeletePoster(ctx context.Context, listID, posterID i
 
 func (c *Controller) handleListPosterRequests(w http.ResponseWriter, r *http.Request) {
 	token := r.Header.Get(tokenHeader)
-	if authErr := c.auth.service.Authorize(token); authErr != nil {
-		writeError(w, fmt.Errorf("%w: %w", errActionNotAuthorized, authErr))
-		return
-	}
 
 	ctx := r.Context()
 	listID, err := parseInt(r, "list_id")
@@ -232,10 +228,6 @@ func (c *Controller) handleListPosterRequests(w http.ResponseWriter, r *http.Req
 
 func (c *Controller) handleGetListPostersRequests(w http.ResponseWriter, r *http.Request) {
 	token := r.Header.Get(tokenHeader)
-	if authErr := c.auth.service.Authorize(token); authErr != nil {
-		writeError(w, fmt.Errorf("%w: %w", errActionNotAuthorized, authErr))
-		return
-	}
 
 	ctx := r.Context()
 	listID, err := parseInt(r, "list_id")
