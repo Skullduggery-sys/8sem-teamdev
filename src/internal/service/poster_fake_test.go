@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"git.iu7.bmstu.ru/vai20u117/testing/src/internal/model"
@@ -26,6 +27,10 @@ func (r *fakePosterRepo) Create(_ context.Context, poster *model.Poster) (int, e
 	poster.ID = len(r.repo) + 101
 	r.repo[poster.ID] = *poster
 	return poster.ID, nil
+}
+
+func (*fakePosterRepo) CreateFromKP(_ context.Context, _ string, _ int) (int, error) {
+	return 0, fmt.Errorf("unimplemented")
 }
 
 func (r *fakePosterRepo) Get(_ context.Context, posterID int) (*model.Poster, error) {
@@ -62,7 +67,7 @@ func TestFake_PosterCreate(t *testing.T) {
 	repo := &fakePosterRepo{
 		repo: make(map[int]model.Poster),
 	}
-	service := NewPosterService(repo)
+	service := NewPosterService(repo, nil, "")
 
 	poster := testPoster
 
@@ -85,7 +90,7 @@ func TestFake_PosterUpdate_ok(t *testing.T) {
 	repo := &fakePosterRepo{
 		repo: make(map[int]model.Poster),
 	}
-	service := NewPosterService(repo)
+	service := NewPosterService(repo, nil, "")
 
 	poster := testPoster
 
@@ -113,7 +118,7 @@ func TestFake_PosterUpdate_notFound(t *testing.T) {
 	repo := &fakePosterRepo{
 		repo: make(map[int]model.Poster),
 	}
-	service := NewPosterService(repo)
+	service := NewPosterService(repo, nil, "")
 
 	poster := testPoster
 
@@ -130,7 +135,7 @@ func TestFake_PosterDelete_ok(t *testing.T) {
 	repo := &fakePosterRepo{
 		repo: make(map[int]model.Poster),
 	}
-	service := NewPosterService(repo)
+	service := NewPosterService(repo, nil, "")
 
 	poster := testPoster
 
@@ -153,7 +158,7 @@ func TestFake_PosterDelete_notFound(t *testing.T) {
 	repo := &fakePosterRepo{
 		repo: make(map[int]model.Poster),
 	}
-	service := NewPosterService(repo)
+	service := NewPosterService(repo, nil, "")
 
 	// Act
 	err := service.Delete(ctx, testPoster.ID)

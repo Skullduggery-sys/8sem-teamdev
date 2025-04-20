@@ -49,6 +49,8 @@ func (c *Controller) CreateRouter(router *mux.Router) *mux.Router {
 		Methods(http.MethodGet, http.MethodPut, http.MethodDelete)
 	router.HandleFunc("/posters", c.handlePosterBodyRequests).
 		Methods(http.MethodPost)
+	router.HandleFunc("/posters/kp", c.handleKPPosterBodyRequests).
+		Methods(http.MethodPost)
 
 	router.HandleFunc("/lists/{id}", c.handleListPathRequests).
 		Methods(http.MethodGet, http.MethodPut, http.MethodDelete)

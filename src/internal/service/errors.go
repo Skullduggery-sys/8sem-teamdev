@@ -8,5 +8,6 @@ var (
 	ErrGeneratingHash        = errors.New("failed to generate hash from password")
 	ErrBadPassword           = errors.New("password is not matched with the login")
 	ErrLoginAlreadyExists    = errors.New("user with such login already exists")
+	ErrKPRequest             = errors.New("failed to perform request to Kinopoisk API")
 	ErrCreated               = errors.New("201 ok")
 )

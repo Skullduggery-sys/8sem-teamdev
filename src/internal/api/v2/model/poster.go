@@ -57,7 +57,7 @@ func ParsePosterRequest(r *http.Request, userID int) (*svcModel.Poster, error) {
 	}, nil
 }
 
-func ParsePosterKPRequest(r *http.Request, userID int) (string, error) {
+func ParsePosterKPRequest(r *http.Request) (string, error) {
 	var req PosterKPRequest
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
@@ -66,6 +66,10 @@ func ParsePosterKPRequest(r *http.Request, userID int) (string, error) {
 
 	if err = json.Unmarshal(body, &req); err != nil {
 		return "", fmt.Errorf("request cannot be unmarshalled: %w", err)
+	}
+
+	if req.KPID == "" {
+		return "", fmt.Errorf("kp_id is missing")
 	}
 
 	return req.KPID, nil
