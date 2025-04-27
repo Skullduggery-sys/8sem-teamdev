@@ -24,8 +24,5 @@ func NewDB(ctx context.Context, cfg *DBConfig) (*Database, error) {
 		return nil, err
 	}
 
-	fmt.Print("!! %s", fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=%s",
-		cfg.Host, cfg.Port, cfg.Username, cfg.DBName, cfg.Password, cfg.SSLMode))
-
 	return newDatabase(pool), nil
 }
