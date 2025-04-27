@@ -86,9 +86,16 @@ jobs:
       - build
     steps:
       - uses: actions/checkout@v4
-      - name: Release
+
+      - name: Build Docker image
+        working-directory: src
         run: |
-          cd src
-          docker tag backend:latest skullduggerysys/filmsbot:latest          
+          docker build -t skullduggerysys/filmsbot:latest .
+
+      - name: Log in to Docker Hub
+        run: |
           docker login -u artyombarskov@gmail.com -p w0nk9PZTM
+
+      - name: Push Docker image
+        run: |
           docker push skullduggerysys/filmsbot:latest
