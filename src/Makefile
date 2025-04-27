@@ -43,6 +43,8 @@ nginx-errors:
 	gedit /var/log/nginx/error.log
 nginx-test:
 	k6 run ./nginx/test/script.js
+unit:
+	go test ./...
 
 # misc:
 # sudo netstat -lpn |grep :9080

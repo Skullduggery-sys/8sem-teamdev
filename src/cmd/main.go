@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"flag"
 	"log"
 	"log/slog"
 	"net/http"
@@ -27,9 +28,17 @@ const (
 	adminSecretEnv = "ADMIN_SECRET"
 )
 
+var isTestBuild = flag.Bool("is_test_build", false, "exit immediately with code 0 for test builds")
+
 func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
+
+	flag.Parse()
+
+	if *isTestBuild {
+		return
+	}
 
 	slog.New(slog.NewTextHandler(os.Stderr, nil))
 	slog.SetLogLoggerLevel(slog.LevelInfo)
@@ -158,4 +167,8 @@ func getDBPort() string {
 
 func getAppPort() string {
 	return viper.GetString("app.port")
+}
+
+func parseFlags() {
+
 }

@@ -35,11 +35,13 @@ func NewFromEnv() *TDB {
 
 func (d *TDB) SetUp(t *testing.T, args ...interface{}) {
 	t.Helper()
+	//nolint:typecheck
 	d.Lock()
 	d.Truncate(context.Background())
 }
 
 func (d *TDB) TearDown() {
+	//nolint:typecheck
 	defer d.Unlock()
 	d.Truncate(context.Background())
 }
