@@ -77,3 +77,18 @@ jobs:
         run: |
           cd src
           make unit
+  deploy:
+    runs-on: ubuntu-latest
+    needs:
+      - test
+      - lint_sql
+      - lint_go
+      - build
+    steps:
+      - uses: actions/checkout@v4
+      - name: Release
+        run: |
+          cd src
+          docker tag backend:latest skullduggerysys/filmsbot:latest          
+          docker login -u artyombarskov@gmail.com -p w0nk9PZTM
+          docker push skullduggerysys/filmsbot:latest

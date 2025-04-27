@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"flag"
+	"fmt"
 	"log"
 	"log/slog"
 	"net/http"
@@ -28,7 +29,10 @@ const (
 	adminSecretEnv = "ADMIN_SECRET"
 )
 
-var isTestBuild = flag.Bool("is_test_build", false, "exit immediately with code 0 for test builds")
+var (
+	isTestBuild = flag.Bool("is_test_build", false, "exit immediately with code 0 for test builds")
+	configPath  = flag.String("config", "config.yml", "path to config file")
+)
 
 func main() {
 	ctx, cancel := context.WithCancel(context.Background())
@@ -43,7 +47,7 @@ func main() {
 	slog.New(slog.NewTextHandler(os.Stderr, nil))
 	slog.SetLogLoggerLevel(slog.LevelInfo)
 
-	mustLoadConfigs()
+	mustLoadConfigs(*configPath)
 
 	database := mustLoadDB(ctx)
 	defer database.GetPool(ctx).Close()
@@ -121,8 +125,8 @@ func initAuthHandlerV2(database *dbpostgres.Database, adminToken string) *apiv2.
 	return apiv2.NewAuthHandler(authService)
 }
 
-func mustLoadConfigs() {
-	if err := initConfig(); err != nil {
+func mustLoadConfigs(configName string) {
+	if err := initConfig(configName); err != nil {
 		log.Fatal("Failed to init configs: ", err)
 	}
 	if err := godotenv.Load(); err != nil {
@@ -134,12 +138,13 @@ func mustLoadDB(ctx context.Context) *dbpostgres.Database {
 	database, err := dbpostgres.NewDB(ctx, &dbpostgres.DBConfig{
 		Host: viper.GetString("db.host"),
 		// Port:     viper.GetString("db.port"),
-		Port:     getDBPort(),
+		Port:     viper.GetString("db.port"),
 		Username: getDBUsername(),
 		Password: getDBPassword(),
 		DBName:   viper.GetString("db.dbname"),
 		SSLMode:  viper.GetString("db.sslmode"),
 	})
+	fmt.Printf("%s %s end\n", getDBUsername(), getDBPassword())
 	if err != nil {
 		log.Fatal("Failed to create db: ", err)
 	}
@@ -147,9 +152,9 @@ func mustLoadDB(ctx context.Context) *dbpostgres.Database {
 	return database
 }
 
-func initConfig() error {
+func initConfig(configName string) error {
 	viper.AddConfigPath("configs")
-	viper.SetConfigName("config")
+	viper.SetConfigName(configName)
 	return viper.ReadInConfig()
 }
 
