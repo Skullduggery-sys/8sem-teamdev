@@ -133,18 +133,27 @@ async def main():
     @dp.message(CommandStart())
     async def on_start(message: Message, state: FSMContext):
         user_token = str(message.from_user.id)
+        is_new = False
         async with APIClient(API_URL) as api:
             try:
                 await api.signup(user_token)
+                is_new = True
             except APIError as e:
                 if e.status != 409:
                     logger.error(f"Signup error: {e}")
+        if is_new:
+            await message.answer(
+                "👋 Привет, киноман! Добро пожаловать в FilmOlistBot! 🍿\n\n"
+                "Здесь ты можешь создавать списки фильмов, добавлять туда понравившиеся картины и отмечать просмотренное. 🎬\n\n"
+                "Чтобы начать, дай имя своей будущей библиотеке 🤩"
+            )
         try:
             async with APIClient(API_URL) as api:
                 root = await api.get_root_list(user_token)
         except APIError as e:
             if e.status == 404:
-                await message.answer("У вас еще нет корневого списка. Введите его название:")
+                if not is_new:
+                    await message.answer("Для начала, давай придумаем имя твоей будущей библиотеки 😊")
                 await state.set_state(Form.root_name)
                 return
             await message.answer("Ошибка при получении списка.")
@@ -306,7 +315,7 @@ async def main():
             except APIError:
                 await callback.answer("Не удалось получить данные постера.")
                 return
-        # Формируем подпись на русском с эмодзи
+            
         caption = (
             f"🎬 {info['name']} ({info['year']})\n"
             f"⏱️ Хронометраж: {info['chrono']} мин\n"
@@ -320,7 +329,7 @@ async def main():
             InlineKeyboardButton(text="✅ Просмотрено", callback_data=f"record_{list_id}_{poster_id}")
             ],
             [
-                # Везде, где вы строите клавиатуру:
+
             InlineKeyboardButton(text="⬅️ Назад", callback_data=f"back_{list_id}"),
             InlineKeyboardButton(text="🏠 Главный", callback_data="home"),
             ],
@@ -341,7 +350,7 @@ async def main():
     async def ask_add_poster(callback: CallbackQuery, state: FSMContext):
         list_id = int(callback.data.split('_')[-1])
         await callback.answer()
-        await callback.message.answer("Мы добавим фильм прямо по ссылке из Кинопоиска (из обычного, не HD 🥲), просто пришли нам ее, либо его айдишник (чиселки в конце)😉 :")
+        await callback.message.answer("Мы добавим фильм в список прямо по ссылке из Кинопоиска (из обычного, не HD 🥲), просто пришли нам ее, либо айдишник фильма (чиселки в конце) 😉 :")
         await state.update_data(list_id=list_id)
         await state.set_state(Form.add_poster)
 
