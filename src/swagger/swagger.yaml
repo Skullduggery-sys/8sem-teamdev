@@ -48,6 +48,11 @@ definitions:
       name:
         type: string
     type: object
+  git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.PosterKPRequest:
+    properties:
+      kp_id:
+        type: string
+    type: object
   git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.PosterRecordResponse:
     properties:
       createdat:
@@ -67,6 +72,10 @@ definitions:
         items:
           type: string
         type: array
+      image_url:
+        type: string
+      kp_id:
+        type: string
       name:
         type: string
       year:
@@ -85,6 +94,10 @@ definitions:
         type: array
       id:
         type: integer
+      image_url:
+        type: string
+      kp_id:
+        type: string
       name:
         type: string
       userId:
@@ -730,6 +743,43 @@ paths:
           schema:
             $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
       summary: Update
+      tags:
+      - posters/v2
+  /api/v2/posters/kp:
+    post:
+      consumes:
+      - application/json
+      description: create poster
+      parameters:
+      - description: KP ID body
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.PosterKPRequest'
+      - description: TG-ID token
+        in: header
+        name: X-User-Token
+        required: true
+        type: string
+      responses:
+        "201":
+          description: id
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.IDResponse'
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        "401":
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse'
+      summary: Create poster based on KP ID
       tags:
       - posters/v2
   /api/v2/sign-up:

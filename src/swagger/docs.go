@@ -787,6 +787,62 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v2/posters/kp": {
+            "post": {
+                "description": "create poster",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "posters/v2"
+                ],
+                "summary": "Create poster based on KP ID",
+                "parameters": [
+                    {
+                        "description": "KP ID body",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.PosterKPRequest"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "TG-ID token",
+                        "name": "X-User-Token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "id",
+                        "schema": {
+                            "$ref": "#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.IDResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v2/posters/{id}": {
             "get": {
                 "description": "get poster",
@@ -1148,6 +1204,14 @@ const docTemplate = `{
                 }
             }
         },
+        "git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.PosterKPRequest": {
+            "type": "object",
+            "properties": {
+                "kp_id": {
+                    "type": "string"
+                }
+            }
+        },
         "git_iu7_bmstu_ru_vai20u117_testing_src_internal_api_v2_model.PosterRecordResponse": {
             "type": "object",
             "properties": {
@@ -1177,6 +1241,12 @@ const docTemplate = `{
                         "type": "string"
                     }
                 },
+                "image_url": {
+                    "type": "string"
+                },
+                "kp_id": {
+                    "type": "string"
+                },
                 "name": {
                     "type": "string"
                 },
@@ -1203,6 +1273,12 @@ const docTemplate = `{
                 },
                 "id": {
                     "type": "integer"
+                },
+                "image_url": {
+                    "type": "string"
+                },
+                "kp_id": {
+                    "type": "string"
                 },
                 "name": {
                     "type": "string"

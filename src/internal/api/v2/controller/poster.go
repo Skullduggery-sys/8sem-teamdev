@@ -16,6 +16,7 @@ import (
 type posterService interface {
 	Get(ctx context.Context, posterID int) (*model.Poster, error)
 	Create(ctx context.Context, poster *model.Poster) (int, error)
+	CreateFromKP(ctx context.Context, kpID string, userID int) (int, error)
 	Update(ctx context.Context, poster *model.Poster) error
 	Delete(ctx context.Context, posterID int) error
 }
@@ -75,6 +76,33 @@ func (h *PosterHandler) Create(ctx context.Context, poster *model.Poster) ([]byt
 	id, err := h.service.Create(ctx, poster)
 	if err != nil {
 		slog.Error("unexpected error occurred while creating poster", "error", err)
+		return nil, fmt.Errorf("%w: %w", errInternal, err)
+	}
+
+	idJSON, err := json.Marshal(map[string]int{"id": id})
+	if err != nil {
+		slog.Error("unexpected error occurred while marshaling id", "error", err)
+		return nil, fmt.Errorf("%w: %w", errInternal, err)
+	}
+
+	return idJSON, nil
+}
+
+// @Summary	Create poster based on KP ID
+// @Description	create poster
+// @Tags posters/v2
+// @Param input body reqModelPkg.PosterKPRequest true "KP ID body"
+// @Param X-User-Token header string true "TG-ID token"
+// @Accept json
+// @Success	201 {object} reqModelPkg.IDResponse "id"
+// @Failure	400	{object} reqModelPkg.ErrorResponse "Error"
+// @Failure	401	{object} reqModelPkg.ErrorResponse "Error"
+// @Failure	500	{object} reqModelPkg.ErrorResponse "Error"
+// @Router /api/v2/posters/kp [post]
+func (h *PosterHandler) CreateFromKP(ctx context.Context, kpID string, userID int) ([]byte, error) {
+	id, err := h.service.CreateFromKP(ctx, kpID, userID)
+	if err != nil {
+		slog.Error("unexpected error occurred while creating poster from KP", "error", err)
 		return nil, fmt.Errorf("%w: %w", errInternal, err)
 	}
 
@@ -232,6 +260,40 @@ func (c *Controller) handlePosterBodyRequests(w http.ResponseWriter, r *http.Req
 		}
 
 		id, err := c.poster.Create(ctx, poster)
+		if err != nil {
+			writeError(w, err)
+			break
+		} else if _, err = w.Write(id); err != nil {
+			writeError(w, fmt.Errorf("%w: writing poster_id body: %w", errInternal, err))
+			break
+		}
+
+		w.WriteHeader(http.StatusCreated)
+	default:
+		slog.Error("http method is not allowed", "method", r.Method)
+		w.WriteHeader(http.StatusForbidden)
+	}
+}
+
+func (c *Controller) handleKPPosterBodyRequests(w http.ResponseWriter, r *http.Request) {
+	token := r.Header.Get(tokenHeader)
+
+	ctx := r.Context()
+	switch r.Method {
+	case http.MethodPost:
+		userID, err := c.getUserIDByToken(ctx, token)
+		if err != nil {
+			writeError(w, err)
+			break
+		}
+
+		kpID, err := reqModelPkg.ParsePosterKPRequest(r)
+		if err != nil {
+			writeError(w, fmt.Errorf("%w: %w", errInvalidArguments, err))
+			break
+		}
+
+		id, err := c.poster.CreateFromKP(ctx, kpID, userID)
 		if err != nil {
 			writeError(w, err)
 			break

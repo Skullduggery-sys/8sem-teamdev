@@ -22,7 +22,7 @@ import (
 )
 
 const (
-	requestsTimeout = 15 * time.Second
+	requestsTimeout = 5 * time.Second
 
 	adminSecretEnv = "ADMIN_SECRET"
 )
@@ -39,11 +39,13 @@ func main() {
 	database := mustLoadDB(ctx)
 	defer database.GetPool(ctx).Close()
 
-	controllerV2 := createControllerV2(database)
+	client := &http.Client{
+		Timeout: requestsTimeout,
+	}
+	controllerV2 := createControllerV2(database, client)
 
 	serverPort := ":" + getAppPort()
 	router := mux.NewRouter()
-	// controller.CreateRouter(router)
 	controllerV2.CreateRouter(router.PathPrefix("/api/v2").Subrouter())
 
 	server := &http.Server{
@@ -68,9 +70,11 @@ func main() {
 	slog.Info("Server shutting down")
 }
 
-func createControllerV2(database *dbpostgres.Database) *apiv2.Controller {
+func createControllerV2(database *dbpostgres.Database, client *http.Client) *apiv2.Controller {
+	kpToken := os.Getenv("KP_TOKEN")
+
 	return apiv2.NewController(
-		initPosterHandlerV2(database),
+		initPosterHandlerV2(database, client, kpToken),
 		initListHandlerV2(database),
 		initListPosterHandlerV2(database),
 		initPosterRecordHandlerV2(database),
@@ -78,9 +82,9 @@ func createControllerV2(database *dbpostgres.Database) *apiv2.Controller {
 	)
 }
 
-func initPosterHandlerV2(database *dbpostgres.Database) *apiv2.PosterHandler {
+func initPosterHandlerV2(database *dbpostgres.Database, client *http.Client, kpToken string) *apiv2.PosterHandler {
 	posterRepository := repository.NewPosterRepository(database)
-	posterService := service.NewPosterService(posterRepository)
+	posterService := service.NewPosterService(posterRepository, client, kpToken)
 	return apiv2.NewPosterHandler(posterService)
 }
 
