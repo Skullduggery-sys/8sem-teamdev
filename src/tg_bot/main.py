@@ -5,6 +5,8 @@ import json
 from typing import Optional, Any, Dict, List
 
 import aiohttp
+import re
+from aiogram.types import InputMediaPhoto
 from aiogram import Bot, Dispatcher, F
 from aiogram.filters import CommandStart
 from aiogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
@@ -203,10 +205,12 @@ async def main():
                 InlineKeyboardButton(text="✏️ Переименовать", callback_data=f"rename_{list_id}"),
                 InlineKeyboardButton(text="🗑️ Удалить", callback_data=f"delete_{list_id}")
             ])
+# Везде, где вы строите клавиатуру:
         rows.append([
-            InlineKeyboardButton(text="⬅️ Назад", callback_data="back"),
+            InlineKeyboardButton(text="⬅️ Назад", callback_data=f"back_{list_id}"),
             InlineKeyboardButton(text="🏠 Главный", callback_data="home")
         ])
+
         kb = InlineKeyboardMarkup(inline_keyboard=rows)
         if isinstance(event, Message):
             await event.answer(text, reply_markup=kb)
@@ -267,7 +271,6 @@ async def main():
         await state.clear()
         await show_list(message, new_id, user_token)
 
-# Исправленный экран фильмаз
     @dp.callback_query(F.data.startswith('poster_'))
     async def show_poster_actions(callback: CallbackQuery):
         parts = callback.data.split('_')
@@ -277,20 +280,39 @@ async def main():
             try:
                 info = await api.get_poster(token, poster_id)
             except APIError:
-                info = {'name': 'неизвестно', 'year': '?'}
-        text = f"🎬 {info.get('name')} ({info.get('year')})\nID: {poster_id}"  
-        rows = [[
+                await callback.answer("Не удалось получить данные постера.")
+                return
+        # Формируем подпись на русском с эмодзи
+        caption = (
+            f"🎬 {info['name']} ({info['year']})\n"
+            f"⏱️ Хронометраж: {info['chrono']} мин\n"
+            f"📅 Создано: {info['createdat']}\n"
+            f"🎭 Жанры: {', '.join(info['genres'])}\n"
+            f"🔗 KP ID: {info['kp_id']}"
+        )
+        kb = InlineKeyboardMarkup(inline_keyboard=[
+            [
             InlineKeyboardButton(text="❌ Удалить", callback_data=f"del_p_{list_id}_{poster_id}"),
             InlineKeyboardButton(text="✅ Просмотрено", callback_data=f"record_{list_id}_{poster_id}")
-        ], [
-            InlineKeyboardButton(text="⬅️ Назад", callback_data=f"list_{list_id}"),
-            InlineKeyboardButton(text="🏠 Главный", callback_data="home")
-        ]]
-        kb = InlineKeyboardMarkup(inline_keyboard=rows)
+            ],
+            [
+                # Везде, где вы строите клавиатуру:
+            InlineKeyboardButton(text="⬅️ Назад", callback_data=f"back_{list_id}"),
+            InlineKeyboardButton(text="🏠 Главный", callback_data="home"),
+            ],
+        ])
         await callback.answer()
-        await callback.message.edit_text(text, reply_markup=kb)
+        image_url = info.get('image_url')
+        if image_url:
+            try:
+                media = InputMediaPhoto(media=image_url, caption=caption)
+                await callback.message.edit_media(media, reply_markup=kb)
+            except Exception:
+                await callback.message.edit_text(caption, reply_markup=kb)
+        else:
+            await callback.message.edit_text(caption, reply_markup=kb)
 
-    # Остальные навигационные хендлеры...
+
     @dp.callback_query(F.data.startswith('add_poster_'))
     async def ask_add_poster(callback: CallbackQuery, state: FSMContext):
         list_id = int(callback.data.split('_')[-1])
@@ -303,7 +325,10 @@ async def main():
     async def process_add_poster(message: Message, state: FSMContext):
         data = await state.get_data()
         list_id = data.get('list_id')
-        kp_id = message.text.strip()
+        user_token = str(message.from_user.id)
+        text = message.text.strip()
+        match = re.search(r"(\d+)(?:\D*$)", text)
+        kp_id = match.group(1) if match else text
         token = str(message.from_user.id)
         async with APIClient(API_URL) as api:
             created = await api.create_poster_kp(token, kp_id)
@@ -340,14 +365,26 @@ async def main():
         await callback.answer()
         await show_list(callback, list_id, token)
 
-    @dp.callback_query(F.data == 'back')
+
+
+    @dp.callback_query(F.data.startswith('back_'))
     async def on_back(callback: CallbackQuery):
+        parts = callback.data.split('_')
+        current_id = int(parts[-1])
         token = str(callback.from_user.id)
         await callback.answer()
         async with APIClient(API_URL) as api:
-            parent = await api.get_list(token, callback.data)
-            parent_id = parent.get('parentId') or (await api.get_root_list(token))['id']
-        await show_list(callback, parent_id, token)
+            try:
+                current = await api.get_list(token, current_id)
+                parent_id = current.get('parentId')
+                if parent_id:
+                    await show_list(callback, parent_id, token)
+                else:
+                    root = await api.get_root_list(token)
+                    await show_list(callback, root['id'], token)
+            except APIError:
+                root = await api.get_root_list(token)
+                await show_list(callback, root['id'], token)
 
     @dp.callback_query(F.data == 'home')
     async def on_home(callback: CallbackQuery):
