@@ -23,5 +23,6 @@ func NewDB(ctx context.Context, cfg *DBConfig) (*Database, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	return newDatabase(pool), nil
 }
