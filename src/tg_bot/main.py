@@ -1,18 +1,24 @@
 import asyncio
+import re
 import logging
 import os
 import json
 from typing import Optional, Any, Dict, List
 
 import aiohttp
-import re
-from aiogram.types import InputMediaPhoto
 from aiogram import Bot, Dispatcher, F
 from aiogram.filters import CommandStart
-from aiogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.types import (
+    Message,
+    CallbackQuery,
+    InlineKeyboardMarkup,
+    InlineKeyboardButton,
+    InputMediaPhoto,
+)
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.fsm.state import StatesGroup, State
+from aiogram.exceptions import TelegramBadRequest
 
 # Адрес бэкенда на порту 9000
 API_URL = "http://127.0.0.1:9000/api/v2"
@@ -21,7 +27,7 @@ BOT_TOKEN = os.getenv("TG_BOT_TOKEN")
 if not BOT_TOKEN:
     raise RuntimeError("Переменная окружения TG_BOT_TOKEN не установлена")
 
-# Логирование
+# Настройка логирования
 logging.basicConfig(
     level=logging.DEBUG,
     format="%(asctime)s | %(levelname)-8s | %(name)s | %(message)s"
@@ -75,7 +81,6 @@ class APIClient:
             except json.JSONDecodeError:
                 return text
 
-    # Пользователь и списки
     async def signup(self, token: str) -> int:
         return await self._request('POST', '/sign-up', token, json={})
 
@@ -100,11 +105,9 @@ class APIClient:
     async def get_sublists(self, token: str, parent_id: int) -> List[Dict[str, Any]]:
         return await self._request('GET', f'/sublists/{parent_id}', token)
 
-    # Постеры в списке
     async def get_list_posters(self, token: str, list_id: int) -> List[Dict[str, Any]]:
         return await self._request('GET', f'/lists/{list_id}/posters', token)
 
-    # Детали постера
     async def get_poster(self, token: str, poster_id: int) -> Dict[str, Any]:
         return await self._request('GET', f'/posters/{poster_id}', token)
 
@@ -117,7 +120,6 @@ class APIClient:
     async def delete_poster_from_list(self, token: str, list_id: int, poster_id: int) -> Any:
         return await self._request('DELETE', f'/lists/{list_id}/posters/{poster_id}', token)
 
-    # Записи просмотра
     async def create_poster_record(self, token: str, poster_id: int) -> Dict[str, Any]:
         return await self._request('POST', f'/poster-records/{poster_id}', token)
 
@@ -166,7 +168,6 @@ async def main():
         await show_list(message, root_id, user_token)
 
     async def show_list(event: Message | CallbackQuery, list_id: int, token: str):
-        # Используем единый клиент для всех запросов
         async with APIClient(API_URL) as api:
             info = await api.get_list(token, list_id)
             name = info.get('name', '')
@@ -175,7 +176,6 @@ async def main():
                 posters_raw = await api.get_list_posters(token, list_id)
             except APIError:
                 posters_raw = []
-            # Получаем названия постеров
             posters: List[Dict[str, Any]] = []
             for p in posters_raw:
                 pid = p.get('posterId')
@@ -185,7 +185,6 @@ async def main():
                 except APIError:
                     title = 'Unknown'
                 posters.append({'id': pid, 'name': title})
-        # Формируем строки кнопок
         rows: List[List[InlineKeyboardButton]] = []
         if not sublists and not posters:
             text = f"🎬 Список '{name}' пуст!"
@@ -205,19 +204,46 @@ async def main():
                 InlineKeyboardButton(text="✏️ Переименовать", callback_data=f"rename_{list_id}"),
                 InlineKeyboardButton(text="🗑️ Удалить", callback_data=f"delete_{list_id}")
             ])
-# Везде, где вы строите клавиатуру:
         rows.append([
             InlineKeyboardButton(text="⬅️ Назад", callback_data=f"back_{list_id}"),
             InlineKeyboardButton(text="🏠 Главный", callback_data="home")
         ])
-
         kb = InlineKeyboardMarkup(inline_keyboard=rows)
         if isinstance(event, Message):
             await event.answer(text, reply_markup=kb)
         else:
-            await event.message.edit_text(text, reply_markup=kb)
+            try:
+                await event.message.edit_text(text, reply_markup=kb)
+            except TelegramBadRequest:
+                await event.message.answer(text, reply_markup=kb)
 
-    # Переименование списка
+    @dp.callback_query(F.data.startswith('back_'))
+    async def on_back(callback: CallbackQuery):
+        parts = callback.data.split('_')
+        current_id = int(parts[-1])
+        token = str(callback.from_user.id)
+        await callback.answer()
+        async with APIClient(API_URL) as api:
+            try:
+                current = await api.get_list(token, current_id)
+                parent_id = current.get('parentId')
+                if parent_id:
+                    await show_list(callback, parent_id, token)
+                else:
+                    root = await api.get_root_list(token)
+                    await show_list(callback, root['id'], token)
+            except APIError:
+                root = await api.get_root_list(token)
+                await show_list(callback, root['id'], token)
+
+    @dp.callback_query(F.data == 'home')
+    async def on_home(callback: CallbackQuery):
+        token = str(callback.from_user.id)
+        await callback.answer()
+        async with APIClient(API_URL) as api:
+            root = await api.get_root_list(token)
+        await show_list(callback, root['id'], token)
+
     @dp.callback_query(F.data.startswith('rename_'))
     async def ask_rename(callback: CallbackQuery, state: FSMContext):
         list_id = int(callback.data.split('_')[-1])
@@ -243,10 +269,8 @@ async def main():
         await state.clear()
         await show_list(message, list_id, token)
 
-        # Обработчик создания подсписка
     @dp.callback_query(F.data.startswith('new_sub_'))
     async def ask_new_sub(callback: CallbackQuery, state: FSMContext):
-        # Запрос имени для нового подсписка
         parent_id = int(callback.data.split('_')[-1])
         await callback.answer()
         await callback.message.answer("Введите название нового подсписка:")
@@ -317,31 +341,35 @@ async def main():
     async def ask_add_poster(callback: CallbackQuery, state: FSMContext):
         list_id = int(callback.data.split('_')[-1])
         await callback.answer()
-        await callback.message.answer("Введите числовой ID фильма на Кинопоиске (например, 404900):")
+        await callback.message.answer("Мы добавим фильм прямо по ссылке из Кинопоиска (из обычного, не HD 🥲), просто пришли нам ее, либо его айдишник (чиселки в конце)😉 :")
         await state.update_data(list_id=list_id)
         await state.set_state(Form.add_poster)
 
     @dp.message(Form.add_poster)
     async def process_add_poster(message: Message, state: FSMContext):
-        data = await state.get_data()
-        list_id = data.get('list_id')
-        user_token = str(message.from_user.id)
-        text = message.text.strip()
-        match = re.search(r"(\d+)(?:\D*$)", text)
-        kp_id = match.group(1) if match else text
-        token = str(message.from_user.id)
-        async with APIClient(API_URL) as api:
-            created = await api.create_poster_kp(token, kp_id)
-            poster_id = created.get('id')
-            await api.add_poster_to_list(token, list_id, poster_id)
-        await message.answer(f"Фильм добавлен.")
-        await state.clear()
-        await show_list(message, list_id, token)
+        try:
+            data = await state.get_data()
+            list_id = data.get('list_id')
+            user_token = str(message.from_user.id)
+            text = message.text.strip()
+            match = re.search(r"(\d+)(?:\D*$)", text)
+            kp_id = match.group(1) if match else text
+            token = str(message.from_user.id)
+            async with APIClient(API_URL) as api:
+                created = await api.create_poster_kp(token, kp_id)
+                poster_id = created.get('id')
+                await api.add_poster_to_list(token, list_id, poster_id)
+            await message.answer(f"Фильм добавлен.")
+            await state.clear()
+            await show_list(message, list_id, token)
+        except Exception as e:
+            message.reply("В этот раз не обошлось без ошибочки. Может, ты отправил ссылку на Кинопоиск HD? Там просто другие ссылки, они не подойдут 🙃")
 
     @dp.callback_query(F.data.startswith('del_p_'))
     async def process_delete_poster(callback: CallbackQuery):
         parts = callback.data.split('_')
-        list_id, poster_id = int(parts[1]), int(parts[2])
+        list_id = int(parts[-2])
+        poster_id = int(parts[-1])
         token = str(callback.from_user.id)
         async with APIClient(API_URL) as api:
             await api.delete_poster_from_list(token, list_id, poster_id)
