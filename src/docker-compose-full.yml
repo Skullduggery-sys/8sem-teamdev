@@ -1,0 +1,46 @@
+version: '3.0'
+services:
+  postgres:
+    image: postgres:15.4
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_USER=perpetualgod
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d postgres -U perpetualgod"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - ./migrations_docker:/docker-entrypoint-initdb.d:ro
+    ports:
+      - '5436:5432'
+    networks:
+      - mynetwork
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: backend
+    container_name: backend
+    entrypoint: ["go", "run", "cmd/main.go", "--config=config_test"]
+    environment:
+      PASSWORD_FROM: $PASSWORD_FROM
+      TC_HOST: "host.docker.internal"
+      TZ: "Europe/Moscow"
+    volumes:
+      - .:/app
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 8080:8080
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge

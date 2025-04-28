@@ -3,80 +3,99 @@ name: Go CI
 on: [push]
 
 jobs:
-  test:
+  build:
+    name: Build
     runs-on: ubuntu-latest
-
+    timeout-minutes: 10
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      # - name: Set up migration tool
-      #   run: |
-      #     export PATH=$PATH:$(go env GOPATH)/bin
-
-      - name: Code checks
-        run: |
-          export PATH=$PATH:$(go env GOPATH)/bin
-          go install github.com/fzipp/gocyclo/cmd/gocyclo@latest
-          cd src
-          touch .env
-          make code-check
-
-      - name: Docker Build
+      - name: Build & exit on test-flag
         run: |
           cd src
-          touch .env
-          make docker-up
-          export PATH=$PATH:$(go env GOPATH)/bin
-          go install github.com/pressly/goose/v3/cmd/goose@latest
-          make migration-up
-          make docker-app-up
-        env:
-          DB_HOST: 0.0.0.0
-          DB_PORT: 5432
-          DB_NAME: postgres
-          DB_USERNAME: postgres
-          DB_PASSWORD: ${{secrets.DB_PASSWORD}}
+          go mod download
+          go run ./... --is_test_build
+
+  lint_go:
+    name: Go Lint
+    runs-on: ubuntu-latest
+    needs: build
+    timeout-minutes: 100
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install golangci-lint
+        run: |
+          curl -sSfL https://github.com/golangci/golangci-lint/releases/download/v1.63.4/golangci-lint-1.63.4-linux-amd64.tar.gz \
+            | tar -xzv -C /tmp
+          mv /tmp/golangci-lint-*/golangci-lint /usr/local/bin/
+          chmod +x /usr/local/bin/golangci-lint
+
+      - name: Run Go Linter
+        run: |
+          cd src
+          golangci-lint cache clean
+          golangci-lint run ./internal/... \
+            --config ./golangci.yaml \
+            --skip-dirs=src/runtime \
+            --max-same-issues 5 -v
+
+  lint_sql:
+    name: SQL Lint
+    runs-on: ubuntu-latest
+    needs: build
+    timeout-minutes: 15
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js & install sql-lint
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - run: npm install -g sql-lint
+
+      - name: Run SQL Linter
+        run: |
+          cd src
+          sql-lint --ignore-errors=my-sql-invalid-create-option,my-sql-invalid-drop-option migrations/*.sql
+
+  test:
+    name: Unit Tests
+    runs-on: ubuntu-24.04
+    needs:
+      - lint_go
+      - lint_sql
+    timeout-minutes: 30
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
       - name: Run Unit Tests
         run: |
           cd src
-          touch .env
-          mkdir -p coverage
-          make unit-tests-coverage
+          make unit
+  deploy:
+    runs-on: ubuntu-latest
+    needs:
+      - test
+      - lint_sql
+      - lint_go
+      - build
+    steps:
+      - uses: actions/checkout@v4
 
-      - name: Run Integration Tests
+      - name: Build Docker image
+        working-directory: src
         run: |
-          cd src
-          touch .env
-          touch internal/tests/.env
-          make integration-tests
-        env:
-          DB_HOST: 0.0.0.0
-          DB_PORT: 5432
-          DB_NAME: postgres
-          DB_USERNAME: postgres
-          DB_PASSWORD: ${{secrets.DB_PASSWORD}}
+          docker build -t skullduggerysys/filmsbot:latest .
 
-      # - name: Run e2e Tests
-      #   run: |
-      #     cd src
-      #     touch .env
-      #     touch e2e/.env
-      #     make e2e-setup
-      #     make e2e-tests
-      #   env:
-      #     APP_HOST: 0.0.0.0
-      #     DB_HOST: 0.0.0.0
-      #     DB_PORT: 5432
-      #     DB_NAME: postgres
-      #     DB_USERNAME: postgres
-      #     DB_PASSWORD: ${{secrets.DB_PASSWORD}}
-
-      - name: Clean Up
+      - name: Log in to Docker Hub
         run: |
-          cd src
-          make docker-down
+          docker login -u artyombarskov@gmail.com -p w0nk9PZTM
+
+      - name: Push Docker image
+        run: |
+          docker push skullduggerysys/filmsbot:latest
